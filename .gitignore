@@ -1,0 +1,18 @@
+# SBT
+target/
+project/target/
+project/project/
+
+# IDE
+.idea/
+.bsp/
+.metals/
+.vscode/
+
+# OS
+.DS_Store
+
+# Test fixtures (large GRIB files)
+src/test/resources/*.grib2
+src/test/resources/*.grb
+src/test/resources/*.idx
