@@ -7,11 +7,16 @@ import ucar.nc2.grib.grib1.{Grib1RecordScanner, Grib1Record, Grib1Gds}
 import ucar.nc2.grib.grib1.tables.{Grib1Customizer, Grib1ParamTables}
 import ucar.nc2.grib.GdsHorizCoordSys
 import ucar.unidata.io.RandomAccessFile
-import java.io.IOException
+import java.io.{Closeable, IOException}
 import java.sql.Timestamp
 import java.util.{Calendar, GregorianCalendar, TimeZone}
-import scala.collection.mutable.ArrayBuffer
 import org.slf4j.LoggerFactory
+
+/**
+ * An iterator that owns a resource (an open file handle) which must be released
+ * by calling `close()` when iteration finishes or is abandoned early.
+ */
+trait CloseableIterator[A] extends Iterator[A] with Closeable
 
 /**
  * Decoded metadata and data from a single GRIB message.
@@ -45,10 +50,42 @@ object GribMessageDecoder {
   private val logger = LoggerFactory.getLogger(getClass)
 
   /**
-   * Scan a local file and decode all GRIB messages.
-   * Tries GRIB2 first, falls back to GRIB1.
+   * Scan a local file and decode all GRIB messages, auto-detecting the edition
+   * from the file header (tries GRIB2 first, falls back to GRIB1).
+   *
+   * @param filePath     Local path to a GRIB file, or a byte-range slice that
+   *                     begins on a message boundary.
+   * @param startIndex   Ordinal to assign to the first decoded message. Used
+   *                     when decoding a partition slice so message indices
+   *                     remain globally consistent across slices.
+   * @param computeLatLon Whether to materialize per-point lat/lon arrays. Only
+   *                     flat output mode needs them; gridded mode emits the grid
+   *                     origin/increments instead, so skipping the arrays there
+   *                     avoids allocating two nx*ny Double arrays per message.
    */
-  def decodeFile(filePath: String): Seq[DecodedGribMessage] = {
+  def decodeFile(
+      filePath: String,
+      startIndex: Int = 0,
+      computeLatLon: Boolean = true
+  ): Seq[DecodedGribMessage] = {
+    val it = openMessages(filePath, startIndex, computeLatLon)
+    try it.toList finally it.close()
+  }
+
+  /**
+   * Open a GRIB file (or a byte-range slice that begins on a message boundary)
+   * and return a lazy, closeable iterator over its decoded messages, with the
+   * edition auto-detected.
+   *
+   * Messages are decoded on demand, so only one is held in memory at a time.
+   * The caller MUST call `close()` on the returned iterator (whether or not it
+   * was fully consumed) to release the underlying file handle.
+   */
+  def openMessages(
+      filePath: String,
+      startIndex: Int = 0,
+      computeLatLon: Boolean = true
+  ): CloseableIterator[DecodedGribMessage] = {
     val raf = new RandomAccessFile(filePath, "r")
     try {
       raf.seek(0)
@@ -56,34 +93,21 @@ object GribMessageDecoder {
       raf.seek(0)
 
       edition match {
-        case 2 => decodeGrib2(raf)
-        case 1 => decodeGrib1(raf)
+        case 2 => new Grib2MessageIterator(raf, startIndex, computeLatLon)
+        case 1 => new Grib1MessageIterator(raf, startIndex, computeLatLon)
         case _ =>
-          val g2 = decodeGrib2(raf)
-          if (g2.nonEmpty) g2
+          // Ambiguous header: prefer GRIB2 if it yields anything, else GRIB1.
+          val g2 = new Grib2MessageIterator(raf, startIndex, computeLatLon)
+          if (g2.hasNext) g2
           else {
             raf.seek(0)
-            decodeGrib1(raf)
+            new Grib1MessageIterator(raf, startIndex, computeLatLon)
           }
       }
-    } finally {
-      raf.close()
-    }
-  }
-
-  /**
-   * Decode GRIB messages from a file with a known edition and starting index.
-   */
-  def decodeFromFile(filePath: String, edition: Int, startIndex: Int): Seq[DecodedGribMessage] = {
-    val raf = new RandomAccessFile(filePath, "r")
-    try {
-      edition match {
-        case 2 => decodeGrib2(raf, startIndex)
-        case 1 => decodeGrib1(raf, startIndex)
-        case _ => decodeGrib2(raf, startIndex) ++ { raf.seek(0); decodeGrib1(raf, startIndex) }
-      }
-    } finally {
-      raf.close()
+    } catch {
+      case e: Throwable =>
+        raf.close()
+        throw e
     }
   }
 
@@ -101,32 +125,79 @@ object GribMessageDecoder {
     }
   }
 
+  /**
+   * Base for the edition-specific message iterators. Prefetches the next
+   * decodable message — skipping records that fail to decode, exactly as the
+   * former eager loop did — and closes the file handle on `close()`.
+   */
+  private abstract class MessageIterator(
+      raf: RandomAccessFile,
+      startIndex: Int
+  ) extends CloseableIterator[DecodedGribMessage] {
+
+    /** Whether the underlying record scanner has another record. */
+    protected def hasNextRecord: Boolean
+
+    /** Advance the scanner by one record and decode it at the given index. */
+    protected def decodeNext(index: Int): Option[DecodedGribMessage]
+
+    private var idx = startIndex
+    private var prefetched: Option[DecodedGribMessage] = None
+    private var exhausted = false
+
+    private def prefetch(): Unit = {
+      while (prefetched.isEmpty && !exhausted) {
+        if (!hasNextRecord) {
+          exhausted = true
+        } else {
+          prefetched =
+            try decodeNext(idx)
+            catch {
+              case e: Exception =>
+                logger.warn(s"Failed to decode message at index $idx: ${e.getMessage}")
+                None
+            }
+          idx += 1
+        }
+      }
+    }
+
+    override def hasNext: Boolean = {
+      prefetch()
+      prefetched.isDefined
+    }
+
+    override def next(): DecodedGribMessage = {
+      prefetch()
+      val msg = prefetched.getOrElse(
+        throw new java.util.NoSuchElementException("next() on an exhausted GRIB iterator"))
+      prefetched = None
+      msg
+    }
+
+    override def close(): Unit = raf.close()
+  }
+
   // ============================================================
   // GRIB2
   // ============================================================
 
-  private def decodeGrib2(raf: RandomAccessFile, startIndex: Int = 0): Seq[DecodedGribMessage] = {
-    val messages = ArrayBuffer.empty[DecodedGribMessage]
-    val scanner = new Grib2RecordScanner(raf)
-    var idx = startIndex
-
-    while (scanner.hasNext) {
-      try {
-        val record = scanner.next()
-        decodeGrib2Record(record, raf, idx).foreach(messages += _)
-      } catch {
-        case e: Exception =>
-          logger.warn(s"Failed to decode GRIB2 message at index $idx: ${e.getMessage}")
-      }
-      idx += 1
-    }
-    messages.toSeq
+  private class Grib2MessageIterator(
+      raf: RandomAccessFile,
+      startIndex: Int,
+      computeLatLon: Boolean
+  ) extends MessageIterator(raf, startIndex) {
+    private val scanner = new Grib2RecordScanner(raf)
+    override protected def hasNextRecord: Boolean = scanner.hasNext
+    override protected def decodeNext(index: Int): Option[DecodedGribMessage] =
+      decodeGrib2Record(scanner.next(), raf, index, computeLatLon)
   }
 
   private def decodeGrib2Record(
       record: Grib2Record,
       raf: RandomAccessFile,
-      messageIndex: Int
+      messageIndex: Int,
+      computeLatLon: Boolean
   ): Option[DecodedGribMessage] = {
     try {
       val is = record.getId
@@ -171,8 +242,10 @@ object GribMessageDecoder {
       val latInc = Math.abs(hcs.dy)
       val lonInc = Math.abs(hcs.dx)
 
-      // Build lat/lon arrays
-      val (lats, lons) = buildLatLonFromHcs(hcs, nx, ny)
+      // Build lat/lon arrays (flat mode only; gridded mode uses origin/increments)
+      val (lats, lons) =
+        if (computeLatLon) buildLatLonFromHcs(hcs, nx, ny)
+        else (Array.empty[Double], Array.empty[Double])
 
       // Decode data
       val dataValues = record.readData(raf)
@@ -208,28 +281,22 @@ object GribMessageDecoder {
   // GRIB1
   // ============================================================
 
-  private def decodeGrib1(raf: RandomAccessFile, startIndex: Int = 0): Seq[DecodedGribMessage] = {
-    val messages = ArrayBuffer.empty[DecodedGribMessage]
-    val scanner = new Grib1RecordScanner(raf)
-    var idx = startIndex
-
-    while (scanner.hasNext) {
-      try {
-        val record = scanner.next()
-        decodeGrib1Record(record, raf, idx).foreach(messages += _)
-      } catch {
-        case e: Exception =>
-          logger.warn(s"Failed to decode GRIB1 message at index $idx: ${e.getMessage}")
-      }
-      idx += 1
-    }
-    messages.toSeq
+  private class Grib1MessageIterator(
+      raf: RandomAccessFile,
+      startIndex: Int,
+      computeLatLon: Boolean
+  ) extends MessageIterator(raf, startIndex) {
+    private val scanner = new Grib1RecordScanner(raf)
+    override protected def hasNextRecord: Boolean = scanner.hasNext
+    override protected def decodeNext(index: Int): Option[DecodedGribMessage] =
+      decodeGrib1Record(scanner.next(), raf, index, computeLatLon)
   }
 
   private def decodeGrib1Record(
       record: Grib1Record,
       raf: RandomAccessFile,
-      messageIndex: Int
+      messageIndex: Int,
+      computeLatLon: Boolean
   ): Option[DecodedGribMessage] = {
     try {
       val pds = record.getPDSsection
@@ -281,7 +348,9 @@ object GribMessageDecoder {
       val latInc = Math.abs(hcs.dy)
       val lonInc = Math.abs(hcs.dx)
 
-      val (lats, lons) = buildLatLonFromHcs(hcs, nx, ny)
+      val (lats, lons) =
+        if (computeLatLon) buildLatLonFromHcs(hcs, nx, ny)
+        else (Array.empty[Double], Array.empty[Double])
 
       // Decode data
       val data = record.readData(raf)

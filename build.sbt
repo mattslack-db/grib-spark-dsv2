@@ -48,7 +48,10 @@ Test / javaOptions ++= Seq(
   "--add-opens=java.base/java.nio=ALL-UNNAMED",
   "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
   "--add-opens=java.base/java.util=ALL-UNNAMED",
-  "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED"
+  "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED",
+  // Pin the driver/block-manager host to loopback so local Spark tests don't
+  // fail with block-manager connect errors when the machine has a LAN IP.
+  "-Dspark.driver.host=127.0.0.1"
 )
 
 // Exclude slow tests by default

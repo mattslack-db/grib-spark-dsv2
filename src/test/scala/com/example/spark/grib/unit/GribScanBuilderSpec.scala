@@ -120,16 +120,29 @@ class GribScanBuilderSpec extends AnyFunSuite with Matchers {
     b.pushedFilters() shouldBe empty
   }
 
-  test("IsNotNull on pushable column should be pushed") {
+  test("EqualTo on discipline should be pushed") {
     val b = builder()
-    val filters = Array[Filter](IsNotNull("variable_short_name"))
+    val filters = Array[Filter](EqualTo("discipline", 0))
     val remaining = b.pushFilters(filters)
 
     remaining shouldBe empty
     b.pushedFilters() should have length 1
   }
 
-  test("filters on reference_time and forecast_time should be pushed") {
+  // --- Filters the reader does NOT evaluate must NOT be pushed ---
+  // If these were pushed, Spark would drop them from post-scan evaluation and
+  // the predicate would be silently ignored, returning incorrect rows.
+
+  test("IsNotNull should NOT be pushed (reader does not evaluate it)") {
+    val b = builder()
+    val filters = Array[Filter](IsNotNull("variable_short_name"))
+    val remaining = b.pushFilters(filters)
+
+    remaining should have length 1
+    b.pushedFilters() shouldBe empty
+  }
+
+  test("filters on reference_time and forecast_time should NOT be pushed") {
     val b = builder()
     val filters = Array[Filter](
       GreaterThan("reference_time", java.sql.Timestamp.valueOf("2024-01-01 00:00:00")),
@@ -137,16 +150,34 @@ class GribScanBuilderSpec extends AnyFunSuite with Matchers {
     )
     val remaining = b.pushFilters(filters)
 
-    remaining shouldBe empty
-    b.pushedFilters() should have length 2
+    remaining should have length 2
+    b.pushedFilters() shouldBe empty
   }
 
-  test("filter on discipline should be pushed") {
+  test("EqualTo on level_value should NOT be pushed (reader only evaluates ranges)") {
     val b = builder()
-    val filters = Array[Filter](EqualTo("discipline", 0))
+    val filters = Array[Filter](EqualTo("level_value", 500.0))
     val remaining = b.pushFilters(filters)
 
-    remaining shouldBe empty
-    b.pushedFilters() should have length 1
+    remaining should have length 1
+    b.pushedFilters() shouldBe empty
+  }
+
+  test("In on level_type should NOT be pushed (reader only evaluates In on variable_short_name)") {
+    val b = builder()
+    val filters = Array[Filter](In("level_type", Array("surface", "isobaricInhPa")))
+    val remaining = b.pushFilters(filters)
+
+    remaining should have length 1
+    b.pushedFilters() shouldBe empty
+  }
+
+  test("range comparison on discipline should NOT be pushed") {
+    val b = builder()
+    val filters = Array[Filter](GreaterThan("discipline", 0))
+    val remaining = b.pushFilters(filters)
+
+    remaining should have length 1
+    b.pushedFilters() shouldBe empty
   }
 }
