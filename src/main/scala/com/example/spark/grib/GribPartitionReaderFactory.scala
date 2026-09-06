@@ -6,11 +6,13 @@ import org.apache.spark.sql.connector.read.{InputPartition, PartitionReader, Par
 /**
  * Factory that creates GribPartitionReader instances on the executors.
  */
-class GribPartitionReaderFactory(options: GribOptions)
-    extends PartitionReaderFactory with Serializable {
+class GribPartitionReaderFactory(
+    options: GribOptions,
+    serializableConf: SerializableHadoopConf
+) extends PartitionReaderFactory with Serializable {
 
   override def createReader(partition: InputPartition): PartitionReader[InternalRow] = {
     val gribPartition = partition.asInstanceOf[GribInputPartition]
-    new GribPartitionReader(gribPartition, options)
+    new GribPartitionReader(gribPartition, options, serializableConf)
   }
 }

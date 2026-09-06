@@ -112,31 +112,4 @@ object GribIndexParser {
       (start, end - start)
     }
   }
-
-  /**
-   * Filter index entries by variable name(s).
-   *
-   * @param entries   All index entries
-   * @param variables Set of variable short names to keep (empty = keep all)
-   * @return Filtered entries
-   */
-  def filterByVariables(entries: Seq[GribIndexEntry], variables: Set[String]): Seq[GribIndexEntry] = {
-    if (variables.isEmpty) entries
-    else entries.filter(e => variables.contains(e.variableName))
-  }
-
-  /**
-   * Filter index entries by level description.
-   *
-   * @param entries   All index entries
-   * @param levelType Level type string to match (e.g. "surface", "1 mb")
-   * @return Filtered entries
-   */
-  def filterByLevelType(entries: Seq[GribIndexEntry], levelType: Option[String]): Seq[GribIndexEntry] = {
-    levelType match {
-      case None => entries
-      case Some(lt) =>
-        entries.filter(e => e.levelDescription.toLowerCase.contains(lt.toLowerCase))
-    }
-  }
 }

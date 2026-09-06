@@ -1,0 +1,57 @@
+name: build
+
+on:
+  pull_request:
+    types: [ opened, synchronize ]
+  push:
+    branches: [ main ]
+
+jobs:
+  # Fast, deterministic gate: compile + unit tests. No fixtures or network.
+  unit:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      # Spark 3.5.x supports Java 8/11/17 only — newer JDKs fail at
+      # SparkContext init (Subject.getSubject). Pin to 17.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'sbt'
+      - uses: sbt/setup-sbt@v1
+      - name: Compile
+        run: sbt -batch Test/compile
+      - name: Unit tests
+        # SlowTest is excluded by default (see build.sbt), so this runs only
+        # the unit suite.
+        run: sbt -batch "testOnly com.example.spark.grib.unit.*"
+
+  # Best-effort integration run against real GRIB data. Downloads only the
+  # small GFS sample (the local specs need just that file); S3ReadSpec is
+  # excluded because hadoop-aws is `provided` scope and it pulls a ~470 MB
+  # object. Marked non-blocking so NOAA download flakiness can't gate a PR.
+  integration:
+    runs-on: ubuntu-22.04
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'sbt'
+      - uses: sbt/setup-sbt@v1
+      - name: Download GFS test fixture
+        run: |
+          mkdir -p src/test/resources
+          curl -sS --fail --retry 3 -o src/test/resources/gfs_sample.grib2 \
+            "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20240101/00/atmos/gfs.t00z.pgrb2.1p00.f000"
+          curl -sS --fail --retry 3 -o src/test/resources/gfs_sample.grib2.idx \
+            "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20240101/00/atmos/gfs.t00z.pgrb2.1p00.f000.idx"
+      - name: Local integration tests
+        # Enable SlowTest-tagged tests by clearing the exclusion, and name the
+        # local specs explicitly to skip S3ReadSpec.
+        run: |
+          sbt -batch 'set Test/testOptions := Seq.empty' \
+            "testOnly com.example.spark.grib.integration.LocalFileReadSpec com.example.spark.grib.integration.GriddedOutputSpec com.example.spark.grib.integration.FilterPushDownSpec"

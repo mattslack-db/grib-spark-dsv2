@@ -1,9 +1,9 @@
 package com.example.spark.grib
 
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory, Scan}
 import org.apache.spark.sql.sources._
 import org.apache.spark.sql.types.StructType
-import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path}
 import org.slf4j.LoggerFactory
 import java.io.{BufferedReader, InputStreamReader}
@@ -22,12 +22,18 @@ class GribScan(
 
   private val logger = LoggerFactory.getLogger(getClass)
 
+  // Capture the session's Hadoop configuration on the driver (includes
+  // spark.hadoop.* and cloud credentials) and ship it to executors, rather than
+  // building a bare `new Configuration()` there that would miss those settings.
+  private val serializableConf =
+    new SerializableHadoopConf(SparkSession.active.sessionState.newHadoopConf())
+
   override def readSchema(): StructType = readSchema
 
   override def toBatch: Batch = this
 
   override def planInputPartitions(): Array[InputPartition] = {
-    val hadoopConf = new Configuration()
+    val hadoopConf = serializableConf.value
     val allPartitions = ArrayBuffer.empty[InputPartition]
 
     for (inputPath <- options.paths) {
@@ -74,7 +80,7 @@ class GribScan(
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
-    new GribPartitionReaderFactory(options)
+    new GribPartitionReaderFactory(options, serializableConf)
   }
 
   /**
@@ -88,19 +94,24 @@ class GribScan(
   ): Seq[InputPartition] = {
     // Read index file
     val idxContent = readTextFile(fs, idxPath)
-    var entries = GribIndexParser.parse(idxContent)
+    val allEntries = GribIndexParser.parse(idxContent)
 
-    // Apply pushed filters at the index level
-    entries = applyIndexFilters(entries)
+    // Compute byte ranges on the FULL, in-file-order entry list: the length of
+    // message N is (offset[N+1] - offset[N]). This MUST happen before any
+    // filtering — dropping entries first would make a surviving entry's range
+    // span the filtered-out messages that physically follow it (and the last
+    // survivor would extend to EOF), re-decoding data that was meant to be
+    // skipped. We pair each entry with its range POSITIONALLY, then filter the
+    // pairs, so a dropped entry can never be attached to the wrong range (and
+    // duplicate `.idx` message numbers, e.g. from concatenated files, are
+    // harmless).
+    val allRanges = GribIndexParser.computeMessageRanges(allEntries, fileSize)
+    val entryRanges = applyIndexFilters(allEntries.zip(allRanges))
 
-    if (entries.isEmpty) {
+    if (entryRanges.isEmpty) {
       logger.info(s"All messages filtered out for $filePath")
       return Seq.empty
     }
-
-    // Compute byte ranges
-    val ranges = GribIndexParser.computeMessageRanges(entries, fileSize)
-    val entryRanges = entries.zip(ranges)
 
     // Group into partitions of messagesPerPartition
     entryRanges
@@ -118,26 +129,30 @@ class GribScan(
   }
 
   /**
-   * Apply pushed filters against .idx entries to skip irrelevant messages
-   * before even planning partitions.
+   * Best-effort pruning of `(entry, byteRange)` pairs before decoding, to skip
+   * byte ranges that cannot match. This is NOT the authoritative filter — the
+   * reader re-evaluates every filter exactly after decoding (see
+   * [[GribFilters.passes]]) — so it must never drop a pair the message-level
+   * filter would keep.
+   *
+   * It prunes only on `variable_short_name`, whose `.idx` token equals the
+   * emitted value (the NCEP short name, matched case-insensitively). It does
+   * NOT prune on level, because the `.idx` level description ("500 mb") uses a
+   * different vocabulary from the decoded `level_type` — pruning on it could
+   * drop rows that should survive. Level filtering happens after decoding.
    */
-  private def applyIndexFilters(entries: Seq[GribIndexEntry]): Seq[GribIndexEntry] = {
-    // Also apply the options-level variable filter
-    var filtered = GribIndexParser.filterByVariables(entries, options.variables)
-    filtered = GribIndexParser.filterByLevelType(filtered, options.levelType)
+  private def applyIndexFilters(
+      entryRanges: Seq[(GribIndexEntry, (Long, Long))]
+  ): Seq[(GribIndexEntry, (Long, Long))] = {
+    // Option-level variable filter (case-insensitive; kept consistent with the
+    // message level via GribFilters.matchesAnyVariable).
+    val afterOption = entryRanges.filter {
+      case (e, _) => GribFilters.matchesAnyVariable(e.variableName, options.variables)
+    }
 
-    // Apply any pushed SQL filters that can be resolved from index metadata
-    pushedFilters.foldLeft(filtered) { (remaining, filter) =>
-      filter match {
-        case EqualTo("variable_short_name", v: String) =>
-          remaining.filter(_.variableName == v)
-        case In("variable_short_name", values) =>
-          val vs = values.map(_.toString).toSet
-          remaining.filter(e => vs.contains(e.variableName))
-        case EqualTo("level_type", v: String) =>
-          remaining.filter(_.levelDescription.toLowerCase.contains(v.toString.toLowerCase))
-        case _ => remaining
-      }
+    // Pushed SQL filters — superset pruning on variable_short_name only.
+    pushedFilters.foldLeft(afterOption) { (remaining, filter) =>
+      remaining.filter { case (e, _) => GribFilters.indexEntryKept(e, filter) }
     }
   }
 

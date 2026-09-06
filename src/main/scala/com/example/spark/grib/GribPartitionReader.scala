@@ -1,14 +1,12 @@
 package com.example.spark.grib
 
 import org.apache.spark.sql.catalyst.InternalRow
-import org.apache.spark.sql.catalyst.util.{ArrayData, GenericArrayData}
+import org.apache.spark.sql.catalyst.util.GenericArrayData
 import org.apache.spark.sql.connector.read.PartitionReader
-import org.apache.spark.sql.sources._
 import org.apache.spark.unsafe.types.UTF8String
-import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path}
 import org.slf4j.LoggerFactory
-import java.io.{File, FileOutputStream}
+import java.io.{Closeable, File, FileOutputStream}
 import java.sql.Timestamp
 
 /**
@@ -19,13 +17,13 @@ import java.sql.Timestamp
  */
 class GribPartitionReader(
     partition: GribInputPartition,
-    options: GribOptions
+    options: GribOptions,
+    serializableConf: SerializableHadoopConf
 ) extends PartitionReader[InternalRow] {
 
   private val logger = LoggerFactory.getLogger(getClass)
 
   // -- State --
-  private var messages: Seq[DecodedGribMessage] = Seq.empty
   private var messageIterator: Iterator[DecodedGribMessage] = Iterator.empty
   private var currentMessage: DecodedGribMessage = _
   private var currentPointIndex: Int = 0
@@ -33,30 +31,35 @@ class GribPartitionReader(
   private var hasNextRow: Boolean = false
   private var initialized: Boolean = false
   private var tempFiles: Seq[File] = Seq.empty
+  // Open file handles (streaming iterators) to release in close().
+  private var closeables: List[Closeable] = Nil
 
   /**
-   * Lazily initialize: open the file, decode messages, set up iteration.
+   * Lazily initialize: open the file, set up (lazy) message iteration.
    */
   private def initialize(): Unit = {
     if (initialized) return
     initialized = true
 
     val filePath = partition.filePath
+    // Per-point lat/lon arrays are only needed in flat mode.
+    val computeLatLon = options.outputMode == GribOptions.OUTPUT_MODE_FLAT
 
-    partition.messageRanges match {
+    val rawMessages: Iterator[DecodedGribMessage] = partition.messageRanges match {
       case Some(ranges) =>
-        // Sub-file read: fetch specific byte ranges and decode each
-        messages = readByteRanges(filePath, ranges)
+        // Sub-file read: bounded by messagesPerPartition, decoded eagerly.
+        readByteRanges(filePath, ranges, computeLatLon).iterator
       case None =>
-        // Whole-file read
+        // Whole-file read: stream messages lazily so the whole file's decoded
+        // values are never held in memory at once.
         val localPath = ensureLocalFile(filePath)
-        messages = GribMessageDecoder.decodeFile(localPath)
+        val src = GribMessageDecoder.openMessages(localPath, computeLatLon = computeLatLon)
+        closeables = src :: closeables
+        src
     }
 
-    // Apply pushed variable/level filters at message level
-    messages = applyMessageFilters(messages)
-
-    messageIterator = messages.iterator
+    // Apply option-level and pushed filters lazily, one message at a time.
+    messageIterator = rawMessages.filter(messagePasses)
     advanceToNextRow()
   }
 
@@ -74,7 +77,13 @@ class GribPartitionReader(
   override def get(): InternalRow = currentRow
 
   override def close(): Unit = {
-    // Clean up temp files
+    // Release streaming file handles first (they may hold the temp files open),
+    // then delete temp files. Runs even if iteration ended early.
+    closeables.foreach { c =>
+      try { c.close() } catch { case _: Exception => }
+    }
+    closeables = Nil
+
     tempFiles.foreach { f =>
       try { f.delete() } catch { case _: Exception => }
     }
@@ -130,7 +139,9 @@ class GribPartitionReader(
       lonStart -= 360.0
     }
 
-    val valuesArray = new GenericArrayData(msg.values.map(_.toDouble.asInstanceOf[Any]))
+    // Build a primitive Array[Double] so GenericArrayData's primitive
+    // constructor is used, avoiding boxing every one of the nx*ny values.
+    val valuesArray = new GenericArrayData(msg.values.map(_.toDouble))
 
     InternalRow(
       UTF8String.fromString(partition.filePath),     // file_path
@@ -217,8 +228,7 @@ class GribPartitionReader(
     if (filePath.startsWith("s3a://") || filePath.startsWith("s3://") ||
         filePath.startsWith("gs://") || filePath.startsWith("hdfs://") ||
         filePath.startsWith("abfss://")) {
-      val hadoopConf = new Configuration()
-      configureHadoop(hadoopConf)
+      val hadoopConf = serializableConf.value
       val path = new Path(filePath)
       val fs = FileSystem.get(path.toUri, hadoopConf)
       val tempFile = File.createTempFile("grib_", ".tmp")
@@ -254,10 +264,10 @@ class GribPartitionReader(
    */
   private def readByteRanges(
       filePath: String,
-      ranges: Seq[(Long, Long)]
+      ranges: Seq[(Long, Long)],
+      computeLatLon: Boolean
   ): Seq[DecodedGribMessage] = {
-    val hadoopConf = new Configuration()
-    configureHadoop(hadoopConf)
+    val hadoopConf = serializableConf.value
     val path = new Path(filePath)
     val fs = FileSystem.get(path.toUri, hadoopConf)
 
@@ -291,8 +301,10 @@ class GribPartitionReader(
         out.close()
       }
 
-      // Decode the range
-      val decoded = GribMessageDecoder.decodeFromFile(tempFile.getAbsolutePath, 2, globalIdx)
+      // Decode the range. Edition is auto-detected per slice, so GRIB1 files
+      // with an .idx sidecar decode correctly too (each slice begins on a
+      // message boundary, i.e. the "GRIB" magic).
+      val decoded = GribMessageDecoder.decodeFile(tempFile.getAbsolutePath, globalIdx, computeLatLon)
       allMessages ++= decoded
       globalIdx += decoded.size
     }
@@ -301,71 +313,21 @@ class GribPartitionReader(
   }
 
   /**
-   * Apply pushed filters at the message level (for filters not already handled
-   * at the index level, or when no index is available).
+   * The authoritative message-level filter, evaluated one message at a time.
+   * Pushed SQL predicates are evaluated exactly here (see [[GribFilters.passes]]),
+   * so this must fully honour every filter that was pushed down.
    */
-  private def applyMessageFilters(msgs: Seq[DecodedGribMessage]): Seq[DecodedGribMessage] = {
-    // First, apply option-level filters
-    var filtered = if (options.variables.nonEmpty) {
-      msgs.filter(m => options.variables.contains(m.variableShortName))
-    } else msgs
+  private def messagePasses(m: DecodedGribMessage): Boolean = {
+    // Option-level filters (user convenience; matched leniently by design).
+    val optionOk =
+      GribFilters.matchesAnyVariable(m.variableShortName, options.variables) &&
+        (options.levelType match {
+          case Some(lt) => m.levelType.toLowerCase.contains(lt.toLowerCase)
+          case None     => true
+        })
 
-    filtered = options.levelType match {
-      case Some(lt) => filtered.filter(m => m.levelType.toLowerCase.contains(lt.toLowerCase))
-      case None     => filtered
-    }
-
-    // Apply pushed SQL filters
-    partition.pushedFilters.foldLeft(filtered) { (remaining, filter) =>
-      applyFilterToMessages(remaining, filter)
-    }
-  }
-
-  private def applyFilterToMessages(
-      msgs: Seq[DecodedGribMessage],
-      filter: Filter
-  ): Seq[DecodedGribMessage] = {
-    filter match {
-      case EqualTo("variable_short_name", v: String) =>
-        msgs.filter(_.variableShortName == v)
-      case In("variable_short_name", values) =>
-        val vs = values.map(_.toString).toSet
-        msgs.filter(m => vs.contains(m.variableShortName))
-      case EqualTo("level_type", v: String) =>
-        msgs.filter(_.levelType.toLowerCase.contains(v.toLowerCase))
-      case EqualTo("discipline", v: Int) =>
-        msgs.filter(_.discipline == v)
-      case GreaterThan("level_value", v: Number) =>
-        msgs.filter(_.levelValue > v.doubleValue())
-      case GreaterThanOrEqual("level_value", v: Number) =>
-        msgs.filter(_.levelValue >= v.doubleValue())
-      case LessThan("level_value", v: Number) =>
-        msgs.filter(_.levelValue < v.doubleValue())
-      case LessThanOrEqual("level_value", v: Number) =>
-        msgs.filter(_.levelValue <= v.doubleValue())
-      case And(left, right) =>
-        applyFilterToMessages(applyFilterToMessages(msgs, left), right)
-      case Or(left, right) =>
-        val l = applyFilterToMessages(msgs, left).toSet
-        val r = applyFilterToMessages(msgs, right).toSet
-        (l ++ r).toSeq
-      case Not(child) =>
-        val excluded = applyFilterToMessages(msgs, child).toSet
-        msgs.filterNot(excluded.contains)
-      case _ => msgs // Unknown filter — don't filter
-    }
-  }
-
-  /**
-   * Configure Hadoop for common cloud storage access.
-   */
-  private def configureHadoop(conf: Configuration): Unit = {
-    // S3A anonymous access for public buckets (can be overridden by cluster config)
-    if (partition.filePath.startsWith("s3a://") || partition.filePath.startsWith("s3://")) {
-      if (conf.get("fs.s3a.aws.credentials.provider") == null) {
-        // Don't override if already configured
-      }
-    }
+    // Pushed SQL filters — exact evaluation. Every pushed filter must pass.
+    optionOk && partition.pushedFilters.forall(f => GribFilters.passes(m, f))
   }
 
   /**

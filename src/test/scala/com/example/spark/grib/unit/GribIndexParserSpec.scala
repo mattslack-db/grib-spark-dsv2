@@ -85,45 +85,4 @@ class GribIndexParserSpec extends AnyFunSuite with Matchers {
   test("computeMessageRanges should handle empty entries") {
     GribIndexParser.computeMessageRanges(Seq.empty, 100000L) shouldBe empty
   }
-
-  test("filterByVariables should keep only matching variables") {
-    val entries = GribIndexParser.parse(sampleIdx)
-
-    val filtered = GribIndexParser.filterByVariables(entries, Set("TMP", "RH"))
-    filtered should have length 2
-    filtered.map(_.variableName) should contain theSameElementsAs Seq("TMP", "RH")
-  }
-
-  test("filterByVariables with empty set should keep all entries") {
-    val entries = GribIndexParser.parse(sampleIdx)
-    val filtered = GribIndexParser.filterByVariables(entries, Set.empty)
-    filtered should have length 5
-  }
-
-  test("filterByLevelType should filter by level description") {
-    val entries = Seq(
-      GribIndexEntry(1, 0, "2024010100", "TMP", "surface", "anl"),
-      GribIndexEntry(2, 100, "2024010100", "TMP", "1 mb", "anl"),
-      GribIndexEntry(3, 200, "2024010100", "TMP", "2 m above ground", "anl")
-    )
-
-    val filtered = GribIndexParser.filterByLevelType(entries, Some("surface"))
-    filtered should have length 1
-    filtered.head.levelDescription shouldBe "surface"
-  }
-
-  test("filterByLevelType should be case-insensitive") {
-    val entries = Seq(
-      GribIndexEntry(1, 0, "2024010100", "TMP", "Surface", "anl"),
-      GribIndexEntry(2, 100, "2024010100", "TMP", "1 mb", "anl")
-    )
-    val filtered = GribIndexParser.filterByLevelType(entries, Some("surface"))
-    filtered should have length 1
-  }
-
-  test("filterByLevelType with None should keep all entries") {
-    val entries = GribIndexParser.parse(sampleIdx)
-    val filtered = GribIndexParser.filterByLevelType(entries, None)
-    filtered should have length 5
-  }
 }
