@@ -4,9 +4,9 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.util.GenericArrayData
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.unsafe.types.UTF8String
-import org.apache.hadoop.fs.{FileSystem, Path}
+import org.apache.hadoop.fs.{FSDataInputStream, FileSystem, Path}
 import org.slf4j.LoggerFactory
-import java.io.{Closeable, File, FileOutputStream}
+import java.io.{Closeable, File}
 import java.sql.Timestamp
 
 /**
@@ -26,6 +26,8 @@ class GribPartitionReader(
   // -- State --
   private var messageIterator: Iterator[DecodedGribMessage] = Iterator.empty
   private var currentMessage: DecodedGribMessage = _
+  // The `product` struct of currentMessage, built once and shared by all its flat rows.
+  private var productRow: InternalRow = _
   private var currentPointIndex: Int = 0
   private var currentRow: InternalRow = _
   private var hasNextRow: Boolean = false
@@ -47,8 +49,8 @@ class GribPartitionReader(
 
     val rawMessages: Iterator[DecodedGribMessage] = partition.messageRanges match {
       case Some(ranges) =>
-        // Sub-file read: bounded by messagesPerPartition, decoded eagerly.
-        readByteRanges(filePath, ranges, computeLatLon).iterator
+        // Sub-file read: fetch the partition's ranges, then decode lazily.
+        readByteRanges(filePath, ranges, computeLatLon)
       case None =>
         // Whole-file read: stream messages lazily so the whole file's decoded
         // values are never held in memory at once.
@@ -124,7 +126,10 @@ class GribPartitionReader(
       timestampToMicros(msg.forecastTime),            // forecast_time
       msg.lats(idx),                                  // latitude
       lon,                                            // longitude
-      msg.values(idx).toDouble                        // value
+      msg.values(idx).toDouble,                       // value
+      ProductAttributes.orNull(msg.pdsTemplate),      // pds_template
+      ProductAttributes.orNull(msg.levelValue2),      // level_value2
+      productRow                                      // product
     )
   }
 
@@ -160,7 +165,10 @@ class GribPartitionReader(
       lonStart,                                       // lon_start
       msg.latIncrement,                               // lat_increment
       msg.lonIncrement,                               // lon_increment
-      valuesArray                                     // values
+      valuesArray,                                    // values
+      ProductAttributes.orNull(msg.pdsTemplate),      // pds_template
+      ProductAttributes.orNull(msg.levelValue2),      // level_value2
+      productRow                                      // product
     )
   }
 
@@ -189,6 +197,11 @@ class GribPartitionReader(
     }
   }
 
+  private def setCurrentMessage(msg: DecodedGribMessage): Unit = {
+    currentMessage = msg
+    productRow = ProductAttributes.toInternalRow(msg.product)
+  }
+
   private def advanceToNextFlatRow(): Unit = {
     // If we have a current message and more points, we're good
     if (currentMessage != null && currentPointIndex < currentMessage.values.length) {
@@ -198,7 +211,7 @@ class GribPartitionReader(
 
     // Move to next message
     while (messageIterator.hasNext) {
-      currentMessage = messageIterator.next()
+      setCurrentMessage(messageIterator.next())
       currentPointIndex = 0
       if (currentMessage.values.nonEmpty) {
         hasNextRow = true
@@ -211,7 +224,7 @@ class GribPartitionReader(
 
   private def advanceToNextGriddedRow(): Unit = {
     if (messageIterator.hasNext) {
-      currentMessage = messageIterator.next()
+      setCurrentMessage(messageIterator.next())
       hasNextRow = true
     } else {
       hasNextRow = false
@@ -221,95 +234,90 @@ class GribPartitionReader(
   // ===== File I/O helpers =====
 
   /**
-   * For S3/remote paths, download to a local temp file.
-   * For local paths, return as-is.
+   * For local paths, return as-is. For any remote filesystem (S3, GCS, ADLS,
+   * HDFS, and `dbfs:` — which is how UC volume paths come back from directory
+   * listings on Databricks), download to a local temp file, since netCDF-Java
+   * needs a local random-access file.
    */
-  private def ensureLocalFile(filePath: String): String = {
-    if (filePath.startsWith("s3a://") || filePath.startsWith("s3://") ||
-        filePath.startsWith("gs://") || filePath.startsWith("hdfs://") ||
-        filePath.startsWith("abfss://")) {
-      val hadoopConf = serializableConf.value
+  private def ensureLocalFile(filePath: String): String =
+    GribPartitionReader.localPathOf(filePath).getOrElse {
       val path = new Path(filePath)
-      val fs = FileSystem.get(path.toUri, hadoopConf)
-      val tempFile = File.createTempFile("grib_", ".tmp")
-      tempFile.deleteOnExit()
+      val in = FileSystem.get(path.toUri, serializableConf.value).open(path)
+      val tempFile = try GribIo.copyToTempFile(in, "grib_") finally in.close()
       tempFiles = tempFiles :+ tempFile
-
-      val in = fs.open(path)
-      val out = new FileOutputStream(tempFile)
-      try {
-        val buf = new Array[Byte](65536)
-        var n = in.read(buf)
-        while (n > 0) {
-          out.write(buf, 0, n)
-          n = in.read(buf)
-        }
-      } finally {
-        in.close()
-        out.close()
-      }
       tempFile.getAbsolutePath
-    } else {
-      // Handle file:// URIs
-      if (filePath.startsWith("file:")) {
-        new java.net.URI(filePath).getPath
-      } else {
-        filePath
-      }
     }
-  }
 
   /**
-   * Read specific byte ranges from a file (for index-based partitioning).
+   * Read a partition's message ranges (index-based partitioning). Ranges that
+   * are adjacent in the file are fetched as one sequential read, all over a
+   * single open stream, rather than opening the file once per message (on
+   * cloud storage, each open is a round trip). See [[SpanMessages]].
    */
   private def readByteRanges(
       filePath: String,
-      ranges: Seq[(Long, Long)],
+      ranges: Seq[MessageRange],
       computeLatLon: Boolean
-  ): Seq[DecodedGribMessage] = {
-    val hadoopConf = serializableConf.value
+  ): Iterator[DecodedGribMessage] = {
     val path = new Path(filePath)
-    val fs = FileSystem.get(path.toUri, hadoopConf)
+    val in = FileSystem.get(path.toUri, serializableConf.value).open(path)
+    val messages = new SpanMessages(in, PartitionPlanning.coalesce(ranges), computeLatLon)
+    closeables = messages :: closeables
+    messages
+  }
 
-    val allMessages = Seq.newBuilder[DecodedGribMessage]
-    var globalIdx = 0
+  /**
+   * The messages of a partition's spans, decoded lazily one span at a time. A
+   * span is copied to a local temp file only when it's reached, and its file
+   * handle and temp file are released as soon as its messages are used up, so a
+   * partition of many scattered spans holds at most one at a time. `close()`
+   * releases the current span and the shared input stream.
+   */
+  private final class SpanMessages(
+      in: FSDataInputStream,
+      spans: Seq[MessageRange],
+      computeLatLon: Boolean
+  ) extends Iterator[DecodedGribMessage] with Closeable {
 
-    for ((offset, length) <- ranges) {
-      val tempFile = File.createTempFile("grib_range_", ".tmp")
-      tempFile.deleteOnExit()
-      tempFiles = tempFiles :+ tempFile
+    private val pending = spans.iterator
+    private var current: Option[(CloseableIterator[DecodedGribMessage], File)] = None
 
-      // Read the byte range
-      val in = fs.open(path)
-      val out = new FileOutputStream(tempFile)
-      try {
-        in.seek(offset)
-        val buf = new Array[Byte](Math.min(65536, length.toInt))
-        var remaining = length
-        while (remaining > 0) {
-          val toRead = Math.min(buf.length.toLong, remaining).toInt
-          val n = in.read(buf, 0, toRead)
-          if (n <= 0) {
-            remaining = 0
-          } else {
-            out.write(buf, 0, n)
-            remaining -= n
-          }
-        }
-      } finally {
-        in.close()
-        out.close()
+    override def hasNext: Boolean = {
+      while (!current.exists(_._1.hasNext) && pending.hasNext) {
+        release()
+        open(pending.next())
       }
-
-      // Decode the range. Edition is auto-detected per slice, so GRIB1 files
-      // with an .idx sidecar decode correctly too (each slice begins on a
-      // message boundary, i.e. the "GRIB" magic).
-      val decoded = GribMessageDecoder.decodeFile(tempFile.getAbsolutePath, globalIdx, computeLatLon)
-      allMessages ++= decoded
-      globalIdx += decoded.size
+      val more = current.exists(_._1.hasNext)
+      if (!more) release()
+      more
     }
 
-    allMessages.result()
+    override def next(): DecodedGribMessage =
+      if (hasNext) current.get._1.next() else throw new NoSuchElementException("No more GRIB messages")
+
+    override def close(): Unit = {
+      release()
+      in.close()
+    }
+
+    private def open(span: MessageRange): Unit = {
+      in.seek(span.offset)
+      val file = GribIo.copyToTempFile(in, "grib_range_", span.length)
+      try {
+        current = Some(GribMessageDecoder.openMessages(file.getAbsolutePath, span.messageIndex, computeLatLon) -> file)
+      } catch {
+        case e: Throwable =>
+          file.delete()
+          throw e
+      }
+    }
+
+    private def release(): Unit = {
+      current.foreach { case (messages, file) =>
+        try messages.close() finally file.delete()
+      }
+      current = None
+    }
   }
 
   /**
@@ -336,5 +344,22 @@ class GribPartitionReader(
   private def timestampToMicros(ts: Timestamp): Long = {
     if (ts == null) 0L
     else ts.getTime * 1000L  // milliseconds to microseconds
+  }
+}
+
+object GribPartitionReader {
+
+  /**
+   * The local filesystem path for `filePath` if it can be opened directly
+   * (no scheme, or `file:`), or None if it lives on a remote filesystem and
+   * must be copied locally first.
+   */
+  def localPathOf(filePath: String): Option[String] = {
+    val uri = new Path(filePath).toUri
+    Option(uri.getScheme) match {
+      case None         => Some(filePath)
+      case Some("file") => Some(uri.getPath)
+      case Some(_)      => None
+    }
   }
 }

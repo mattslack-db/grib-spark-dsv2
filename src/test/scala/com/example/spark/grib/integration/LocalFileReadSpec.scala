@@ -141,4 +141,75 @@ class LocalFileReadSpec extends SparkTestBase with Matchers {
     minLon should be >= -180.0
     maxLon should be <= 180.0
   }
+
+  test("index-based reads number messages by their position in the file", SlowTest) {
+    assume(gribFile.isDefined && idxFile.isDefined, "Test fixtures not found. Run download_test_fixtures.sh")
+
+    def messageKeys(useIndex: Boolean) = spark.read
+      .format("grib")
+      .option("outputMode", "gridded")
+      .option("useIndex", useIndex.toString)
+      .option("messagesPerPartition", "7")
+      .option("variables", "TMP,RH")
+      .load(gribFile.get)
+      .select("message_index", "variable_short_name", "level_type", "level_value")
+      .collect()
+      .map(r => (r.getInt(0), r.getString(1), r.getString(2), r.getDouble(3)))
+      .sortBy(_._1)
+      .toSeq
+
+    val wholeFile = messageKeys(useIndex = false)
+    val indexed = messageKeys(useIndex = true)
+
+    // Spans several partitions, so a per-partition counter would repeat indices.
+    indexed.size should be > 7
+    indexed.map(_._1).distinct.size shouldBe indexed.size
+    indexed shouldBe wholeFile
+  }
+
+  test("directory and glob loads read NOAA-named files and skip sidecars", SlowTest) {
+    assume(gribFile.isDefined && idxFile.isDefined, "Test fixtures not found. Run download_test_fixtures.sh")
+
+    val dir = java.nio.file.Files.createTempDirectory("grib_dir_")
+    val noaaName = "gfs.t00z.pgrb2.1p00.f000" // dots, but no GRIB extension
+    java.nio.file.Files.copy(java.nio.file.Paths.get(gribFile.get), dir.resolve(noaaName))
+    java.nio.file.Files.copy(java.nio.file.Paths.get(idxFile.get), dir.resolve(s"$noaaName.idx"))
+    java.nio.file.Files.write(dir.resolve(s"$noaaName.md5"), "not grib".getBytes)
+    java.nio.file.Files.write(dir.resolve("_SUCCESS"), Array.emptyByteArray)
+
+    def tmpRows(path: String) = spark.read
+      .format("grib")
+      .option("outputMode", "gridded")
+      .option("variables", "TMP")
+      .load(path)
+      .select("file_path", "message_index")
+      .collect()
+
+    val expected = tmpRows(gribFile.get).length
+    expected should be > 0
+    for (path <- Seq(dir.toString, s"$dir/*")) {
+      val rows = tmpRows(path)
+      rows.length shouldBe expected
+      rows.map(_.getString(0)).distinct.map(_.split('/').last) shouldBe Array(noaaName)
+    }
+  }
+
+  test("byte-sized index partitions decode exactly the messages of a whole-file read", SlowTest) {
+    assume(gribFile.isDefined && idxFile.isDefined, "Test fixtures not found. Run download_test_fixtures.sh")
+
+    def read(useIndex: Boolean) = spark.read
+      .format("grib")
+      .option("outputMode", "gridded")
+      .option("useIndex", useIndex.toString)
+      .option("maxPartitionBytes", (4L * 1024 * 1024).toString) // ~40 MB file -> ~10 partitions
+      .load(gribFile.get)
+
+    val indexed = read(useIndex = true)
+    indexed.rdd.getNumPartitions should be > 5
+
+    def keys(df: org.apache.spark.sql.DataFrame) =
+      df.select("message_index", "variable_short_name", "level_type", "level_value").collect().map(_.toString).sorted.toSeq
+    keys(indexed) shouldBe keys(read(useIndex = false))
+  }
 }
+

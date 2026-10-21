@@ -86,4 +86,36 @@ class GriddedOutputSpec extends SparkTestBase with Matchers {
     val variables = df.select("variable_short_name").distinct().collect().map(_.getString(0))
     variables should contain only "TMP"
   }
+
+  test("grid origin and signed increments reproduce flat-mode coordinates", SlowTest) {
+    assume(gribFile.isDefined, "Test fixture not found. Run download_test_fixtures.sh")
+
+    // PRMSL is a single message in the GFS sample, so both modes describe the same grid.
+    def read(mode: String) = spark.read
+      .format("grib")
+      .option("outputMode", mode)
+      .option("useIndex", "false")
+      .option("variables", "PRMSL")
+      .load(gribFile.get)
+
+    val grid = read("gridded").collect().head
+    val nx = grid.getAs[Int]("nx")
+    val ny = grid.getAs[Int]("ny")
+    val latStart = grid.getAs[Double]("lat_start")
+    val lonStart = grid.getAs[Double]("lon_start")
+    val latInc = grid.getAs[Double]("lat_increment")
+    val lonInc = grid.getAs[Double]("lon_increment")
+
+    // GFS scans north to south, so the latitude increment must be negative.
+    latInc should be < 0.0
+
+    val flatCorners = read("flat").select("latitude", "longitude").collect()
+    val first = flatCorners.head
+    val last = flatCorners.last
+
+    latStart shouldBe first.getAs[Double]("latitude") +- 1e-6
+    lonStart shouldBe first.getAs[Double]("longitude") +- 1e-6
+    (latStart + (ny - 1) * latInc) shouldBe last.getAs[Double]("latitude") +- 1e-6
+    (lonStart + (nx - 1) * lonInc) shouldBe last.getAs[Double]("longitude") +- 1e-6
+  }
 }

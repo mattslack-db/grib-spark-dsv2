@@ -14,7 +14,8 @@ class GribSchemaSpec extends AnyFunSuite with Matchers {
       "variable_short_name", "variable_name", "units",
       "level_type", "level_value",
       "reference_time", "forecast_time",
-      "latitude", "longitude", "value"
+      "latitude", "longitude", "value",
+      "pds_template", "level_value2", "product"
     )
   }
 
@@ -40,7 +41,8 @@ class GribSchemaSpec extends AnyFunSuite with Matchers {
       "level_type", "level_value",
       "reference_time", "forecast_time",
       "nx", "ny", "lat_start", "lon_start",
-      "lat_increment", "lon_increment", "values"
+      "lat_increment", "lon_increment", "values",
+      "pds_template", "level_value2", "product"
     )
   }
 
@@ -78,5 +80,40 @@ class GribSchemaSpec extends AnyFunSuite with Matchers {
     schema("level_type").nullable shouldBe true
     schema("reference_time").nullable shouldBe true
     schema("value").nullable shouldBe true
+  }
+
+  test("product-definition columns are nullable and typed, in both modes") {
+    for (schema <- Seq(GribSchemas.flatSchema, GribSchemas.griddedSchema)) {
+      schema("pds_template").dataType shouldBe IntegerType
+      schema("level_value2").dataType shouldBe DoubleType
+      Seq("pds_template", "level_value2", "product").foreach(c => schema(c).nullable shouldBe true)
+
+      val product = schema("product").dataType.asInstanceOf[StructType]
+      val aerosol = product("aerosol")
+      aerosol.nullable shouldBe true
+      aerosol.dataType shouldBe StructType(Seq(
+        StructField("type", IntegerType, nullable = false),
+        StructField("type_name", StringType, nullable = true),
+        StructField("size_interval_type", IntegerType, nullable = true),
+        StructField("size_first_m", DoubleType, nullable = true),
+        StructField("size_second_m", DoubleType, nullable = true),
+        StructField("wavelength_interval_type", IntegerType, nullable = true),
+        StructField("wavelength_first_m", DoubleType, nullable = true),
+        StructField("wavelength_second_m", DoubleType, nullable = true)
+      ))
+
+      product.fieldNames should contain theSameElementsInOrderAs Seq(
+        "aerosol", "ensemble", "ensemble_derived", "probability", "percentile", "statistic")
+      product.fields.foreach(_.nullable shouldBe true)
+      product("percentile").dataType shouldBe IntegerType
+      product("ensemble").dataType.asInstanceOf[StructType].fieldNames should contain theSameElementsInOrderAs Seq(
+        "perturbation_type", "perturbation_type_name", "member", "ensemble_size")
+      product("ensemble_derived").dataType.asInstanceOf[StructType].fieldNames should contain theSameElementsInOrderAs Seq(
+        "type", "type_name", "ensemble_size")
+      product("probability").dataType.asInstanceOf[StructType].fieldNames should contain theSameElementsInOrderAs Seq(
+        "type", "type_name", "lower_limit", "upper_limit")
+      product("statistic").dataType.asInstanceOf[StructType].fieldNames should contain theSameElementsInOrderAs Seq(
+        "process", "process_name", "interval_hours")
+    }
   }
 }

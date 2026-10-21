@@ -19,10 +19,11 @@ import org.apache.spark.sql.sources._
  * cover exactly the same set of filter shapes.
  *
  * `indexEntryKept` is a pure optimization and is deliberately NOT the same as
- * `passes`: it may only prune on columns whose `.idx` vocabulary matches the
- * decoded output, and it must never be stricter than `passes` (or it would drop
- * rows that should survive). Today that is `variable_short_name` only, matched
- * case-insensitively; every other filter is kept for `passes` to decide.
+ * `passes`: it may only prune on what an `.idx` line reliably says, and it must
+ * never be stricter than `passes` (or it would drop rows that should survive).
+ * That is `variable_short_name` (matched case-insensitively) and, when the
+ * line's level text maps to a known decoded level ([[GribIndexLevels]]),
+ * `level_type`/`level_value`. Everything else is unknown and kept for `passes`.
  */
 object GribFilters {
 
@@ -35,6 +36,8 @@ object GribFilters {
     case In("variable_short_name", _)                 => true
     case EqualTo("level_type", _: String)             => true
     case EqualTo("discipline", _: Int)                => true
+    case EqualTo("level_value", _: Number)            => true
+    case In("level_value", values)                    => values.forall(_.isInstanceOf[Number])
     case GreaterThan("level_value", _: Number)        => true
     case GreaterThanOrEqual("level_value", _: Number) => true
     case LessThan("level_value", _: Number)           => true
@@ -58,10 +61,12 @@ object GribFilters {
     case In("variable_short_name", values)            => values.map(_.toString).contains(msg.variableShortName)
     case EqualTo("level_type", v: String)             => msg.levelType == v
     case EqualTo("discipline", v: Int)                => msg.discipline == v
-    case GreaterThan("level_value", v: Number)        => msg.levelValue > v.doubleValue()
-    case GreaterThanOrEqual("level_value", v: Number) => msg.levelValue >= v.doubleValue()
-    case LessThan("level_value", v: Number)           => msg.levelValue < v.doubleValue()
-    case LessThanOrEqual("level_value", v: Number)    => msg.levelValue <= v.doubleValue()
+    case EqualTo("level_value", v: Number)            => sqlCompare(msg.levelValue, v) == 0
+    case In("level_value", values)                    => values.exists(v => sqlCompare(msg.levelValue, v.asInstanceOf[Number]) == 0)
+    case GreaterThan("level_value", v: Number)        => sqlCompare(msg.levelValue, v) > 0
+    case GreaterThanOrEqual("level_value", v: Number) => sqlCompare(msg.levelValue, v) >= 0
+    case LessThan("level_value", v: Number)           => sqlCompare(msg.levelValue, v) < 0
+    case LessThanOrEqual("level_value", v: Number)    => sqlCompare(msg.levelValue, v) <= 0
     case And(left, right)                             => passes(msg, left) && passes(msg, right)
     case Or(left, right)                              => passes(msg, left) || passes(msg, right)
     case Not(child)                                   => !passes(msg, child)
@@ -69,20 +74,75 @@ object GribFilters {
   }
 
   /**
-   * Best-effort, superset pruning of an `.idx` entry for a pushed filter.
-   *
-   * Only prunes on `variable_short_name` (case-insensitive), because that token
-   * is shared between the `.idx` and the decoded output (both the NCEP short
-   * name). It intentionally does NOT recurse into And/Or/Not or touch other
-   * columns: keeping such entries is conservative and safe, since the
-   * authoritative [[passes]] runs after decoding. It must never drop an entry
-   * that `passes` would keep.
+   * Compare doubles as Spark SQL does, since Spark doesn't re-check pushed
+   * filters: NaN equals NaN and is larger than any other value, and -0.0 equals
+   * 0.0 (unlike Scala's `==`/`<` on doubles).
    */
-  def indexEntryKept(entry: GribIndexEntry, filter: Filter): Boolean = filter match {
-    case EqualTo("variable_short_name", v: String) => entry.variableName.equalsIgnoreCase(v)
-    case In("variable_short_name", values)         => values.exists(x => entry.variableName.equalsIgnoreCase(x.toString))
-    case _                                         => true
+  private def sqlCompare(a: Double, b: Number): Int = {
+    val y = b.doubleValue()
+    if (a.isNaN || y.isNaN) java.lang.Boolean.compare(a.isNaN, y.isNaN)
+    else java.lang.Double.compare(a + 0.0, y + 0.0) // + 0.0 turns -0.0 into 0.0
   }
+
+  /**
+   * Best-effort, superset pruning of an `.idx` entry for a pushed filter: false
+   * only if the entry's message definitely fails it. `level` is the entry's
+   * level as the decoder would report it, when [[GribIndexLevels]] recognises
+   * the `.idx` text (and the file is GRIB2); None leaves level filters unknown.
+   * It must never drop an entry that `passes` would keep.
+   */
+  def indexEntryKept(entry: GribIndexEntry, filter: Filter, level: Option[IndexLevel] = None): Boolean =
+    indexVerdict(entry, level, filter) != Some(false)
+
+  /**
+   * Three-valued evaluation against `.idx` metadata: Some(true)/Some(false) when
+   * the outcome is certain, None when the `.idx` line can't tell.
+   */
+  private def indexVerdict(entry: GribIndexEntry, level: Option[IndexLevel], filter: Filter): Option[Boolean] =
+    filter match {
+      // The .idx short name matches the decoded one up to case, so a mismatch
+      // ignoring case is certain; a match isn't (decoded matching is exact).
+      case EqualTo("variable_short_name", v: String) => falseUnless(entry.variableName.equalsIgnoreCase(v))
+      case In("variable_short_name", values)         => falseUnless(values.exists(x => entry.variableName.equalsIgnoreCase(x.toString)))
+
+      case EqualTo("level_type", v: String)             => level.map(_.levelType == v)
+      case EqualTo("level_value", v: Number)            => level.flatMap(l => compare(l.value, v)(_ == 0))
+      case In("level_value", values)                    => level.flatMap(l => anyOf(values.map(v => compare(l.value, v.asInstanceOf[Number])(_ == 0))))
+      case GreaterThan("level_value", v: Number)        => level.flatMap(l => compare(l.value, v)(_ > 0))
+      case GreaterThanOrEqual("level_value", v: Number) => level.flatMap(l => compare(l.value, v)(_ >= 0))
+      case LessThan("level_value", v: Number)           => level.flatMap(l => compare(l.value, v)(_ < 0))
+      case LessThanOrEqual("level_value", v: Number)    => level.flatMap(l => compare(l.value, v)(_ <= 0))
+
+      case And(left, right) =>
+        (indexVerdict(entry, level, left), indexVerdict(entry, level, right)) match {
+          case (Some(false), _) | (_, Some(false)) => Some(false)
+          case (Some(true), Some(true))            => Some(true)
+          case _                                   => None
+        }
+      case Or(left, right) => anyOf(Seq(indexVerdict(entry, level, left), indexVerdict(entry, level, right)))
+      case Not(child)      => indexVerdict(entry, level, child).map(!_)
+      case _               => None
+    }
+
+  // Levels derived from .idx text (e.g. "0.4 mb" * 100) carry floating-point
+  // error, so values this close to the filter's are treated as unknown.
+  private val LevelTolerance = 1e-6
+
+  /** Outcome of `cmp(sign of level - v)`, or None if the two are within tolerance (or either is NaN). */
+  private def compare(levelValue: Double, v: Number)(cmp: Int => Boolean): Option[Boolean] = {
+    val target = v.doubleValue()
+    if (levelValue.isNaN || target.isNaN) return None
+    val diff = levelValue - target
+    if (math.abs(diff) <= LevelTolerance * math.max(1.0, math.abs(target))) None
+    else Some(cmp(math.signum(diff).toInt))
+  }
+
+  private def falseUnless(maybeTrue: Boolean): Option[Boolean] = if (maybeTrue) None else Some(false)
+
+  private def anyOf(verdicts: Seq[Option[Boolean]]): Option[Boolean] =
+    if (verdicts.contains(Some(true))) Some(true)
+    else if (verdicts.forall(_.contains(false))) Some(false)
+    else None
 
   /**
    * Case-insensitive match for the `variables` option (a user-convenience

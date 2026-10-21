@@ -1,5 +1,6 @@
 package com.example.spark.grib
 
+import org.apache.spark.network.util.JavaUtils
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 import scala.collection.JavaConverters._
 
@@ -10,7 +11,10 @@ import scala.collection.JavaConverters._
  * @param variables          Optional filter: only read these variable short names
  * @param levelType          Optional filter: only read messages matching this level type
  * @param outputMode         "flat" (one row per grid point) or "gridded" (one row per message)
- * @param messagesPerPartition Number of GRIB messages per Spark partition when using index
+ * @param messagesPerPartition Fixed number of GRIB messages per Spark partition when using
+ *                           the index. When unset, partitions are sized by bytes instead
+ *                           (see [[PartitionPlanning.targetPartitionBytes]]).
+ * @param maxPartitionBytes  Upper bound on bytes per partition for byte-based sizing
  * @param longitudeRange     "0to360" or "-180to180"
  * @param useIndex           Whether to look for and use .idx sidecar files
  */
@@ -19,9 +23,10 @@ case class GribOptions(
     variables: Set[String],
     levelType: Option[String],
     outputMode: String,
-    messagesPerPartition: Int,
+    messagesPerPartition: Option[Int],
     longitudeRange: String,
-    useIndex: Boolean
+    useIndex: Boolean,
+    maxPartitionBytes: Long = GribOptions.DEFAULT_MAX_PARTITION_BYTES
 )
 
 object GribOptions {
@@ -33,7 +38,7 @@ object GribOptions {
   val LONGITUDE_NEG180    = "-180to180"
 
   val DEFAULT_OUTPUT_MODE           = OUTPUT_MODE_FLAT
-  val DEFAULT_MESSAGES_PER_PARTITION = 20
+  val DEFAULT_MAX_PARTITION_BYTES: Long = 128L * 1024 * 1024 // as Spark's spark.sql.files.maxPartitionBytes
   val DEFAULT_LONGITUDE_RANGE       = LONGITUDE_0_360
   val DEFAULT_USE_INDEX             = true
 
@@ -67,7 +72,19 @@ object GribOptions {
         require(n > 0, s"messagesPerPartition must be > 0, got $n")
         n
       }
-      .getOrElse(DEFAULT_MESSAGES_PER_PARTITION)
+
+    val maxPartitionBytes = Option(options.get("maxPartitionBytes"))
+      .map { s =>
+        // Same syntax as Spark's own size settings: "134217728", "64m", "128MB", "1g".
+        val n = try JavaUtils.byteStringAsBytes(s.trim) catch {
+          case _: NumberFormatException =>
+            throw new IllegalArgumentException(
+              s"Invalid maxPartitionBytes '$s'. Use a number of bytes or a size such as '64m' or '1g'.")
+        }
+        require(n > 0, s"maxPartitionBytes must be > 0, got $n")
+        n
+      }
+      .getOrElse(DEFAULT_MAX_PARTITION_BYTES)
 
     val longitudeRange = Option(options.get("longitudeRange"))
       .map(_.trim)
@@ -88,7 +105,8 @@ object GribOptions {
       outputMode = outputMode,
       messagesPerPartition = messagesPerPartition,
       longitudeRange = longitudeRange,
-      useIndex = useIndex
+      useIndex = useIndex,
+      maxPartitionBytes = maxPartitionBytes
     )
   }
 }

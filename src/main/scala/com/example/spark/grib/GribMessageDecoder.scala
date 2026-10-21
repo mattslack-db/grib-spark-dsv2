@@ -1,6 +1,6 @@
 package com.example.spark.grib
 
-import ucar.nc2.grib.grib2.{Grib2RecordScanner, Grib2Record, Grib2Gds}
+import ucar.nc2.grib.grib2.{Grib2Gds, Grib2Pds, Grib2Record, Grib2RecordScanner}
 import ucar.nc2.grib.grib2.Grib2SectionIdentification
 import ucar.nc2.grib.grib2.table.Grib2Tables
 import ucar.nc2.grib.grib1.{Grib1RecordScanner, Grib1Record, Grib1Gds}
@@ -39,7 +39,10 @@ case class DecodedGribMessage(
     lonIncrement: Double,
     lats: Array[Double],
     lons: Array[Double],
-    values: Array[Float]
+    values: Array[Float],
+    pdsTemplate: Option[Int] = None,
+    levelValue2: Option[Double] = None,
+    product: ProductAttributes = ProductAttributes.Empty
 )
 
 /**
@@ -48,6 +51,9 @@ case class DecodedGribMessage(
 object GribMessageDecoder {
 
   private val logger = LoggerFactory.getLogger(getClass)
+
+  /** GRIB2 code table 4.5: "missing" type of fixed surface. */
+  private val Grib2MissingLevelType = 255
 
   /**
    * Scan a local file and decode all GRIB messages, auto-detecting the edition
@@ -115,11 +121,10 @@ object GribMessageDecoder {
   private def detectEdition(raf: RandomAccessFile): Int = {
     try {
       val startPos = raf.getFilePointer
-      val buf = new Array[Byte](16)
-      raf.readFully(buf)
+      val header = new Array[Byte](GribIo.HeaderBytes)
+      raf.readFully(header)
       raf.seek(startPos)
-      val magic = new String(buf, 0, 4, "ASCII")
-      if (magic == "GRIB") buf(7).toInt & 0xFF else 0
+      GribIo.edition(header)
     } catch {
       case _: IOException => 0
     }
@@ -213,12 +218,19 @@ object GribMessageDecoder {
       val shortName = if (param != null && param.getAbbrev != null) param.getAbbrev
                       else s"var${discipline}_${pds.getParameterCategory}_${pds.getParameterNumber}"
       val longName = if (param != null && param.getName != null) param.getName else shortName
-      val units = if (param != null && param.getUnit != null) param.getUnit else "unknown"
+      val units = ParameterUnits.resolve(
+        is.getCenter_id, discipline, pds.getParameterCategory, pds.getParameterNumber,
+        if (param != null && param.getUnit != null) param.getUnit else "unknown")
 
       // Level
       val levelType1 = pds.getLevelType1
       val levelTypeName = tables.getLevelName(levelType1)
       val levelValue = pds.getLevelValue1
+      // Second fixed surface: only set for layers (e.g. "0.33-1 sigma layer").
+      val levelValue2 = Some(pds.getLevelType2)
+        .filter(_ != Grib2MissingLevelType)
+        .map(_ => pds.getLevelValue2)
+        .filterNot(_.isNaN)
 
       // Reference time
       val refCalDate = is.getReferenceDate
@@ -239,8 +251,10 @@ object GribMessageDecoder {
 
       val latStart = hcs.starty
       val lonStart = hcs.startx
-      val latInc = Math.abs(hcs.dy)
-      val lonInc = Math.abs(hcs.dx)
+      // Signed: negative when the grid scans north to south (e.g. GFS), so
+      // lat_start + row * lat_increment reproduces each row's latitude.
+      val latInc = hcs.dy
+      val lonInc = hcs.dx
 
       // Build lat/lon arrays (flat mode only; gridded mode uses origin/increments)
       val (lats, lons) =
@@ -268,7 +282,10 @@ object GribMessageDecoder {
         lonIncrement = lonInc,
         lats = lats,
         lons = lons,
-        values = dataValues
+        values = dataValues,
+        pdsTemplate = Some(pds.getTemplateNumber),
+        levelValue2 = levelValue2,
+        product = productAttributes(pds, tables, messageIndex)
       ))
     } catch {
       case e: Exception =>
@@ -276,6 +293,20 @@ object GribMessageDecoder {
         None
     }
   }
+
+  /**
+   * The message's template-specific attributes. These are optional metadata, so
+   * if netCDF-Java can't compute them for an unusual template the message is
+   * still emitted, with an empty `product`, rather than dropped.
+   */
+  private def productAttributes(pds: Grib2Pds, tables: Grib2Tables, messageIndex: Int): ProductAttributes =
+    try ProductAttributes.fromGrib2(pds, tables)
+    catch {
+      case e: Exception =>
+        logger.warn(s"Could not read product attributes of GRIB2 record $messageIndex " +
+          s"(template ${pds.getTemplateNumber}); leaving them null: ${e.getMessage}")
+        ProductAttributes.Empty
+    }
 
   // ============================================================
   // GRIB1
@@ -345,8 +376,10 @@ object GribMessageDecoder {
 
       val latStart = hcs.starty
       val lonStart = hcs.startx
-      val latInc = Math.abs(hcs.dy)
-      val lonInc = Math.abs(hcs.dx)
+      // Signed: negative when the grid scans north to south (e.g. GFS), so
+      // lat_start + row * lat_increment reproduces each row's latitude.
+      val latInc = hcs.dy
+      val lonInc = hcs.dx
 
       val (lats, lons) =
         if (computeLatLon) buildLatLonFromHcs(hcs, nx, ny)
