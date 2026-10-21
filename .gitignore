@@ -16,3 +16,6 @@ project/project/
 src/test/resources/*.grib2
 src/test/resources/*.grb
 src/test/resources/*.idx
+
+# Local tool configuration
+.isaac/
