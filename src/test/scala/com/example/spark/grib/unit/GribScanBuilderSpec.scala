@@ -13,7 +13,7 @@ class GribScanBuilderSpec extends AnyFunSuite with Matchers {
       variables = Set.empty,
       levelType = None,
       outputMode = "flat",
-      messagesPerPartition = 20,
+      messagesPerPartition = None,
       longitudeRange = "0to360",
       useIndex = true
     )
@@ -154,13 +154,13 @@ class GribScanBuilderSpec extends AnyFunSuite with Matchers {
     b.pushedFilters() shouldBe empty
   }
 
-  test("EqualTo on level_value should NOT be pushed (reader only evaluates ranges)") {
+  test("EqualTo and In on level_value should be pushed") {
     val b = builder()
-    val filters = Array[Filter](EqualTo("level_value", 500.0))
+    val filters = Array[Filter](EqualTo("level_value", 500.0), In("level_value", Array(500.0, 850.0)))
     val remaining = b.pushFilters(filters)
 
-    remaining should have length 1
-    b.pushedFilters() shouldBe empty
+    remaining shouldBe empty
+    b.pushedFilters() should have length 2
   }
 
   test("In on level_type should NOT be pushed (reader only evaluates In on variable_short_name)") {

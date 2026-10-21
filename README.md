@@ -26,6 +26,20 @@ df.printSchema()
 //  |-- latitude: double
 //  |-- longitude: double
 //  |-- value: double
+//  |-- pds_template: integer
+//  |-- level_value2: double
+//  |-- product: struct
+//  |    |-- aerosol: struct
+//  |    |    |-- type: integer
+//  |    |    |-- type_name: string
+//  |    |    |-- size_interval_type: integer
+//  |    |    |-- size_first_m: double
+//  |    |    |-- ... (size_second_m, wavelength_*)
+//  |    |-- ensemble: struct (perturbation_type, perturbation_type_name, member, ensemble_size)
+//  |    |-- ensemble_derived: struct (type, type_name, ensemble_size)
+//  |    |-- probability: struct (type, type_name, lower_limit, upper_limit)
+//  |    |-- percentile: integer
+//  |    |-- statistic: struct (process, process_name, interval_hours)
 
 df.where("variable_short_name = 'TMP' AND level_value = 500")
   .select("latitude", "longitude", "value")
@@ -38,10 +52,42 @@ df.where("variable_short_name = 'TMP' AND level_value = 500")
 - **Two output modes:**
   - `flat` (default) — one row per grid point per message, ideal for SQL queries
   - `gridded` — one row per message with values as `Array[Double]`, preserving grid structure
-- **Index-based partitioning** — uses `.idx` sidecar files for sub-file parallelism and efficient S3 range reads
-- **Filter push-down** on `variable_short_name`, `level_type`, `level_value`, `discipline`, `reference_time`, `forecast_time`
+- **Index-based partitioning** — uses `.idx` sidecar files to split files into byte-sized partitions spread across the cluster, each fetched with one sequential read per run of adjacent messages
+- **Filter push-down** on `variable_short_name`, `level_type`, `level_value` and `discipline`. With an `.idx` sidecar, messages that can't match are skipped before they're read or decoded: by variable always, and by level for the GRIB2 level forms in NCEP `.idx` files: pressure, height and depth levels and layers (`500 mb`, `2 m above ground`, `0-0.1 m below ground`, `30-0 mb above ground`), hybrid and sigma levels, PV surfaces, and named levels such as `surface`, `tropopause` and `max wind`. Levels it doesn't recognise are never pruned
 - **S3 support** — reads from `s3a://` paths via Hadoop filesystem with anonymous access for NOAA public buckets
-- **Glob patterns** — `spark.read.format("grib").load("path/to/*.grib2")`
+- **Directories and glob patterns** — `spark.read.format("grib").load("path/to/gfs.t00z.pgrb2.1p00.f*")`. Every file is read as GRIB except `.idx` sidecars, checksums, netCDF-Java index files, hidden files and partial downloads, so NOAA's extension-less names work as-is
+
+## Product-definition columns
+
+In GRIB2, what identifies a field can go beyond variable, level and time, depending on the message's product
+definition template. Three nullable columns, appended to both output modes, carry this:
+
+| Column | Description |
+|--------|-------------|
+| `pds_template` | GRIB2 product definition template number (e.g. `0` analysis/forecast, `48` aerosol). Null for GRIB1 |
+| `level_value2` | Second bound of a layer (e.g. `1.0` for "0.33-1 sigma layer"). Null for single levels and GRIB1 |
+| `product.aerosol` | Templates 4.46/4.48: aerosol `type` (code table 4.233) and `type_name`, plus size and wavelength intervals in metres, as GRIB2 encodes them (`*_interval_type` from code table 4.91, then the first and second limits) |
+| `product.ensemble` | Templates 4.1/4.11: an ensemble member's `perturbation_type` (code table 4.6), `member` number and `ensemble_size` |
+| `product.ensemble_derived` | Templates 4.2/4.12: a product derived from all members, e.g. `type_name` "Unweighted mean of all members" (code table 4.7) |
+| `product.probability` | Templates 4.5/4.9: probability `type` (code table 4.9) and its `lower_limit`/`upper_limit`, in the parameter's units |
+| `product.percentile` | Templates 4.6/4.10: the percentile, e.g. `1` for the 1% level |
+| `product.statistic` | Templates 4.8-4.12: statistical `process` over a time interval (code table 4.10, e.g. "Accumulation") and `interval_hours`. `forecast_time` is the end of the interval |
+
+Each `product` field is null unless the message's template carries it, and a template can carry several: an
+ensemble member's 6-hour accumulation (4.11) has both `ensemble` and `statistic`.
+
+```scala
+spark.read.format("grib").load("gefs.chem.t00z.a3d_0p50.f003.grib2")
+  .where("product.aerosol.type_name = 'Dust Dry' AND level_value = 1")
+
+spark.read.format("grib").load("blend.t00z.qmd.f024.co.grib2")
+  .where("variable_short_name = 'APCP' AND product.percentile = 90")
+```
+
+Units come from netCDF-Java's parameter tables. Where those are known to be wrong they're corrected: NCEP's
+aerosol parameters (`PMTC`, `PMTF`, `LPMTF`, `LIPMF`) are reported in µg m-3, as NCEP documents them, not g m-3.
+
+Filters on these columns are applied by Spark after decoding; they aren't pushed down.
 
 ## Options
 
@@ -50,13 +96,14 @@ df.where("variable_short_name = 'TMP' AND level_value = 500")
 | `variables` | *(all)* | Comma-separated variable filter (e.g. `"TMP,RH,UGRD"`) |
 | `levelType` | *(all)* | Filter by level type string |
 | `outputMode` | `flat` | `"flat"` or `"gridded"` |
-| `messagesPerPartition` | `20` | Messages per Spark partition (index-based mode) |
+| `maxPartitionBytes` | `134217728` (128 MiB) | Upper bound on bytes per partition (index-based mode). Partitions are sized to spread the data that survives filtering across the cluster's cores, like Spark's file sources |
+| `messagesPerPartition` | *(unset)* | Fixed number of messages per partition instead of byte-based sizing (index-based mode) |
 | `longitudeRange` | `0to360` | `"0to360"` or `"-180to180"` |
 | `useIndex` | `true` | Look for `.idx` sidecar files for sub-file partitioning |
 
 ## Building
 
-Requires SBT and JDK 8+.
+Requires SBT and JDK 8, 11 or 17 (Spark 3.5 doesn't support newer JDKs; CI uses 17).
 
 ```bash
 # Compile
@@ -65,9 +112,9 @@ sbt compile
 # Run unit tests
 sbt test
 
-# Run all tests including integration (requires test fixtures)
+# Run all tests, including integration tests on real NOAA data
 ./download_test_fixtures.sh
-sbt "testOnly * -- -n com.example.spark.grib.tags.SlowTest"
+sbt testAll
 
 # Build fat JAR
 sbt assembly
@@ -93,6 +140,10 @@ val df = spark.read.format("grib")
   .option("variables", "TMP")
   .load("s3a://noaa-gfs-bdp-pds/gfs.20240101/00/atmos/gfs.t00z.pgrb2.1p00.f000")
 ```
+
+## Databricks Example
+
+[`examples/databricks/`](examples/databricks/) contains a Python notebook that downloads NOAA GFS files into a Unity Catalog volume and reads them with this connector. It also has CLI setup steps for the JAR and cluster.
 
 ## Project Structure
 

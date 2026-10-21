@@ -8,6 +8,17 @@ import org.apache.spark.sql.types._
 object GribSchemas {
 
   /**
+   * Product-definition columns, appended to both schemas so existing column
+   * positions are unchanged. All nullable: GRIB1 messages have none of them,
+   * and `product.*` sub-structs are null unless the message's template uses them.
+   */
+  private lazy val productColumns: Seq[StructField] = Seq(
+    StructField("pds_template", IntegerType,               nullable = true),
+    StructField("level_value2", DoubleType,                nullable = true),
+    StructField("product",      ProductAttributes.schema, nullable = true)
+  )
+
+  /**
    * Flat / long-format schema: one row per grid point per message.
    * This is the most flexible format for SQL queries, joins, and aggregations.
    */
@@ -25,7 +36,7 @@ object GribSchemas {
     StructField("latitude",            DoubleType,    nullable = false),
     StructField("longitude",           DoubleType,    nullable = false),
     StructField("value",               DoubleType,    nullable = true)
-  ))
+  ) ++ productColumns)
 
   /**
    * Gridded / wide-format schema: one row per message with data as an array.
@@ -49,7 +60,7 @@ object GribSchemas {
     StructField("lat_increment",       DoubleType,    nullable = false),
     StructField("lon_increment",       DoubleType,    nullable = false),
     StructField("values",              ArrayType(DoubleType, containsNull = true), nullable = false)
-  ))
+  ) ++ productColumns)
 
   /** Return the appropriate schema based on output mode. */
   def forMode(outputMode: String): StructType = outputMode match {

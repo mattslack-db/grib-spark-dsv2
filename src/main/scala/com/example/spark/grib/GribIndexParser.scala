@@ -14,6 +14,10 @@ import scala.util.Try
  * @param variableName   Variable short name (e.g. "TMP")
  * @param levelDescription Level description string (e.g. "1 mb", "surface")
  * @param forecastInfo   Forecast info string (e.g. "anl", "6 hour fcst")
+ * @param subMessage     For a GRIB message packing several fields, this field's
+ *                       1-based position within it (`.idx` number `12.2` is
+ *                       message 12, sub-message 2). All of a message's fields
+ *                       share its byte offset.
  */
 case class GribIndexEntry(
     messageNumber: Int,
@@ -21,8 +25,17 @@ case class GribIndexEntry(
     referenceTime: String,
     variableName: String,
     levelDescription: String,
-    forecastInfo: String
+    forecastInfo: String,
+    subMessage: Option[Int] = None
 )
+
+/**
+ * One physical GRIB message located by the `.idx` file: its fields (one entry,
+ * or several sub-messages) and its byte range. `range.messageIndex` is the
+ * position of its first field, so decoding it numbers the fields exactly as a
+ * whole-file read does.
+ */
+case class IndexedMessage(entries: Seq[GribIndexEntry], range: MessageRange)
 
 /**
  * Parser for GRIB .idx sidecar index files.
@@ -55,6 +68,18 @@ object GribIndexParser {
   }
 
   /**
+   * Parse an .idx file, or None if any non-blank line is malformed. Byte ranges
+   * come from consecutive offsets, so a skipped line would silently merge its
+   * message into the previous entry's range: an index that doesn't fully parse
+   * can't be trusted for partitioning or pruning.
+   */
+  def parseStrict(idxContent: String): Option[Seq[GribIndexEntry]] = {
+    val lines = Option(idxContent).getOrElse("").linesIterator.map(_.trim).filter(_.nonEmpty).toVector
+    val entries = lines.flatMap(parseLine)
+    if (entries.length == lines.length) Some(entries) else None
+  }
+
+  /**
    * Parse a single .idx line.
    *
    * @param line A single line from the .idx file
@@ -69,7 +94,11 @@ object GribIndexParser {
     }
 
     Try {
-      val messageNumber = parts(0).trim.toInt
+      val (messageNumber, subMessage) = parts(0).trim.split('.') match {
+        case Array(number)      => (number.toInt, None)
+        case Array(number, sub) => (number.toInt, Some(sub.toInt))
+        case _                  => throw new NumberFormatException(s"Bad message number: ${parts(0)}")
+      }
       val byteOffset = parts(1).trim.toLong
       val refTimeRaw = parts(2).trim
       val referenceTime = if (refTimeRaw.startsWith("d=")) refTimeRaw.substring(2) else refTimeRaw
@@ -83,7 +112,8 @@ object GribIndexParser {
         referenceTime = referenceTime,
         variableName = variableName,
         levelDescription = levelDescription,
-        forecastInfo = forecastInfo
+        forecastInfo = forecastInfo,
+        subMessage = subMessage
       )
     }.toOption match {
       case Some(entry) => Some(entry)
@@ -94,22 +124,41 @@ object GribIndexParser {
   }
 
   /**
-   * Compute the (offset, length) byte ranges for each message.
+   * Compute the (offset, length) byte range of each entry's GRIB message.
    *
-   * Message lengths are inferred from consecutive byte offsets — the length
-   * of message N is (offset[N+1] - offset[N]). The last message extends to EOF.
+   * A message runs from its offset to the next larger offset (or EOF for the
+   * last one). Sub-messages share their message's offset, so each gets the
+   * whole message's range.
    *
    * @param entries  Parsed index entries (must be in file order)
    * @param fileSize Total size of the GRIB file in bytes
    * @return Sequence of (byteOffset, byteLength) pairs, one per entry
    */
   def computeMessageRanges(entries: Seq[GribIndexEntry], fileSize: Long): Seq[(Long, Long)] = {
-    if (entries.isEmpty) return Seq.empty
+    // Walk backwards so each entry sees the next offset beyond its own.
+    val ends = entries.map(_.byteOffset).scanRight((fileSize, fileSize)) {
+      case (offset, (nextOffset, nextEnd)) => (offset, if (offset == nextOffset) nextEnd else nextOffset)
+    }.init.map(_._2)
+    entries.zip(ends).map { case (entry, end) => (entry.byteOffset, end - entry.byteOffset) }
+  }
 
-    entries.zipWithIndex.map { case (entry, i) =>
-      val start = entry.byteOffset
-      val end = if (i + 1 < entries.length) entries(i + 1).byteOffset else fileSize
-      (start, end - start)
+  /**
+   * Group entries into physical GRIB messages (sub-messages sharing a byte
+   * offset form one message), each with its byte range and file-level
+   * message_index: the position of its first field among all entries.
+   *
+   * @param entries  Parsed index entries (must be in file order)
+   * @param fileSize Total size of the GRIB file in bytes
+   */
+  def groupMessages(entries: Seq[GribIndexEntry], fileSize: Long): Seq[IndexedMessage] = {
+    val ranges = computeMessageRanges(entries, fileSize)
+    val positioned = entries.zip(ranges).zipWithIndex
+
+    positioned.foldRight(List.empty[IndexedMessage]) {
+      case (((entry, (offset, length)), position), next :: rest) if next.range.offset == offset =>
+        IndexedMessage(entry +: next.entries, MessageRange(position, offset, length)) :: rest
+      case (((entry, (offset, length)), position), acc) =>
+        IndexedMessage(Seq(entry), MessageRange(position, offset, length)) :: acc
     }
   }
 }

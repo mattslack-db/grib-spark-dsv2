@@ -87,6 +87,9 @@ Use the **netCDF-Java** library (`edu.ucar:cdm-core`) as the GRIB decoding engin
 | `latitude` | `DoubleType` | Grid point latitude (degrees north) |
 | `longitude` | `DoubleType` | Grid point longitude (degrees east, 0–360 or -180–180 based on option) |
 | `value` | `DoubleType` | The data value at this grid point |
+| `pds_template` | `IntegerType` | GRIB2 product definition template number (null for GRIB1) |
+| `level_value2` | `DoubleType` | Second bound of a layer level (null for single levels) |
+| `product` | `StructType` | Template-specific identity: `aerosol`, `ensemble`, `ensemble_derived`, `probability`, `percentile`, `statistic` |
 
 **Alternative: wide-format / gridded schema** (one row per message, data as array):
 
@@ -101,9 +104,12 @@ Use the **netCDF-Java** library (`edu.ucar:cdm-core`) as the GRIB decoding engin
 | `ny` | `IntegerType` | Number of points in y dimension |
 | `lat_start` | `DoubleType` | First grid latitude |
 | `lon_start` | `DoubleType` | First grid longitude |
-| `lat_increment` | `DoubleType` | Grid spacing in latitude |
-| `lon_increment` | `DoubleType` | Grid spacing in longitude |
+| `lat_increment` | `DoubleType` | Signed grid spacing in latitude (negative when rows run north to south) |
+| `lon_increment` | `DoubleType` | Signed grid spacing in longitude |
 | `values` | `ArrayType(DoubleType)` | Flattened grid data (row-major, ny × nx) |
+| `pds_template` | `IntegerType` | GRIB2 product definition template number (null for GRIB1) |
+| `level_value2` | `DoubleType` | Second bound of a layer level (null for single levels) |
+| `product` | `StructType` | Template-specific identity: `aerosol`, `ensemble`, `ensemble_derived`, `probability`, `percentile`, `statistic` |
 
 **Recommendation:** Implement the long-format as the default (most flexible for SQL queries, joins, aggregations), and offer the gridded format via `.option("outputMode", "gridded")` for users who want to preserve the array structure for downstream processing.
 
@@ -113,7 +119,7 @@ Each GRIB **message** (or group of messages in the same file) maps to one Spark 
 
 1. **File-level partitioning** — each input file becomes one or more partitions.
 2. **Message-level partitioning** — if an `.idx` index file is available, individual messages (or groups of N messages) within a file can be assigned to separate partitions, enabling sub-file parallelism via HTTP range reads from S3.
-3. **User-configurable** — `option("messagesPerPartition", "50")` controls granularity.
+3. **Sized by bytes** — by default, partitions are sized so the data that survives index pruning spreads over about three partitions per core (at most `maxPartitionBytes`, default 128 MiB). `option("messagesPerPartition", "50")` fixes the number of messages per partition instead.
 
 For S3 reads, leverage the `.idx` file byte offsets to issue targeted range requests rather than downloading entire multi-GB files.
 
@@ -160,7 +166,8 @@ options parsed:
   - "variables" — comma-separated filter list
   - "levelType" — filter by level type string
   - "outputMode" — "flat" (default) or "gridded"
-  - "messagesPerPartition" — int, default 20
+  - "maxPartitionBytes" — size, default 128 MiB (accepts "64m", "1g", ...)
+  - "messagesPerPartition" — int, unset by default (byte-based sizing)
   - "longitudeRange" — "0to360" (default) or "-180to180"
   - "useIndex" — boolean, default true (look for .idx sidecar)
 ```
@@ -209,7 +216,7 @@ planInputPartitions():
   3. If .idx exists and useIndex=true:
        - Parse .idx to get message offsets + metadata
        - Apply pushed variable/level filters to exclude messages
-       - Group remaining messages into partitions of messagesPerPartition
+       - Group remaining messages into byte-sized partitions (or messagesPerPartition, if set)
        - Each GribInputPartition stores: filePath, List[(byteOffset, byteLength)]
   4. If no .idx:
        - One GribInputPartition per file (whole-file read)

@@ -1,6 +1,6 @@
 package com.example.spark.grib.unit
 
-import com.example.spark.grib.{DecodedGribMessage, GribFilters, GribIndexEntry}
+import com.example.spark.grib.{DecodedGribMessage, GribFilters, GribIndexEntry, IndexLevel}
 import org.apache.spark.sql.sources._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
@@ -47,9 +47,10 @@ class GribFiltersSpec extends AnyFunSuite with Matchers {
     GribFilters.isSupported(EqualTo("level_type", "surface")) shouldBe true
     GribFilters.isSupported(EqualTo("discipline", 0)) shouldBe true
     GribFilters.isSupported(GreaterThan("level_value", 500.0)) shouldBe true
+    GribFilters.isSupported(EqualTo("level_value", 500.0)) shouldBe true
+    GribFilters.isSupported(In("level_value", Array(500.0, 850.0))) shouldBe true
 
     // Not evaluable → Spark must apply them post-scan.
-    GribFilters.isSupported(EqualTo("level_value", 500.0)) shouldBe false
     GribFilters.isSupported(GreaterThan("discipline", 0)) shouldBe false
     GribFilters.isSupported(IsNotNull("variable_short_name")) shouldBe false
     GribFilters.isSupported(GreaterThan("reference_time", new Timestamp(0L))) shouldBe false
@@ -90,6 +91,14 @@ class GribFiltersSpec extends AnyFunSuite with Matchers {
     GribFilters.passes(msg(discipline = 2), not) shouldBe true
   }
 
+  test("passes matches level_value equality and In exactly") {
+    GribFilters.passes(msg(levelValue = 2.0), EqualTo("level_value", 2.0)) shouldBe true
+    GribFilters.passes(msg(levelValue = 2.0), EqualTo("level_value", 2)) shouldBe true
+    GribFilters.passes(msg(levelValue = 2.0), EqualTo("level_value", 10.0)) shouldBe false
+    GribFilters.passes(msg(levelValue = 2.0), In("level_value", Array(10.0, 2.0))) shouldBe true
+    GribFilters.passes(msg(levelValue = 2.0), In("level_value", Array(10.0))) shouldBe false
+  }
+
   // --- indexEntryKept: a case-insensitive superset that never over-prunes ---
 
   test("indexEntryKept prunes variable_short_name case-insensitively") {
@@ -113,4 +122,69 @@ class GribFiltersSpec extends AnyFunSuite with Matchers {
     GribFilters.matchesAnyVariable("TMP", Set("tmp", "rh")) shouldBe true
     GribFilters.matchesAnyVariable("UGRD", Set("tmp", "rh")) shouldBe false
   }
+
+  // --- indexEntryKept with a parsed .idx level ---
+
+  private val twoMetres = Some(IndexLevel("Specified height level above ground", 2.0))
+  private def keptAt2m(filter: Filter): Boolean =
+    GribFilters.indexEntryKept(entry("TMP", "2 m above ground"), filter, twoMetres)
+
+  test("indexEntryKept prunes on level when the .idx level is known") {
+    keptAt2m(EqualTo("level_value", 2.0)) shouldBe true
+    keptAt2m(EqualTo("level_value", 10.0)) shouldBe false
+    keptAt2m(In("level_value", Array(10.0, 2.0))) shouldBe true
+    keptAt2m(In("level_value", Array(10.0, 80.0))) shouldBe false
+    keptAt2m(GreaterThan("level_value", 5.0)) shouldBe false
+    keptAt2m(LessThanOrEqual("level_value", 2.0)) shouldBe true
+    keptAt2m(EqualTo("level_type", "Specified height level above ground")) shouldBe true
+    keptAt2m(EqualTo("level_type", "Isobaric surface")) shouldBe false
+  }
+
+  test("indexEntryKept combines filters with three-valued logic, pruning only on a definite false") {
+    keptAt2m(And(EqualTo("variable_short_name", "TMP"), EqualTo("level_value", 10.0))) shouldBe false
+    keptAt2m(Or(EqualTo("level_value", 10.0), EqualTo("variable_short_name", "TMP"))) shouldBe true
+    // A level equal to the filter's (within tolerance) is only "maybe", so Not keeps it for the exact check.
+    keptAt2m(Not(EqualTo("level_value", 2.0))) shouldBe true
+    keptAt2m(Not(EqualTo("level_type", "Specified height level above ground"))) shouldBe false
+    keptAt2m(Not(EqualTo("level_value", 10.0))) shouldBe true
+    // Unknown (discipline isn't in the .idx) keeps the entry, even under Not.
+    keptAt2m(Not(EqualTo("discipline", 0))) shouldBe true
+    keptAt2m(And(EqualTo("discipline", 0), EqualTo("level_value", 2.0))) shouldBe true
+  }
+
+  test("indexEntryKept tolerates floating-point error in levels derived from .idx text") {
+    // "0.4 mb" -> 0.4 * 100 Pa is not exactly 40.0 in floating point.
+    val level = Some(IndexLevel("Isobaric surface", 0.4 * 100))
+    GribFilters.indexEntryKept(entry("TMP", "0.4 mb"), EqualTo("level_value", 40.0), level) shouldBe true
+    GribFilters.indexEntryKept(entry("TMP", "0.4 mb"), GreaterThanOrEqual("level_value", 40.0), level) shouldBe true
+    GribFilters.indexEntryKept(entry("TMP", "0.4 mb"), LessThan("level_value", 40.0), level) shouldBe true
+  }
+
+  test("indexEntryKept never prunes on level when the .idx level is unknown") {
+    GribFilters.indexEntryKept(entry("TMP", "entire atmosphere"), EqualTo("level_value", 10.0), None) shouldBe true
+    GribFilters.indexEntryKept(entry("TMP", "entire atmosphere"), Not(EqualTo("level_value", 0.0)), None) shouldBe true
+  }
+
+  // --- Spark SQL semantics for NaN and -0.0, since pushed filters aren't re-checked by Spark ---
+
+  test("passes follows Spark SQL: NaN equals NaN and is larger than any other value; -0.0 equals 0.0") {
+    val nanLevel = msg(levelValue = Double.NaN)
+    GribFilters.passes(nanLevel, EqualTo("level_value", Double.NaN)) shouldBe true
+    GribFilters.passes(nanLevel, In("level_value", Array(1.0, Double.NaN))) shouldBe true
+    GribFilters.passes(nanLevel, GreaterThan("level_value", 1e9)) shouldBe true
+    GribFilters.passes(nanLevel, LessThan("level_value", 1e9)) shouldBe false
+    GribFilters.passes(msg(levelValue = 5.0), LessThan("level_value", Double.NaN)) shouldBe true
+    GribFilters.passes(msg(levelValue = 5.0), GreaterThanOrEqual("level_value", Double.NaN)) shouldBe false
+    GribFilters.passes(msg(levelValue = -0.0), EqualTo("level_value", 0.0)) shouldBe true
+  }
+
+  test("indexEntryKept never prunes on a NaN filter value") {
+    Seq[Filter](
+      EqualTo("level_value", Double.NaN), LessThan("level_value", Double.NaN),
+      GreaterThan("level_value", Double.NaN), Not(EqualTo("level_value", Double.NaN))
+    ).foreach { f =>
+      withClue(f) { keptAt2m(f) shouldBe true }
+    }
+  }
 }
+

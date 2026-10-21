@@ -15,7 +15,8 @@ class GribOptionsSpec extends AnyFunSuite with Matchers {
     val opts = GribOptions.parse(makeOptions("path" -> "/tmp/test.grib2"))
 
     opts.outputMode shouldBe GribOptions.OUTPUT_MODE_FLAT
-    opts.messagesPerPartition shouldBe 20
+    opts.messagesPerPartition shouldBe None
+    opts.maxPartitionBytes shouldBe 128L * 1024 * 1024
     opts.longitudeRange shouldBe GribOptions.LONGITUDE_0_360
     opts.useIndex shouldBe true
     opts.variables shouldBe empty
@@ -81,7 +82,7 @@ class GribOptionsSpec extends AnyFunSuite with Matchers {
       "path" -> "/tmp/test.grib2",
       "messagesPerPartition" -> "50"
     ))
-    opts.messagesPerPartition shouldBe 50
+    opts.messagesPerPartition shouldBe Some(50)
   }
 
   test("messagesPerPartition <= 0 should throw") {
@@ -127,4 +128,27 @@ class GribOptionsSpec extends AnyFunSuite with Matchers {
     opts.paths shouldBe Seq("/tmp/test.grib2")
     opts.variables shouldBe Set("TMP")
   }
+
+  test("maxPartitionBytes should be parsed, and must be positive") {
+    GribOptions.parse(makeOptions("path" -> "/tmp/t.grib2", "maxPartitionBytes" -> "1048576"))
+      .maxPartitionBytes shouldBe 1048576L
+    an[IllegalArgumentException] should be thrownBy
+      GribOptions.parse(makeOptions("path" -> "/tmp/t.grib2", "maxPartitionBytes" -> "0"))
+  }
+
+  test("maxPartitionBytes accepts Spark-style size strings") {
+    def parsed(v: String) = GribOptions.parse(makeOptions("path" -> "/tmp/t.grib2", "maxPartitionBytes" -> v)).maxPartitionBytes
+    parsed("64m") shouldBe 64L * 1024 * 1024
+    parsed("128MB") shouldBe 128L * 1024 * 1024
+    parsed("1g") shouldBe 1024L * 1024 * 1024
+    parsed("4096") shouldBe 4096L
+  }
+
+  test("an unparseable maxPartitionBytes gives a clear error") {
+    val e = the[IllegalArgumentException] thrownBy
+      GribOptions.parse(makeOptions("path" -> "/tmp/t.grib2", "maxPartitionBytes" -> "lots"))
+    e.getMessage should include("maxPartitionBytes")
+    e.getMessage should include("64m")
+  }
 }
+
