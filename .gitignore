@@ -19,3 +19,8 @@ src/test/resources/*.idx
 
 # Local tool configuration
 .isaac/
+
+# Rust spike (rust/): cargo target/ is covered above
+.venv/
+__pycache__/
+.pytest_cache/

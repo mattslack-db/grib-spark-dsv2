@@ -1,0 +1,36 @@
+[package]
+name = "grib-idx"
+version = "0.1.0"
+edition = "2024"
+description = "Evaluation spike: idx-driven GRIB2 range reads from object storage, decoded to Arrow"
+license = "Apache-2.0"
+publish = false
+
+[lib]
+name = "grib_idx"
+crate-type = ["cdylib", "rlib"]
+
+[features]
+# Builds the Python extension module (enabled by maturin via pyproject.toml).
+python = ["dep:pyo3", "arrow/pyarrow"]
+
+[dependencies]
+arrow = { version = "60", default-features = false }
+bytes = "1"
+futures = "0.3"
+# Pure-Rust codecs only, so wheels build without a C toolchain (no openjpeg/libaec).
+grib = { version = "0.19", default-features = false, features = [
+    "jpeg2000-unpack-with-hayro",
+    "png-unpack-with-png-crate",
+    "ccsds-unpack-with-rust-aec",
+    "time-calculation",
+] }
+object_store = { version = "0.14", features = ["aws", "azure", "gcp", "http"] }
+pyo3 = { version = "*", optional = true }
+rayon = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["rt-multi-thread"] }
+url = "2"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
