@@ -4,7 +4,7 @@
 
 use crate::decode::DecodedField;
 use crate::error::{Error, Result};
-use crate::filters::{FieldView, Predicate, idx_name_may_be};
+use crate::filters::{FieldView, Predicate, idx_name_may_be, matches_any_variable};
 use crate::idx::IndexEntry;
 use crate::index_levels;
 
@@ -38,7 +38,7 @@ impl Selection {
     /// Exact evaluation of a decoded field, with its `.idx` entry if it has one.
     pub fn keeps_field(&self, field: &DecodedField, entry: Option<&IndexEntry>) -> Result<bool> {
         let variable_ok = self.variables.as_ref().is_none_or(|vs| {
-            vs.iter().any(|v| v.eq_ignore_ascii_case(&field.variable_short_name) || entry.is_some_and(|e| e.variable_name.eq_ignore_ascii_case(v)))
+            matches_any_variable(&field.variable_short_name, vs) || entry.is_some_and(|e| vs.iter().any(|v| e.variable_name.eq_ignore_ascii_case(v)))
         });
         let level_ok = match (&self.levels, entry) {
             (None, _) => true,

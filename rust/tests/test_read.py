@@ -54,6 +54,20 @@ def test_predicate_filters_exactly() -> None:
     assert all(v > 90000.0 for v in table.column("level_value").to_pylist())
 
 
+# GFS cloud mixing ratio: CLMR in NOAA's .idx, CLWMR as netCDF-Java decodes it.
+CLOUD_MIXING_RATIO_FIELDS = 23
+
+
+@requires_fixtures
+@pytest.mark.parametrize("use_index", [True, False])
+@pytest.mark.parametrize("name", ["CLMR", "clwmr"])
+def test_a_field_is_found_by_its_idx_or_decoded_name_with_or_without_the_index(name: str, use_index: bool) -> None:
+    table = grib_idx.read(str(GFS), variables=[name], use_index=use_index)
+
+    assert table.num_rows == CLOUD_MIXING_RATIO_FIELDS
+    assert set(table.column("variable_short_name").to_pylist()) == {"CLWMR"}
+
+
 @requires_fixtures
 def test_file_without_index_is_read_whole_with_product_attributes() -> None:
     table = grib_idx.read(str(TEMPLATES))

@@ -128,9 +128,9 @@ impl Predicate {
     }
 }
 
-/// wgrib2 `.idx` names that differ from netCDF-Java's decoded short names, as
-/// observed on NOAA fixtures (the Scala reader assumes they only differ by case,
-/// so it prunes these fields away when filtering on either name).
+/// wgrib2 `.idx` names that differ from netCDF-Java's decoded short names
+/// beyond case, as observed on NOAA fixtures (`.idx` name, decoded name).
+/// Other pairs are unknown, so an index read can still prune them.
 const IDX_NAME_ALIASES: [(&str, &str); 2] = [("CLMR", "CLWMR"), ("LFTX", "LFT X")];
 
 /// Whether the field an `.idx` entry names could decode with short name `v`.
@@ -140,15 +140,36 @@ const IDX_NAME_ALIASES: [(&str, &str); 2] = [("CLMR", "CLWMR"), ("LFTX", "LFT X"
 pub fn idx_name_may_be(entry: &IndexEntry, v: &str) -> bool {
     let idx_name = entry.variable_name.as_str();
     let is_plain = |name: &str| !name.is_empty() && name.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'_');
-    !is_plain(idx_name)
-        || is_decoded_fallback_name(v)
-        || idx_name.eq_ignore_ascii_case(v)
-        || IDX_NAME_ALIASES.iter().any(|(idx, decoded)| idx.eq_ignore_ascii_case(idx_name) && decoded.eq_ignore_ascii_case(v))
+    !is_plain(idx_name) || is_decoded_fallback_name(v) || is_same_field(idx_name, v)
 }
 
-/// The decoder's name for a parameter its tables don't know: `var{d}_{c}_{n}`.
+/// Whether a decoded short name is one of the requested `variables`: ignoring
+/// case, and by its `.idx` alias (e.g. `CLMR` for `CLWMR`).
+pub fn matches_any_variable(name: &str, variables: &[String]) -> bool {
+    variables.iter().any(|v| is_same_field(v, name))
+}
+
+/// A short name in upper case, with an `.idx` alias replaced by its decoded name.
+fn canonical_name(name: &str) -> String {
+    let upper = name.to_ascii_uppercase();
+    IDX_NAME_ALIASES
+        .iter()
+        .find(|(idx, _)| *idx == upper)
+        .map_or(upper, |(_, decoded)| (*decoded).to_string())
+}
+
+/// Whether two short names denote the same field: equal ignoring case, or an
+/// `.idx` alias and its decoded name, either way round.
+fn is_same_field(a: &str, b: &str) -> bool {
+    canonical_name(a) == canonical_name(b)
+}
+
+/// The decoder's name for a parameter its tables don't know, `var{d}_{c}_{n}`,
+/// matched ignoring case like the `variables` option.
 fn is_decoded_fallback_name(v: &str) -> bool {
-    v.strip_prefix("var").is_some_and(|rest| rest.split('_').all(|p| !p.is_empty() && (p.bytes().all(|b| b.is_ascii_digit()) || p == "missing")))
+    let has_prefix = v.get(..3).is_some_and(|p| p.eq_ignore_ascii_case("var"));
+    has_prefix
+        && v[3..].split('_').all(|p| !p.is_empty() && (p.bytes().all(|b| b.is_ascii_digit()) || p.eq_ignore_ascii_case("missing")))
 }
 
 /// Levels derived from `.idx` text (e.g. "0.4 mb" * 100) carry floating-point
@@ -221,6 +242,29 @@ mod tests {
         let unnamed = Predicate::StrEq(Column::VariableShortName, "var0_16_195".into());
         assert_eq!(unnamed.index_verdict(&entry("var discipline=0 center=7 local_table=1 parmcat=16 parm=195"), None), None);
         assert_eq!(unnamed.index_verdict(&entry("TMP"), None), None);
+    }
+
+    #[test]
+    fn index_pruning_never_rules_out_fallback_names_whatever_their_case() {
+        // The variables option ignores case, so pruning must too.
+        assert!(idx_name_may_be(&entry("REFD"), "VAR0_16_195"));
+        assert!(idx_name_may_be(&entry("REFD"), "Var0_16_195"));
+        assert!(!idx_name_may_be(&entry("REFD"), "VARIANCE"));
+    }
+
+    #[test]
+    fn aliases_match_whichever_side_carries_the_idx_spelling() {
+        assert!(idx_name_may_be(&entry("CLWMR"), "clmr"));
+        assert!(idx_name_may_be(&entry("CLMR"), "CLWMR"));
+        assert!(!idx_name_may_be(&entry("CLWMR"), "LFTX"));
+    }
+
+    #[test]
+    fn a_decoded_field_can_be_requested_by_its_idx_alias_without_an_index() {
+        assert!(matches_any_variable("CLWMR", &["clmr".into()]));
+        assert!(matches_any_variable("LFT X", &["LFTX".into()]));
+        assert!(matches_any_variable("CLMR", &["CLWMR".into()]));
+        assert!(!matches_any_variable("CLWMR", &["TMP".into()]));
     }
 
     #[test]

@@ -56,17 +56,22 @@ df = (spark.read.format("grib_idx")
 
 ## Bugs found in the Scala reader
 
-Both are reproducible with the fixtures and fixed (or avoided) in the Rust reader:
+Both are reproducible with the fixtures, and the Rust reader avoids both:
 
 1. **`variables=CLMR` / `CLWMR` both return nothing.** Index pruning assumes the
    `.idx` short name equals the decoded one up to case, but for 24 GFS fields
    wgrib2 and netCDF-Java disagree (`CLMR`/`CLWMR`, `LFTX`/`LFT X`). The `.idx`
    keeps `CLMR` messages, then the exact decoded check (`CLWMR`) drops them;
-   asking for `CLWMR` prunes them from the `.idx`. Rust matches either name.
+   asking for `CLWMR` prunes them from the `.idx`. Fixed in the Scala reader
+   by PR #3, which also fixed the same gaps found afterwards in both readers:
+   fallback names (`var0_16_195`) were compared case-sensitively, and an alias
+   only matched in one direction.
 2. **NBM present weather (`PWTHER`) is 98% NaN.** netCDF-Java 5.6 mis-decodes
    complex packing (template 5.2) with missing-value management: it marks
    3.68M of 3.74M points missing and the rest differ by up to 78. ecCodes
-   (via pygrib) agrees with the Rust reader exactly.
+   (via pygrib) agrees with the Rust reader exactly. Every netCDF-Java release
+   up to 5.11.0 gives the same result; the Scala README lists it as a known
+   limitation.
 
 ## Decisions (made unattended; easy to revisit)
 
@@ -78,7 +83,9 @@ Both are reproducible with the fixtures and fixed (or avoided) in the Rust reade
   `AerosolTypeNames` corrections), embedded at build time. Other centres'
   local tables aren't exported.
 - **`variables` matches the decoded or the `.idx` name** (case-insensitive),
-  and SQL pruning knows the observed wgrib2 aliases, avoiding Scala bug 1.
+  with or without the `.idx`, and SQL pruning knows the observed wgrib2
+  aliases, avoiding Scala bug 1. Only two alias pairs are known; another pair
+  would still be pruned by an index read that filters on the decoded name.
 - **netCDF-Java's quirks are reproduced** where they define the output: the
   interval length adds each range's time increment (NBM's 1 h accumulations
   with a 1 h increment report 2 h); on a unit mismatch, where netCDF-Java
@@ -90,7 +97,7 @@ Both are reproducible with the fixtures and fixed (or avoided) in the Rust reade
   like a malformed one; ranges passed in from Python are bounds-checked.
 - **Name pruning is conservative:** `.idx` names that aren't plain
   abbreviations (wgrib2's `var discipline=0 ... parm=195` for unnamed
-  parameters) and decoded fallback names (`var0_16_195`) never prune.
+  parameters) and decoded fallback names (`var0_16_195`, any case) never prune.
 - **`levels` needs an `.idx`**: on a file without one it raises rather than
   silently matching nothing.
 - **Pushdown is opt-in** (`filterPushdown=true`): Spark 4.1 raises if a
