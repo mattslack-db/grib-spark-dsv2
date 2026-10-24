@@ -107,17 +107,12 @@ fn decode_submessage<R: grib::Grib2Read>(
         || "level_unknown".to_string(),
         |t| tables::code_name(centre, CodeTable::LevelType, u32::from(t)).map_or_else(|| format!("level_{t}"), str::to_string),
     );
-    let level_value2 = second
-        .filter(|s| s.surface_type != MISSING_SURFACE_TYPE)
-        .map(FixedSurface::value)
-        .filter(|v| !v.is_nan());
+    let level_value2 = second.filter(|s| s.surface_type != MISSING_SURFACE_TYPE).map(FixedSurface::value).filter(|v| !v.is_nan());
 
     let temporal = submessage.temporal_info();
     let reference_time_ms = temporal.ref_time.map_or(0, |t| t.timestamp_millis());
-    let forecast_time_ms = definition
-        .interval_end_ms
-        .or(temporal.forecast_time_target.map(|t| t.timestamp_millis()))
-        .unwrap_or(reference_time_ms);
+    let forecast_time_ms =
+        definition.interval_end_ms.or(temporal.forecast_time_target.map(|t| t.timestamp_millis())).unwrap_or(reference_time_ms);
 
     let (nx, ny) = submessage.grid_shape()?;
     let geometry = geometry::geometry(&submessage);

@@ -43,11 +43,7 @@ fn patterns() -> &'static [(Regex, &'static str, f64)] {
             (format!("{NUM} m above ground"), "Specified height level above ground", 1.0),
             (format!("{layer} m above ground"), "Specified height level above ground", 1.0),
             (format!("{layer} m below ground"), "Depth below land surface", 1.0),
-            (
-                format!("{layer} mb above ground"),
-                "Level at specified pressure difference from ground to level",
-                PASCALS_PER_MILLIBAR,
-            ),
+            (format!("{layer} mb above ground"), "Level at specified pressure difference from ground to level", PASCALS_PER_MILLIBAR),
             (format!("{NUM} m above mean sea level"), "Specific altitude above mean sea level", 1.0),
             (format!("{NUM} hybrid level"), "Hybrid level", 1.0),
             (format!("{NUM} sigma level"), "Sigma level", 1.0),
@@ -94,10 +90,7 @@ mod tests {
     fn layers_report_their_first_bound() {
         assert_eq!(parse("3000-0 m above ground"), level("Specified height level above ground", 3000.0));
         assert_eq!(parse("0-0.1 m below ground"), level("Depth below land surface", 0.0));
-        assert_eq!(
-            parse("30-0 mb above ground"),
-            level("Level at specified pressure difference from ground to level", 3000.0)
-        );
+        assert_eq!(parse("30-0 mb above ground"), level("Level at specified pressure difference from ground to level", 3000.0));
         assert_eq!(parse("0.33-1 sigma layer"), level("Sigma level", 0.33));
     }
 

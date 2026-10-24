@@ -342,10 +342,22 @@ mod tests {
     #[test]
     fn statistical_template_reports_interval_end_process_and_hours() {
         // Template 4.8: end 2024-01-01 06:00:00, one range: accumulation (1) over 6 hours (unit 1).
-        let p = payload(58, &[
-            (35, &2024u16.to_be_bytes()), (37, &[1]), (38, &[1]), (39, &[6]), (40, &[0]), (41, &[0]),
-            (42, &[1]), (47, &[1]), (48, &[2]), (49, &[1]), (50, &6u32.to_be_bytes()),
-        ]);
+        let p = payload(
+            58,
+            &[
+                (35, &2024u16.to_be_bytes()),
+                (37, &[1]),
+                (38, &[1]),
+                (39, &[6]),
+                (40, &[0]),
+                (41, &[0]),
+                (42, &[1]),
+                (47, &[1]),
+                (48, &[2]),
+                (49, &[1]),
+                (50, &6u32.to_be_bytes()),
+            ],
+        );
         let def = parse(NCEP, 8, &p);
         assert_eq!(def.interval_end_ms, Some(1_704_088_800_000));
         let statistic = def.attributes.statistic.unwrap();
@@ -356,20 +368,43 @@ mod tests {
     #[test]
     fn interval_length_includes_time_increments_as_netcdf_java_computes_it() {
         // Template 4.8, one range of 1 hour with a 1-hour increment: netCDF-Java reports 2 hours.
-        let p = payload(58, &[
-            (35, &2024u16.to_be_bytes()), (37, &[1]), (38, &[1]), (39, &[1]),
-            (42, &[1]), (47, &[1]), (48, &[2]), (49, &[1]), (50, &1u32.to_be_bytes()), (54, &[1]), (55, &1u32.to_be_bytes()),
-        ]);
+        let p = payload(
+            58,
+            &[
+                (35, &2024u16.to_be_bytes()),
+                (37, &[1]),
+                (38, &[1]),
+                (39, &[1]),
+                (42, &[1]),
+                (47, &[1]),
+                (48, &[2]),
+                (49, &[1]),
+                (50, &1u32.to_be_bytes()),
+                (54, &[1]),
+                (55, &1u32.to_be_bytes()),
+            ],
+        );
         assert_eq!(parse(NCEP, 8, &p).attributes.statistic.and_then(|s| s.interval_hours), Some(2.0));
     }
 
     #[test]
     fn ensemble_statistical_template_has_both_blocks() {
-        let p = payload(61, &[
-            (35, &[3]), (36, &[1]), (37, &[30]),
-            (38, &2024u16.to_be_bytes()), (40, &[1]), (41, &[1]), (42, &[12]), (45, &[1]), (50, &[1]), (52, &[11]),
-            (53, &1u32.to_be_bytes()),
-        ]);
+        let p = payload(
+            61,
+            &[
+                (35, &[3]),
+                (36, &[1]),
+                (37, &[30]),
+                (38, &2024u16.to_be_bytes()),
+                (40, &[1]),
+                (41, &[1]),
+                (42, &[12]),
+                (45, &[1]),
+                (50, &[1]),
+                (52, &[11]),
+                (53, &1u32.to_be_bytes()),
+            ],
+        );
         let attrs = parse(NCEP, 11, &p).attributes;
         assert_eq!(attrs.ensemble.map(|e| (e.perturbation_type, e.member, e.ensemble_size)), Some((3, 1, 30)));
         assert_eq!(attrs.statistic.and_then(|s| s.interval_hours), Some(6.0));
@@ -378,10 +413,18 @@ mod tests {
     #[test]
     fn aerosol_template_reads_type_and_size_interval() {
         // Type 62000, size interval "smaller than second limit" (1): only the second size is used.
-        let p = payload(58, &[
-            (12, &62000u16.to_be_bytes()), (14, &[1]), (15, &[6]), (16, &[0, 0, 0, 1]), (20, &[6]), (21, &[0, 0, 0, 25]),
-            (25, &[MISSING_INTERVAL_TYPE]),
-        ]);
+        let p = payload(
+            58,
+            &[
+                (12, &62000u16.to_be_bytes()),
+                (14, &[1]),
+                (15, &[6]),
+                (16, &[0, 0, 0, 1]),
+                (20, &[6]),
+                (21, &[0, 0, 0, 25]),
+                (25, &[MISSING_INTERVAL_TYPE]),
+            ],
+        );
         let aerosol = parse(NCEP, 48, &p).attributes.aerosol.unwrap();
         assert_eq!(aerosol.aerosol_type, 62000);
         assert_eq!((aerosol.size_interval_type, aerosol.size_first_m), (Some(1), None));

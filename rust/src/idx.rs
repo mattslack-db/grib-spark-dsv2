@@ -39,22 +39,12 @@ impl IndexedMessage {
 /// ranges come from consecutive offsets, so a skipped line would silently merge
 /// its message into the previous entry's range.
 pub fn parse_strict(content: &str) -> Option<Vec<IndexEntry>> {
-    content
-        .lines()
-        .map(str::trim)
-        .filter(|line| !line.is_empty())
-        .map(parse_line)
-        .collect()
+    content.lines().map(str::trim).filter(|line| !line.is_empty()).map(parse_line).collect()
 }
 
 /// Parse an `.idx` file, skipping malformed lines.
 pub fn parse(content: &str) -> Vec<IndexEntry> {
-    content
-        .lines()
-        .map(str::trim)
-        .filter(|line| !line.is_empty())
-        .filter_map(parse_line)
-        .collect()
+    content.lines().map(str::trim).filter(|line| !line.is_empty()).filter_map(parse_line).collect()
 }
 
 const MIN_FIELDS: usize = 6;
@@ -89,9 +79,7 @@ pub fn group_messages(entries: &[IndexEntry], file_size: u64) -> Option<Vec<Inde
     if !ascending || entries.last().is_some_and(|e| e.byte_offset >= file_size) {
         return None;
     }
-    let starts: Vec<usize> = (0..entries.len())
-        .filter(|&i| i == 0 || entries[i].byte_offset != entries[i - 1].byte_offset)
-        .collect();
+    let starts: Vec<usize> = (0..entries.len()).filter(|&i| i == 0 || entries[i].byte_offset != entries[i - 1].byte_offset).collect();
     let messages = starts
         .iter()
         .enumerate()
@@ -99,12 +87,7 @@ pub fn group_messages(entries: &[IndexEntry], file_size: u64) -> Option<Vec<Inde
             let end = starts.get(n + 1).copied().unwrap_or(entries.len());
             let offset = entries[start].byte_offset;
             let next_offset = entries.get(end).map_or(file_size, |e| e.byte_offset);
-            IndexedMessage {
-                message_index: start,
-                offset,
-                length: next_offset - offset,
-                entries: entries[start..end].to_vec(),
-            }
+            IndexedMessage { message_index: start, offset, length: next_offset - offset, entries: entries[start..end].to_vec() }
         })
         .collect();
     Some(messages)

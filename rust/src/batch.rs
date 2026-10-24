@@ -4,11 +4,10 @@
 use std::sync::{Arc, OnceLock};
 
 use arrow::array::{
-    ArrayRef, Float64Array, Int32Array, ListArray, RecordBatch, StringArray, StructArray, TimestampMicrosecondArray,
-    UInt32Array,
+    ArrayRef, Float64Array, Int32Array, ListArray, RecordBatch, StringArray, StructArray, TimestampMicrosecondArray, UInt32Array,
 };
-use arrow::compute::take;
 use arrow::buffer::{NullBuffer, OffsetBuffer};
+use arrow::compute::take;
 use arrow::datatypes::{DataType, Field, Fields, Schema, SchemaRef, TimeUnit};
 
 use crate::decode::DecodedField;
@@ -82,29 +81,33 @@ fn product_fields() -> &'static Fields {
     FIELDS.get_or_init(|| {
         let strukt = |name: &str, fields: Vec<Field>| Field::new(name, DataType::Struct(fields.into()), true);
         Fields::from(vec![
-            strukt("aerosol", vec![
-                int("type", false),
-                string("type_name", true),
-                int("size_interval_type", true),
-                double("size_first_m", true),
-                double("size_second_m", true),
-                int("wavelength_interval_type", true),
-                double("wavelength_first_m", true),
-                double("wavelength_second_m", true),
-            ]),
-            strukt("ensemble", vec![
-                int("perturbation_type", false),
-                string("perturbation_type_name", true),
-                int("member", false),
-                int("ensemble_size", false),
-            ]),
+            strukt(
+                "aerosol",
+                vec![
+                    int("type", false),
+                    string("type_name", true),
+                    int("size_interval_type", true),
+                    double("size_first_m", true),
+                    double("size_second_m", true),
+                    int("wavelength_interval_type", true),
+                    double("wavelength_first_m", true),
+                    double("wavelength_second_m", true),
+                ],
+            ),
+            strukt(
+                "ensemble",
+                vec![
+                    int("perturbation_type", false),
+                    string("perturbation_type_name", true),
+                    int("member", false),
+                    int("ensemble_size", false),
+                ],
+            ),
             strukt("ensemble_derived", vec![int("type", false), string("type_name", true), int("ensemble_size", false)]),
-            strukt("probability", vec![
-                int("type", false),
-                string("type_name", true),
-                double("lower_limit", true),
-                double("upper_limit", true),
-            ]),
+            strukt(
+                "probability",
+                vec![int("type", false), string("type_name", true), double("lower_limit", true), double("upper_limit", true)],
+            ),
             int("percentile", true),
             strukt("statistic", vec![int("process", false), string("process_name", true), double("interval_hours", true)]),
         ])
@@ -128,11 +131,7 @@ fn leading_fields() -> Vec<Field> {
 }
 
 fn trailing_fields() -> Vec<Field> {
-    vec![
-        int("pds_template", true),
-        double("level_value2", true),
-        Field::new("product", DataType::Struct(product_fields().clone()), true),
-    ]
+    vec![int("pds_template", true), double("level_value2", true), Field::new("product", DataType::Struct(product_fields().clone()), true)]
 }
 
 pub fn schema(mode: OutputMode) -> SchemaRef {
@@ -180,9 +179,8 @@ pub fn flat_batch(file_path: &str, field: &DecodedField, longitudes: LongitudeRa
     let (lats, lons) = field.lat_lons.as_ref().ok_or_else(|| Error::Unsupported("flat mode needs lat/lons decoded".into()))?;
     let points = field.values.len();
     let first_row = UInt32Array::from(vec![0u32; points]);
-    let repeat = |columns: Vec<ArrayRef>| -> Result<Vec<ArrayRef>> {
-        columns.iter().map(|c| Ok(take(c.as_ref(), &first_row, None)?)).collect()
-    };
+    let repeat =
+        |columns: Vec<ArrayRef>| -> Result<Vec<ArrayRef>> { columns.iter().map(|c| Ok(take(c.as_ref(), &first_row, None)?)).collect() };
     let middle: Vec<ArrayRef> = vec![
         Arc::new(Float64Array::from(lats.clone())),
         Arc::new(lons.iter().map(|&lon| longitudes.apply(lon)).collect::<Float64Array>()),
@@ -240,46 +238,66 @@ fn product_array(products: &[&ProductAttributes]) -> Result<StructArray> {
         };
     }
     let aerosols: Vec<_> = products.iter().map(|p| p.aerosol.as_ref()).collect();
-    let aerosol = struct_column(sub_fields("aerosol"), vec![
-        column!(aerosols, Int32Array, |a| a.map(|a| a.aerosol_type)),
-        column!(aerosols, StringArray, |a| a.and_then(|a| a.type_name.as_deref())),
-        column!(aerosols, Int32Array, |a| a.and_then(|a| a.size_interval_type)),
-        column!(aerosols, Float64Array, |a| a.and_then(|a| a.size_first_m)),
-        column!(aerosols, Float64Array, |a| a.and_then(|a| a.size_second_m)),
-        column!(aerosols, Int32Array, |a| a.and_then(|a| a.wavelength_interval_type)),
-        column!(aerosols, Float64Array, |a| a.and_then(|a| a.wavelength_first_m)),
-        column!(aerosols, Float64Array, |a| a.and_then(|a| a.wavelength_second_m)),
-    ], aerosols.iter().map(Option::is_some).collect())?;
+    let aerosol = struct_column(
+        sub_fields("aerosol"),
+        vec![
+            column!(aerosols, Int32Array, |a| a.map(|a| a.aerosol_type)),
+            column!(aerosols, StringArray, |a| a.and_then(|a| a.type_name.as_deref())),
+            column!(aerosols, Int32Array, |a| a.and_then(|a| a.size_interval_type)),
+            column!(aerosols, Float64Array, |a| a.and_then(|a| a.size_first_m)),
+            column!(aerosols, Float64Array, |a| a.and_then(|a| a.size_second_m)),
+            column!(aerosols, Int32Array, |a| a.and_then(|a| a.wavelength_interval_type)),
+            column!(aerosols, Float64Array, |a| a.and_then(|a| a.wavelength_first_m)),
+            column!(aerosols, Float64Array, |a| a.and_then(|a| a.wavelength_second_m)),
+        ],
+        aerosols.iter().map(Option::is_some).collect(),
+    )?;
 
     let ensembles: Vec<_> = products.iter().map(|p| p.ensemble.as_ref()).collect();
-    let ensemble = struct_column(sub_fields("ensemble"), vec![
-        column!(ensembles, Int32Array, |e| e.map(|e| e.perturbation_type)),
-        column!(ensembles, StringArray, |e| e.and_then(|e| e.perturbation_type_name.as_deref())),
-        column!(ensembles, Int32Array, |e| e.map(|e| e.member)),
-        column!(ensembles, Int32Array, |e| e.map(|e| e.ensemble_size)),
-    ], ensembles.iter().map(Option::is_some).collect())?;
+    let ensemble = struct_column(
+        sub_fields("ensemble"),
+        vec![
+            column!(ensembles, Int32Array, |e| e.map(|e| e.perturbation_type)),
+            column!(ensembles, StringArray, |e| e.and_then(|e| e.perturbation_type_name.as_deref())),
+            column!(ensembles, Int32Array, |e| e.map(|e| e.member)),
+            column!(ensembles, Int32Array, |e| e.map(|e| e.ensemble_size)),
+        ],
+        ensembles.iter().map(Option::is_some).collect(),
+    )?;
 
     let deriveds: Vec<_> = products.iter().map(|p| p.ensemble_derived.as_ref()).collect();
-    let ensemble_derived = struct_column(sub_fields("ensemble_derived"), vec![
-        column!(deriveds, Int32Array, |d| d.map(|d| d.derived_type)),
-        column!(deriveds, StringArray, |d| d.and_then(|d| d.type_name.as_deref())),
-        column!(deriveds, Int32Array, |d| d.map(|d| d.ensemble_size)),
-    ], deriveds.iter().map(Option::is_some).collect())?;
+    let ensemble_derived = struct_column(
+        sub_fields("ensemble_derived"),
+        vec![
+            column!(deriveds, Int32Array, |d| d.map(|d| d.derived_type)),
+            column!(deriveds, StringArray, |d| d.and_then(|d| d.type_name.as_deref())),
+            column!(deriveds, Int32Array, |d| d.map(|d| d.ensemble_size)),
+        ],
+        deriveds.iter().map(Option::is_some).collect(),
+    )?;
 
     let probabilities: Vec<_> = products.iter().map(|p| p.probability.as_ref()).collect();
-    let probability = struct_column(sub_fields("probability"), vec![
-        column!(probabilities, Int32Array, |p| p.map(|p| p.probability_type)),
-        column!(probabilities, StringArray, |p| p.and_then(|p| p.type_name.as_deref())),
-        column!(probabilities, Float64Array, |p| p.and_then(|p| p.lower_limit)),
-        column!(probabilities, Float64Array, |p| p.and_then(|p| p.upper_limit)),
-    ], probabilities.iter().map(Option::is_some).collect())?;
+    let probability = struct_column(
+        sub_fields("probability"),
+        vec![
+            column!(probabilities, Int32Array, |p| p.map(|p| p.probability_type)),
+            column!(probabilities, StringArray, |p| p.and_then(|p| p.type_name.as_deref())),
+            column!(probabilities, Float64Array, |p| p.and_then(|p| p.lower_limit)),
+            column!(probabilities, Float64Array, |p| p.and_then(|p| p.upper_limit)),
+        ],
+        probabilities.iter().map(Option::is_some).collect(),
+    )?;
 
     let statistics: Vec<_> = products.iter().map(|p| p.statistic.as_ref()).collect();
-    let statistic = struct_column(sub_fields("statistic"), vec![
-        column!(statistics, Int32Array, |s| s.map(|s| s.process)),
-        column!(statistics, StringArray, |s| s.and_then(|s| s.process_name.as_deref())),
-        column!(statistics, Float64Array, |s| s.and_then(|s| s.interval_hours)),
-    ], statistics.iter().map(Option::is_some).collect())?;
+    let statistic = struct_column(
+        sub_fields("statistic"),
+        vec![
+            column!(statistics, Int32Array, |s| s.map(|s| s.process)),
+            column!(statistics, StringArray, |s| s.and_then(|s| s.process_name.as_deref())),
+            column!(statistics, Float64Array, |s| s.and_then(|s| s.interval_hours)),
+        ],
+        statistics.iter().map(Option::is_some).collect(),
+    )?;
 
     let percentile = column!(products, Int32Array, |p| p.percentile);
     let columns: Vec<ArrayRef> =

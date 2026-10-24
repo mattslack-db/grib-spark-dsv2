@@ -38,17 +38,15 @@ impl Selection {
     /// Exact evaluation of a decoded field, with its `.idx` entry if it has one.
     pub fn keeps_field(&self, field: &DecodedField, entry: Option<&IndexEntry>) -> Result<bool> {
         let variable_ok = self.variables.as_ref().is_none_or(|vs| {
-            matches_any_variable(&field.variable_short_name, vs) || entry.is_some_and(|e| vs.iter().any(|v| e.variable_name.eq_ignore_ascii_case(v)))
+            matches_any_variable(&field.variable_short_name, vs)
+                || entry.is_some_and(|e| vs.iter().any(|v| e.variable_name.eq_ignore_ascii_case(v)))
         });
         let level_ok = match (&self.levels, entry) {
             (None, _) => true,
             (Some(levels), Some(e)) => levels.contains(&e.level_description),
             (Some(_), None) => return Err(Error::LevelsNeedIndex),
         };
-        let level_type_ok = self
-            .level_type
-            .as_ref()
-            .is_none_or(|lt| field.level_type.to_lowercase().contains(&lt.to_lowercase()));
+        let level_type_ok = self.level_type.as_ref().is_none_or(|lt| field.level_type.to_lowercase().contains(&lt.to_lowercase()));
         let view = FieldView {
             variable_short_name: &field.variable_short_name,
             level_type: &field.level_type,

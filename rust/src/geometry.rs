@@ -58,10 +58,7 @@ fn lambert_geometry(def: &grib::def::grib2::template::Template3_30) -> Option<Ge
         lat_2: degrees(f64::from(def.latin2)),
     })
     .ok()?;
-    let first = (
-        degrees(f64::from(def.first_point_lon)).to_radians(),
-        degrees(f64::from(def.first_point_lat)).to_radians(),
-    );
+    let first = (degrees(f64::from(def.first_point_lon)).to_radians(), degrees(f64::from(def.first_point_lat)).to_radians());
     let (x, y) = projection.project(&first, false).ok()?;
     let dx = f64::from(def.dx) / MM_PER_KM;
     let dy = f64::from(def.dy) / MM_PER_KM;

@@ -98,9 +98,7 @@ fn load_params() -> HashMap<(Table, u8, u8, u8), Parameter> {
 }
 
 fn load_codes() -> HashMap<(Table, CodeTable, u32), &'static str> {
-    rows(CODES_TSV)
-        .map(|f| ((Table::parse(f[0]), CodeTable::parse(f[1]), f[2].parse().expect("numeric code")), f[3]))
-        .collect()
+    rows(CODES_TSV).map(|f| ((Table::parse(f[0]), CodeTable::parse(f[1]), f[2].parse().expect("numeric code")), f[3])).collect()
 }
 
 fn parse_code(field: &str) -> u8 {

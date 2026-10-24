@@ -40,9 +40,7 @@ const NON_GRIB_EXTENSIONS: [&str; 42] = [
 /// Spark/Hadoop marker, and not a known non-GRIB extension.
 pub fn is_grib_file_candidate(file_name: &str) -> bool {
     let extension = file_name.rsplit_once('.').map(|(_, e)| e.to_lowercase()).unwrap_or_default();
-    !file_name.starts_with('.')
-        && !file_name.starts_with('_')
-        && !NON_GRIB_EXTENSIONS.contains(&extension.as_str())
+    !file_name.starts_with('.') && !file_name.starts_with('_') && !NON_GRIB_EXTENSIONS.contains(&extension.as_str())
 }
 
 /// A store, the key within it, and how to turn keys back into locations.
@@ -62,7 +60,8 @@ impl Resolved {
 /// `file://`), a `dbfs:/Volumes/` path, or a local path (e.g. `/Volumes/...`).
 pub fn resolve(location: &str, options: &HashMap<String, String>) -> Result<Resolved> {
     let invalid = |reason: String| Error::InvalidLocation { location: location.to_string(), reason };
-    let location = location.strip_prefix(DBFS_VOLUMES_PREFIX).map_or_else(|| location.to_string(), |rest| format!("{VOLUMES_PREFIX}{rest}"));
+    let location =
+        location.strip_prefix(DBFS_VOLUMES_PREFIX).map_or_else(|| location.to_string(), |rest| format!("{VOLUMES_PREFIX}{rest}"));
     let url = match Url::parse(&location) {
         Ok(url) => url,
         Err(url::ParseError::RelativeUrlWithoutBase) => {
@@ -183,7 +182,8 @@ impl FilePlan {
 /// Plan one file: with `use_index`, fetch its `.idx` and keep the messages
 /// `selection` can match; otherwise (or without a usable `.idx`) read it whole.
 pub async fn plan_file(file: &GribFile, options: &HashMap<String, String>, selection: &Selection, use_index: bool) -> Result<FilePlan> {
-    let whole = |warnings| FilePlan { location: file.location.clone(), file_size: file.size, messages: None, messages_in_index: None, warnings };
+    let whole =
+        |warnings| FilePlan { location: file.location.clone(), file_size: file.size, messages: None, messages_in_index: None, warnings };
     if !use_index || file.has_idx == Some(false) {
         return Ok(whole(vec![]));
     }
@@ -200,11 +200,20 @@ pub async fn plan_file(file: &GribFile, options: &HashMap<String, String>, selec
         return Ok(whole(vec![format!("ignoring malformed index {}.idx; reading the file whole", file.location)]));
     };
     let Some(all) = idx::group_messages(&entries, file.size) else {
-        return Ok(whole(vec![format!("ignoring index {}.idx: its offsets don't ascend within the file; reading the file whole", file.location)]));
+        return Ok(whole(vec![format!(
+            "ignoring index {}.idx: its offsets don't ascend within the file; reading the file whole",
+            file.location
+        )]));
     };
     let messages_in_index = all.len();
     let kept = all.into_iter().filter(|m| m.entries.iter().any(|e| selection.keeps_entry(e))).collect();
-    Ok(FilePlan { location: file.location.clone(), file_size: file.size, messages: Some(kept), messages_in_index: Some(messages_in_index), warnings: vec![] })
+    Ok(FilePlan {
+        location: file.location.clone(),
+        file_size: file.size,
+        messages: Some(kept),
+        messages_in_index: Some(messages_in_index),
+        warnings: vec![],
+    })
 }
 
 /// What a read did.

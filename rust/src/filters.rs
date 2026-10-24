@@ -152,10 +152,7 @@ pub fn matches_any_variable(name: &str, variables: &[String]) -> bool {
 /// A short name in upper case, with an `.idx` alias replaced by its decoded name.
 fn canonical_name(name: &str) -> String {
     let upper = name.to_ascii_uppercase();
-    IDX_NAME_ALIASES
-        .iter()
-        .find(|(idx, _)| *idx == upper)
-        .map_or(upper, |(_, decoded)| (*decoded).to_string())
+    IDX_NAME_ALIASES.iter().find(|(idx, _)| *idx == upper).map_or(upper, |(_, decoded)| (*decoded).to_string())
 }
 
 /// Whether two short names denote the same field: equal ignoring case, or an
@@ -168,8 +165,7 @@ fn is_same_field(a: &str, b: &str) -> bool {
 /// matched ignoring case like the `variables` option.
 fn is_decoded_fallback_name(v: &str) -> bool {
     let has_prefix = v.get(..3).is_some_and(|p| p.eq_ignore_ascii_case("var"));
-    has_prefix
-        && v[3..].split('_').all(|p| !p.is_empty() && (p.bytes().all(|b| b.is_ascii_digit()) || p.eq_ignore_ascii_case("missing")))
+    has_prefix && v[3..].split('_').all(|p| !p.is_empty() && (p.bytes().all(|b| b.is_ascii_digit()) || p.eq_ignore_ascii_case("missing")))
 }
 
 /// Levels derived from `.idx` text (e.g. "0.4 mb" * 100) carry floating-point
@@ -181,11 +177,7 @@ fn tolerant_compare(level: f64, target: f64, holds: impl Fn(Ordering) -> bool) -
         return None;
     }
     let diff = level - target;
-    if diff.abs() <= LEVEL_TOLERANCE * target.abs().max(1.0) {
-        None
-    } else {
-        Some(holds(diff.partial_cmp(&0.0).expect("not NaN")))
-    }
+    if diff.abs() <= LEVEL_TOLERANCE * target.abs().max(1.0) { None } else { Some(holds(diff.partial_cmp(&0.0).expect("not NaN"))) }
 }
 
 fn false_unless(maybe_true: bool) -> Option<bool> {
@@ -304,10 +296,8 @@ mod tests {
         ] {
             assert_eq!(Predicate::LevelCmp(op, v).passes(&f), expected, "{op:?}");
         }
-        let either = Predicate::Or(
-            Box::new(Predicate::StrEq(Column::VariableShortName, "RH".into())),
-            Box::new(Predicate::LevelIn(vec![50000.0])),
-        );
+        let either =
+            Predicate::Or(Box::new(Predicate::StrEq(Column::VariableShortName, "RH".into())), Box::new(Predicate::LevelIn(vec![50000.0])));
         assert!(either.passes(&f));
         assert!(!Predicate::Not(Box::new(either)).passes(&f));
     }

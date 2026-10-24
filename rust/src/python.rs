@@ -101,7 +101,11 @@ fn schema<'py>(py: Python<'py>, output_mode: &str) -> PyResult<Bound<'py, PyAny>
 /// `(location, size, has_idx)` tuples; `has_idx` is None when unknown.
 #[pyfunction]
 #[pyo3(signature = (location, storage_options=None))]
-fn list_files(py: Python<'_>, location: &str, storage_options: Option<HashMap<String, String>>) -> PyResult<Vec<(String, u64, Option<bool>)>> {
+fn list_files(
+    py: Python<'_>,
+    location: &str,
+    storage_options: Option<HashMap<String, String>>,
+) -> PyResult<Vec<(String, u64, Option<bool>)>> {
     let options = options(storage_options);
     let files = py.detach(|| runtime().block_on(reader::list_files(location, &options))).map_err(to_py_err)?;
     Ok(files.into_iter().map(|f| (f.location, f.size, f.has_idx)).collect())
@@ -175,9 +179,7 @@ fn read_plan<'py>(
         messages_in_index: None,
         warnings: vec![],
     };
-    let scan = py
-        .detach(|| runtime().block_on(Scan::open(&plan, &options, selection, mode == OutputMode::Flat)))
-        .map_err(to_py_err)?;
+    let scan = py.detach(|| runtime().block_on(Scan::open(&plan, &options, selection, mode == OutputMode::Flat))).map_err(to_py_err)?;
     Ok(PlanScan { scan, location: plan.location, mode, longitudes, pending: VecDeque::new() })
 }
 
