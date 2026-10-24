@@ -115,12 +115,41 @@ class GribFiltersSpec extends AnyFunSuite with Matchers {
     GribFilters.indexEntryKept(entry("TMP"), Not(EqualTo("variable_short_name", "RH"))) shouldBe true
   }
 
+  test("indexEntryKept keeps entries whose .idx name is a known alias of the decoded name") {
+    // wgrib2's .idx and netCDF-Java name these parameters differently.
+    GribFilters.indexEntryKept(entry("CLMR"), EqualTo("variable_short_name", "CLWMR")) shouldBe true
+    GribFilters.indexEntryKept(entry("LFTX"), EqualTo("variable_short_name", "LFT X")) shouldBe true
+    GribFilters.indexEntryKept(entry("CLMR"), In("variable_short_name", Array("RH", "CLWMR"))) shouldBe true
+    GribFilters.indexEntryKept(entry("CLMR"), EqualTo("variable_short_name", "TMP")) shouldBe false
+  }
+
+  test("indexEntryKept never prunes on .idx names it cannot compare") {
+    // A parameter without an abbreviation: wgrib2 writes its numbers, the decoder var0_16_195.
+    val unnamed = entry("var discipline=0 center=7 local_table=1 parmcat=16 parm=195")
+    GribFilters.indexEntryKept(unnamed, EqualTo("variable_short_name", "var0_16_195")) shouldBe true
+    GribFilters.indexEntryKept(unnamed, EqualTo("variable_short_name", "TMP")) shouldBe true
+    GribFilters.indexEntryKept(entry("TMP"), EqualTo("variable_short_name", "var0_16_195")) shouldBe true
+  }
+
   // --- matchesAnyVariable ---
 
   test("matchesAnyVariable is case-insensitive and treats empty as keep-all") {
     GribFilters.matchesAnyVariable("TMP", Set.empty) shouldBe true
     GribFilters.matchesAnyVariable("TMP", Set("tmp", "rh")) shouldBe true
     GribFilters.matchesAnyVariable("UGRD", Set("tmp", "rh")) shouldBe false
+  }
+
+  test("matchesAnyVariable accepts a decoded name requested by its .idx alias") {
+    GribFilters.matchesAnyVariable("CLWMR", Set("clmr")) shouldBe true
+    GribFilters.matchesAnyVariable("LFT X", Set("LFTX")) shouldBe true
+    GribFilters.matchesAnyVariable("CLWMR", Set("TMP")) shouldBe false
+  }
+
+  test("indexEntryMatchesAnyVariable keeps an .idx entry requested by either name") {
+    GribFilters.indexEntryMatchesAnyVariable("CLMR", Set.empty) shouldBe true
+    GribFilters.indexEntryMatchesAnyVariable("CLMR", Set("clmr")) shouldBe true
+    GribFilters.indexEntryMatchesAnyVariable("CLMR", Set("CLWMR")) shouldBe true
+    GribFilters.indexEntryMatchesAnyVariable("CLMR", Set("TMP")) shouldBe false
   }
 
   // --- indexEntryKept with a parsed .idx level ---

@@ -93,7 +93,7 @@ Filters on these columns are applied by Spark after decoding; they aren't pushed
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `variables` | *(all)* | Comma-separated variable filter (e.g. `"TMP,RH,UGRD"`) |
+| `variables` | *(all)* | Comma-separated variable filter (e.g. `"TMP,RH,UGRD"`), case-insensitive. A field also matches by its `.idx` name where that differs from the decoded one (e.g. `CLMR` for `CLWMR`) |
 | `levelType` | *(all)* | Filter by level type string |
 | `outputMode` | `flat` | `"flat"` or `"gridded"` |
 | `maxPartitionBytes` | `134217728` (128 MiB) | Upper bound on bytes per partition (index-based mode). Partitions are sized to spread the data that survives filtering across the cluster's cores, like Spark's file sources |

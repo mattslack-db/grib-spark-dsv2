@@ -138,4 +138,31 @@ class FilterPushDownSpec extends SparkTestBase with Matchers {
     // Sub-file index partitioning must not add or drop rows versus a full scan.
     dfIndex.count() shouldBe dfNoIndex.count()
   }
+
+  // GFS cloud mixing ratio: CLMR in NOAA's .idx, CLWMR as netCDF-Java decodes it.
+  private val CloudMixingRatioFields = 23L
+
+  private def gridded(useIndex: Boolean) =
+    spark.read.format("grib").option("outputMode", "gridded").option("useIndex", useIndex.toString)
+
+  test("the variables option finds a field by its .idx name or its decoded name", SlowTest) {
+    assume(gribFile.isDefined, "Test fixture not found. Run download_test_fixtures.sh")
+
+    val byIdxName = gridded(useIndex = true).option("variables", "CLMR").load(gribFile.get)
+    val byDecodedName = gridded(useIndex = true).option("variables", "CLWMR").load(gribFile.get)
+
+    byIdxName.count() shouldBe CloudMixingRatioFields
+    byDecodedName.count() shouldBe CloudMixingRatioFields
+    byIdxName.select("variable_short_name").distinct().collect().map(_.getString(0)) shouldBe Array("CLWMR")
+  }
+
+  test("a pushed filter on a decoded name whose .idx name differs is not pruned away", SlowTest) {
+    assume(gribFile.isDefined, "Test fixture not found. Run download_test_fixtures.sh")
+
+    val indexed = gridded(useIndex = true).load(gribFile.get).where("variable_short_name = 'CLWMR'")
+    val whole = gridded(useIndex = false).load(gribFile.get).where("variable_short_name = 'CLWMR'")
+
+    whole.count() shouldBe CloudMixingRatioFields
+    indexed.count() shouldBe CloudMixingRatioFields
+  }
 }

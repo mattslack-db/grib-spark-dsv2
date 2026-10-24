@@ -156,8 +156,9 @@ class GribScan(
    * [[GribFilters.passes]]) — so it must never drop an entry the message-level
    * filter would keep.
    *
-   * It prunes on `variable_short_name`, whose `.idx` token equals the emitted
-   * value (the NCEP short name, matched case-insensitively), and on level only
+   * It prunes on `variable_short_name`, whose `.idx` token is the emitted value
+   * up to case for all but a few known parameters (see
+   * [[GribFilters.idxNameMayBe]]), and on level only
    * where [[GribIndexLevels]] maps the `.idx` level text ("500 mb") to the
    * decoded `level_type`/`level_value`, in GRIB2 files. Unrecognised levels are
    * never pruned; they're filtered after decoding.
@@ -166,7 +167,7 @@ class GribScan(
     // Option-level variable filter (case-insensitive; kept consistent with the
     // message level via GribFilters.matchesAnyVariable), then pushed SQL
     // filters — superset pruning on variable_short_name, and on level when known.
-    GribFilters.matchesAnyVariable(entry.variableName, options.variables) &&
+    GribFilters.indexEntryMatchesAnyVariable(entry.variableName, options.variables) &&
       pushedFilters.forall(GribFilters.indexEntryKept(entry, _, level))
 
   private val GribEdition2 = 2
