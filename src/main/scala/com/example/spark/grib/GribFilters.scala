@@ -107,8 +107,8 @@ object GribFilters {
     filter match {
       // A match isn't certain (decoded matching is exact and case-sensitive),
       // but a name the .idx entry can't decode to is a certain mismatch.
-      case EqualTo("variable_short_name", v: String) => falseUnless(idxNameMayBe(entry.variableName, v))
-      case In("variable_short_name", values)         => falseUnless(values.exists(x => idxNameMayBe(entry.variableName, x.toString)))
+      case EqualTo("variable_short_name", v: String) => nameVerdict(entry, Seq(v))
+      case In("variable_short_name", values)         => nameVerdict(entry, values)
 
       case EqualTo("level_type", v: String)             => level.map(_.levelType == v)
       case EqualTo("level_value", v: Number)            => level.flatMap(l => compare(l.value, v)(_ == 0))
@@ -142,6 +142,13 @@ object GribFilters {
     else Some(cmp(math.signum(diff).toInt))
   }
 
+  /** A certain mismatch unless the entry's field could have one of these names; a NULL matches nothing. */
+  private def nameVerdict(entry: GribIndexEntry, names: Seq[Any]): Option[Boolean] =
+    falseUnless(names.exists {
+      case v: String => idxNameMayBe(entry.variableName, v)
+      case _         => false
+    })
+
   private def falseUnless(maybeTrue: Boolean): Option[Boolean] = if (maybeTrue) None else Some(false)
 
   private def anyOf(verdicts: Seq[Option[Boolean]]): Option[Boolean] =
@@ -160,13 +167,13 @@ object GribFilters {
     "LFTX" -> "LFT X"  // surface lifted index
   )
 
-  private val PlainAbbreviation = "^[A-Za-z0-9_]+$".r
+  private val PlainAbbreviation = "[A-Za-z0-9_]+"
   /**
    * The decoder's name for a parameter its tables don't know (see
    * GribMessageDecoder): `var<discipline>_<category>_<number>` in GRIB2,
-   * `var_<number>` in GRIB1.
+   * `var_<number>` in GRIB1. Matched ignoring case, like the `variables` option.
    */
-  private val DecodedFallbackName = "^var(\\d+_\\d+_\\d+|_\\d+)$".r
+  private val DecodedFallbackName = "(?i)var(\\d+_\\d+_\\d+|_\\d+)"
 
   /** A name in upper case, with an `.idx` alias replaced by its decoded name. */
   private def canonicalName(name: String): String = {
@@ -184,8 +191,8 @@ object GribFilters {
    * which the decoder names `var0_16_195`, so such names never rule a field out.
    */
   def idxNameMayBe(idxName: String, v: String): Boolean =
-    PlainAbbreviation.findFirstIn(idxName).isEmpty ||
-      DecodedFallbackName.findFirstIn(v).isDefined ||
+    !idxName.matches(PlainAbbreviation) ||
+      v.matches(DecodedFallbackName) ||
       isSameField(idxName, v)
 
   /**

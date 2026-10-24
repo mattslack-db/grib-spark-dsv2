@@ -139,7 +139,13 @@ class GribFiltersSpec extends AnyFunSuite with Matchers {
 
   test("indexEntryKept matches an alias whichever side carries the .idx spelling") {
     GribFilters.indexEntryKept(entry("CLWMR"), EqualTo("variable_short_name", "CLMR")) shouldBe true
-    GribFilters.indexEntryKept(entry("LFT X"), EqualTo("variable_short_name", "LFTX")) shouldBe true
+    GribFilters.indexEntryKept(entry("CLWMR"), In("variable_short_name", Array("clmr"))) shouldBe true
+    GribFilters.indexEntryKept(entry("CLWMR"), EqualTo("variable_short_name", "LFTX")) shouldBe false
+  }
+
+  test("indexEntryKept treats a NULL in an IN list as matching nothing") {
+    GribFilters.indexEntryKept(entry("RH"), In("variable_short_name", Array("TMP", null))) shouldBe false
+    GribFilters.indexEntryKept(entry("TMP"), In("variable_short_name", Array(null, "TMP"))) shouldBe true
   }
 
   test("isSupported rejects an IN list on variable_short_name containing NULL") {
@@ -174,6 +180,13 @@ class GribFiltersSpec extends AnyFunSuite with Matchers {
     GribFilters.indexEntryMatchesAnyVariable("CLMR", Set("clmr")) shouldBe true
     GribFilters.indexEntryMatchesAnyVariable("CLMR", Set("CLWMR")) shouldBe true
     GribFilters.indexEntryMatchesAnyVariable("CLMR", Set("TMP")) shouldBe false
+  }
+
+  test("indexEntryMatchesAnyVariable is never stricter than matchesAnyVariable for fallback names") {
+    // The variables option ignores case, so an upper-cased fallback name still finds the field.
+    GribFilters.matchesAnyVariable("var0_16_195", Set("VAR0_16_195")) shouldBe true
+    GribFilters.indexEntryMatchesAnyVariable("REFD", Set("VAR0_16_195")) shouldBe true
+    GribFilters.indexEntryMatchesAnyVariable("REFD", Set("VAR_123")) shouldBe true
   }
 
   // --- indexEntryKept with a parsed .idx level ---
