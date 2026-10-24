@@ -156,6 +156,10 @@ Regenerate the embedded tables after a netCDF-Java upgrade:
 sbt "Test/runMain com.example.spark.grib.tools.ExportGribTables rust/data"
 ```
 
+CI (`.github/workflows/rust.yml`, on changes under `rust/`) runs `cargo fmt
+--check`, clippy, the Rust and Python tests on the GFS sample, and builds
+the manylinux wheel as an artifact.
+
 Coverage: Rust 93% of lines (`cargo llvm-cov`), Python 93% (`pytest --cov`).
 
 ## On Databricks
