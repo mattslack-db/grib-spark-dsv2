@@ -21,9 +21,11 @@ import org.apache.spark.sql.sources._
  * `indexEntryKept` is a pure optimization and is deliberately NOT the same as
  * `passes`: it may only prune on what an `.idx` line reliably says, and it must
  * never be stricter than `passes` (or it would drop rows that should survive).
- * That is `variable_short_name` (matched case-insensitively) and, when the
- * line's level text maps to a known decoded level ([[GribIndexLevels]]),
- * `level_type`/`level_value`. Everything else is unknown and kept for `passes`.
+ * That is `variable_short_name` (matched case-insensitively, allowing for the
+ * few parameters whose `.idx` name differs from the decoded one, see
+ * [[idxNameMayBe]]) and, when the line's level text maps to a known decoded
+ * level ([[GribIndexLevels]]), `level_type`/`level_value`. Everything else is
+ * unknown and kept for `passes`.
  */
 object GribFilters {
 
@@ -33,7 +35,10 @@ object GribFilters {
    */
   def isSupported(filter: Filter): Boolean = filter match {
     case EqualTo("variable_short_name", _: String)    => true
-    case In("variable_short_name", _)                 => true
+    // A NULL in the list makes SQL's answer NULL rather than false for other
+    // rows, which `passes` can't express (it matters under NOT), so Spark
+    // evaluates those lists itself.
+    case In("variable_short_name", values)            => values.forall(_.isInstanceOf[String])
     case EqualTo("level_type", _: String)             => true
     case EqualTo("discipline", _: Int)                => true
     case EqualTo("level_value", _: Number)            => true
@@ -100,10 +105,10 @@ object GribFilters {
    */
   private def indexVerdict(entry: GribIndexEntry, level: Option[IndexLevel], filter: Filter): Option[Boolean] =
     filter match {
-      // The .idx short name matches the decoded one up to case, so a mismatch
-      // ignoring case is certain; a match isn't (decoded matching is exact).
-      case EqualTo("variable_short_name", v: String) => falseUnless(entry.variableName.equalsIgnoreCase(v))
-      case In("variable_short_name", values)         => falseUnless(values.exists(x => entry.variableName.equalsIgnoreCase(x.toString)))
+      // A match isn't certain (decoded matching is exact and case-sensitive),
+      // but a name the .idx entry can't decode to is a certain mismatch.
+      case EqualTo("variable_short_name", v: String) => nameVerdict(entry, Seq(v))
+      case In("variable_short_name", values)         => nameVerdict(entry, values)
 
       case EqualTo("level_type", v: String)             => level.map(_.levelType == v)
       case EqualTo("level_value", v: Number)            => level.flatMap(l => compare(l.value, v)(_ == 0))
@@ -137,6 +142,13 @@ object GribFilters {
     else Some(cmp(math.signum(diff).toInt))
   }
 
+  /** A certain mismatch unless the entry's field could have one of these names; a NULL matches nothing. */
+  private def nameVerdict(entry: GribIndexEntry, names: Seq[Any]): Option[Boolean] =
+    falseUnless(names.exists {
+      case v: String => idxNameMayBe(entry.variableName, v)
+      case _         => false
+    })
+
   private def falseUnless(maybeTrue: Boolean): Option[Boolean] = if (maybeTrue) None else Some(false)
 
   private def anyOf(verdicts: Seq[Option[Boolean]]): Option[Boolean] =
@@ -145,10 +157,57 @@ object GribFilters {
     else None
 
   /**
-   * Case-insensitive match for the `variables` option (a user-convenience
-   * filter, applied consistently at both the index and message level). An empty
-   * set means "keep everything".
+   * wgrib2 `.idx` names that differ from netCDF-Java's decoded short names
+   * beyond case, as observed in NOAA files (`.idx` name -> decoded name, upper
+   * case). Without these, filtering on either name dropped the fields. Other
+   * pairs are unknown; see the README's known limitations.
+   */
+  private val IdxNameAliases: Map[String, String] = Map(
+    "CLMR" -> "CLWMR", // cloud mixing ratio
+    "LFTX" -> "LFT X"  // surface lifted index
+  )
+
+  private val PlainAbbreviation = "[A-Za-z0-9_]+"
+  /**
+   * The decoder's name for a parameter its tables don't know (see
+   * GribMessageDecoder): `var<discipline>_<category>_<number>` in GRIB2,
+   * `var_<number>` in GRIB1. Matched ignoring case, like the `variables` option.
+   */
+  private val DecodedFallbackName = "(?i)var(\\d+_\\d+_\\d+|_\\d+)"
+
+  /** A name in upper case, with an `.idx` alias replaced by its decoded name. */
+  private def canonicalName(name: String): String = {
+    val upper = name.toUpperCase
+    IdxNameAliases.getOrElse(upper, upper)
+  }
+
+  /** Whether two short names denote the same field: equal ignoring case, or alias and decoded name either way round. */
+  private def isSameField(a: String, b: String): Boolean = canonicalName(a) == canonicalName(b)
+
+  /**
+   * Whether the field an `.idx` entry names `idxName` could decode with short
+   * name `v`, ignoring case. Only plain abbreviations can be compared: wgrib2
+   * writes a parameter without one as `var discipline=0 center=7 ... parm=195`,
+   * which the decoder names `var0_16_195`, so such names never rule a field out.
+   */
+  def idxNameMayBe(idxName: String, v: String): Boolean =
+    !idxName.matches(PlainAbbreviation) ||
+      v.matches(DecodedFallbackName) ||
+      isSameField(idxName, v)
+
+  /**
+   * The `variables` option (a user-convenience filter) against a decoded
+   * short name: case-insensitive, and a field can also be requested by its
+   * `.idx` name (e.g. `CLMR` for `CLWMR`). An empty set means "keep everything".
    */
   def matchesAnyVariable(name: String, variables: Set[String]): Boolean =
-    variables.isEmpty || variables.exists(_.equalsIgnoreCase(name))
+    variables.isEmpty || variables.exists(isSameField(_, name))
+
+  /**
+   * The `variables` option against an `.idx` entry's name: kept if any
+   * requested name could be its field's, by `.idx` or decoded name. Never
+   * stricter than [[matchesAnyVariable]] on the decoded field.
+   */
+  def indexEntryMatchesAnyVariable(idxName: String, variables: Set[String]): Boolean =
+    variables.isEmpty || variables.exists(idxNameMayBe(idxName, _))
 }

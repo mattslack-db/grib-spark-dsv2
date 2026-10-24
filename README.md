@@ -93,7 +93,7 @@ Filters on these columns are applied by Spark after decoding; they aren't pushed
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `variables` | *(all)* | Comma-separated variable filter (e.g. `"TMP,RH,UGRD"`) |
+| `variables` | *(all)* | Comma-separated variable filter (e.g. `"TMP,RH,UGRD"`), case-insensitive. A field also matches by its `.idx` name where that differs from the decoded one (e.g. `CLMR` for `CLWMR`) |
 | `levelType` | *(all)* | Filter by level type string |
 | `outputMode` | `flat` | `"flat"` or `"gridded"` |
 | `maxPartitionBytes` | `134217728` (128 MiB) | Upper bound on bytes per partition (index-based mode). Partitions are sized to spread the data that survives filtering across the cluster's cores, like Spark's file sources |
@@ -165,3 +165,8 @@ src/main/scala/com/example/spark/grib/
 ## GRIB Parsing
 
 Uses [netCDF-Java](https://www.unidata.ucar.edu/software/netcdf-java/) (Unidata CDM) `edu.ucar:grib:5.6.0` for decoding. This is pure Java with no native dependencies, supports both GRIB editions, all standard grid types, and WMO + centre-specific parameter tables.
+
+## Known Limitations
+
+- **NBM present-weather fields decode as mostly missing.** netCDF-Java mis-decodes some GRIB2 messages that use complex packing with missing-value management (data representation template 5.2 or 5.3). In the NBM test fixture (`blend.t00z.core.f001.co.grib2` from `download_test_fixtures.sh`), message 227 (`PWTHER`, present weather) comes back with 3,682,099 of its 3,744,965 points as NaN and a maximum of 80. ecCodes decodes no missing points and a maximum of 86. Every netCDF-Java release from 5.6.0 to 5.11.0 (the latest) gives the same wrong result, so upgrading doesn't help. No workaround is in place, and no upstream issue was found. Treat these fields from this connector as unreliable.
+- **`.idx` pruning knows only two name aliases.** wgrib2's `.idx` short names usually match netCDF-Java's decoded names, ignoring case. The known exceptions are `CLMR`/`CLWMR` and `LFTX`/`LFT X`, and they are handled. Another pair that differs beyond case would be pruned by an index read that filters on the decoded name. If a filter returns no rows that you expect, compare it with `useIndex=false`, and add the pair to `IdxNameAliases` in `GribFilters.scala`.
