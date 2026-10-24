@@ -82,11 +82,17 @@ fn parse_line(line: &str) -> Option<IndexEntry> {
 
 /// Group entries (in file order) into physical GRIB messages. A message runs
 /// from its offset to the next larger offset, or to `file_size` for the last.
-pub fn group_messages(entries: &[IndexEntry], file_size: u64) -> Vec<IndexedMessage> {
+/// None if the offsets don't ascend within the file (e.g. a stale `.idx`),
+/// since byte ranges can't then be derived from them.
+pub fn group_messages(entries: &[IndexEntry], file_size: u64) -> Option<Vec<IndexedMessage>> {
+    let ascending = entries.windows(2).all(|w| w[0].byte_offset <= w[1].byte_offset);
+    if !ascending || entries.last().is_some_and(|e| e.byte_offset >= file_size) {
+        return None;
+    }
     let starts: Vec<usize> = (0..entries.len())
         .filter(|&i| i == 0 || entries[i].byte_offset != entries[i - 1].byte_offset)
         .collect();
-    starts
+    let messages = starts
         .iter()
         .enumerate()
         .map(|(n, &start)| {
@@ -100,7 +106,8 @@ pub fn group_messages(entries: &[IndexEntry], file_size: u64) -> Vec<IndexedMess
                 entries: entries[start..end].to_vec(),
             }
         })
-        .collect()
+        .collect();
+    Some(messages)
 }
 
 #[cfg(test)]
@@ -163,7 +170,7 @@ mod tests {
 
     #[test]
     fn last_message_extends_to_end_of_file() {
-        let messages = group_messages(&parse(SAMPLE), 350_000);
+        let messages = group_messages(&parse(SAMPLE), 350_000).unwrap();
         let ranges: Vec<_> = messages.iter().map(|m| (m.offset, m.length)).collect();
         assert_eq!(ranges[0], (0, 83345));
         assert_eq!(ranges[1], (83345, 152498 - 83345));
@@ -176,7 +183,7 @@ mod tests {
         assert_eq!(entries[2].sub_message, Some(1));
         assert_eq!(entries[3].sub_message, Some(2));
 
-        let messages = group_messages(&entries, 20_000);
+        let messages = group_messages(&entries, 20_000).unwrap();
         let ranges: Vec<_> = messages.iter().map(|m| (m.message_index, m.offset, m.length)).collect();
         assert_eq!(ranges, [(0, 0, 5000), (1, 5000, 4000), (2, 9000, 6000), (4, 15000, 5000)]);
         let names: Vec<_> = messages[2].entries.iter().map(|e| e.variable_name.as_str()).collect();
@@ -185,6 +192,13 @@ mod tests {
 
     #[test]
     fn no_entries_yield_no_messages() {
-        assert!(group_messages(&[], 100).is_empty());
+        assert_eq!(group_messages(&[], 100), Some(vec![]));
+    }
+
+    #[test]
+    fn offsets_that_do_not_ascend_within_the_file_are_rejected() {
+        let descending = parse("1:500:d=2024010100:HGT:1 mb:anl:\n2:100:d=2024010100:TMP:1 mb:anl:");
+        assert_eq!(group_messages(&descending, 1000), None);
+        assert_eq!(group_messages(&parse(SAMPLE), 270_000), None, "stale index past the end of the file");
     }
 }

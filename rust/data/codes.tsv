@@ -1,0 +1,950 @@
+table	code_table	code	name
+wmo	4.5	0	Reserved
+wmo	4.5	1	Ground or water surface
+wmo	4.5	2	Cloud base level
+wmo	4.5	3	Level of cloud tops
+wmo	4.5	4	Level of 0 °C isotherm
+wmo	4.5	5	Level of adiabatic condensation lifted from the surface
+wmo	4.5	6	Maximum wind level
+wmo	4.5	7	Tropopause
+wmo	4.5	8	Nominal top of the atmosphere
+wmo	4.5	9	Sea bottom
+wmo	4.5	10	Entire atmosphere
+wmo	4.5	11	Cumulonimbus (CB) base
+wmo	4.5	12	Cumulonimbus (CB) top
+wmo	4.5	13	Lowest level where vertically integrated cloud cover exceeds the specified percentage (cloud base for a given percentage cloud cover)
+wmo	4.5	14	Level of free convection (LFC)
+wmo	4.5	15	Convective condensation level (CCL)
+wmo	4.5	16	Level of neutral buoyancy or equilibrium level (LNB)
+wmo	4.5	20	Isothermal level
+wmo	4.5	21	Lowest level where mass density exceeds the specified value (base for a given threshold of mass density)
+wmo	4.5	22	Highest level where mass density exceeds the specified value (top for a given threshold of mass density)
+wmo	4.5	23	Lowest level where air concentration exceeds the specified value (base for a given threshold of air concentration)
+wmo	4.5	24	Highest level where air concentration exceeds the specified value (top for a given threshold of air concentration)
+wmo	4.5	25	Highest level where radar reflectivity exceeds the specified value (echo top for a given threshold of reflectivity)
+wmo	4.5	100	Isobaric surface
+wmo	4.5	101	Mean sea level
+wmo	4.5	102	Specific altitude above mean sea level
+wmo	4.5	103	Specified height level above ground
+wmo	4.5	104	Sigma level
+wmo	4.5	105	Hybrid level
+wmo	4.5	106	Depth below land surface
+wmo	4.5	107	Isentropic (theta) level
+wmo	4.5	108	Level at specified pressure difference from ground to level
+wmo	4.5	109	Potential vorticity surface
+wmo	4.5	110	Reserved
+wmo	4.5	111	Eta level
+wmo	4.5	112	Reserved
+wmo	4.5	113	Logarithmic hybrid level
+wmo	4.5	114	Snow level
+wmo	4.5	115	Sigma height level
+wmo	4.5	116	Reserved
+wmo	4.5	117	Mixed layer depth
+wmo	4.5	118	Hybrid height level
+wmo	4.5	119	Hybrid pressure level
+wmo	4.5	150	Generalized vertical height coordinate
+wmo	4.5	151	Soil level
+wmo	4.5	160	Depth below sea level
+wmo	4.5	161	Depth below water surface
+wmo	4.5	162	Lake or river bottom
+wmo	4.5	163	Bottom of sediment layer
+wmo	4.5	164	Bottom of thermally active sediment layer
+wmo	4.5	165	Bottom of sediment layer penetrated by thermal wave
+wmo	4.5	166	Mixing layer
+wmo	4.5	167	Bottom of root zone
+wmo	4.5	174	Top surface of ice on sea, lake or river
+wmo	4.5	175	Top surface of ice, under snow cover, on sea, lake or river
+wmo	4.5	176	Bottom surface (underside) ice on sea, lake or river
+wmo	4.5	177	Deep soil (of indefinite depth)
+wmo	4.5	178	Reserved
+wmo	4.5	179	Top surface of glacier ice and inland ice
+wmo	4.5	180	Deep inland or glacier ice (of indefinite depth)
+wmo	4.5	181	Grid tile land fraction as a model surface
+wmo	4.5	182	Grid tile water fraction as a model surface
+wmo	4.5	183	Grid tile ice fraction on sea, lake or river as a model surface
+wmo	4.5	184	Grid tile glacier ice and inland ice fraction as a model surface
+wmo	4.5	255	Missing
+wmo	4.6	0	Unperturbed high-resolution control forecast
+wmo	4.6	1	Unperturbed low-resolution control forecast
+wmo	4.6	2	Negatively perturbed forecast
+wmo	4.6	3	Positively perturbed forecast
+wmo	4.6	4	Multi-model forecast
+wmo	4.6	255	Missing
+wmo	4.7	0	Unweighted mean of all members
+wmo	4.7	1	Weighted mean of all members
+wmo	4.7	2	Standard deviation with respect to cluster mean
+wmo	4.7	3	Standard deviation with respect to cluster mean, normalized
+wmo	4.7	4	Spread of all members
+wmo	4.7	5	Large anomaly index of all members
+wmo	4.7	6	Unweighted mean of the cluster members
+wmo	4.7	7	Interquartile range (range between the 25th and 75th quantile)
+wmo	4.7	8	Minimum of all ensemble members
+wmo	4.7	9	Maximum of all ensemble members
+wmo	4.7	255	Missing
+wmo	4.9	0	Probability of event below lower limit
+wmo	4.9	1	Probability of event above upper limit
+wmo	4.9	2	Probability of event between lower and upper limits (the range includes the lower limit but not the upper limit)
+wmo	4.9	3	Probability of event above lower limit
+wmo	4.9	4	Probability of event below upper limit
+wmo	4.9	5	Probability of event equal to lower limit
+wmo	4.9	6	Probability of event in above normal category
+wmo	4.9	7	Probability of event in near normal category
+wmo	4.9	8	Probability of event in below normal category
+wmo	4.9	255	Missing
+wmo	4.10	0	Average
+wmo	4.10	1	Accumulation
+wmo	4.10	2	Maximum
+wmo	4.10	3	Minimum
+wmo	4.10	4	Difference (value at the end of time range minus value at the beginning)
+wmo	4.10	5	Root mean square
+wmo	4.10	6	Standard deviation
+wmo	4.10	7	Covariance (temporal variance)
+wmo	4.10	8	Difference (value at the start of time range minus value at the end)
+wmo	4.10	9	Ratio
+wmo	4.10	10	Standardized anomaly
+wmo	4.10	11	Summation
+wmo	4.10	12	UnknownStatType-12
+wmo	4.10	13	UnknownStatType-13
+wmo	4.10	14	UnknownStatType-14
+wmo	4.10	15	UnknownStatType-15
+wmo	4.10	16	UnknownStatType-16
+wmo	4.10	17	UnknownStatType-17
+wmo	4.10	18	UnknownStatType-18
+wmo	4.10	19	UnknownStatType-19
+wmo	4.10	20	UnknownStatType-20
+wmo	4.10	21	UnknownStatType-21
+wmo	4.10	22	UnknownStatType-22
+wmo	4.10	23	UnknownStatType-23
+wmo	4.10	24	UnknownStatType-24
+wmo	4.10	25	UnknownStatType-25
+wmo	4.10	26	UnknownStatType-26
+wmo	4.10	27	UnknownStatType-27
+wmo	4.10	28	UnknownStatType-28
+wmo	4.10	29	UnknownStatType-29
+wmo	4.10	30	UnknownStatType-30
+wmo	4.10	31	UnknownStatType-31
+wmo	4.10	32	UnknownStatType-32
+wmo	4.10	33	UnknownStatType-33
+wmo	4.10	34	UnknownStatType-34
+wmo	4.10	35	UnknownStatType-35
+wmo	4.10	36	UnknownStatType-36
+wmo	4.10	37	UnknownStatType-37
+wmo	4.10	38	UnknownStatType-38
+wmo	4.10	39	UnknownStatType-39
+wmo	4.10	40	UnknownStatType-40
+wmo	4.10	41	UnknownStatType-41
+wmo	4.10	42	UnknownStatType-42
+wmo	4.10	43	UnknownStatType-43
+wmo	4.10	44	UnknownStatType-44
+wmo	4.10	45	UnknownStatType-45
+wmo	4.10	46	UnknownStatType-46
+wmo	4.10	47	UnknownStatType-47
+wmo	4.10	48	UnknownStatType-48
+wmo	4.10	49	UnknownStatType-49
+wmo	4.10	50	UnknownStatType-50
+wmo	4.10	51	UnknownStatType-51
+wmo	4.10	52	UnknownStatType-52
+wmo	4.10	53	UnknownStatType-53
+wmo	4.10	54	UnknownStatType-54
+wmo	4.10	55	UnknownStatType-55
+wmo	4.10	56	UnknownStatType-56
+wmo	4.10	57	UnknownStatType-57
+wmo	4.10	58	UnknownStatType-58
+wmo	4.10	59	UnknownStatType-59
+wmo	4.10	60	UnknownStatType-60
+wmo	4.10	61	UnknownStatType-61
+wmo	4.10	62	UnknownStatType-62
+wmo	4.10	63	UnknownStatType-63
+wmo	4.10	64	UnknownStatType-64
+wmo	4.10	65	UnknownStatType-65
+wmo	4.10	66	UnknownStatType-66
+wmo	4.10	67	UnknownStatType-67
+wmo	4.10	68	UnknownStatType-68
+wmo	4.10	69	UnknownStatType-69
+wmo	4.10	70	UnknownStatType-70
+wmo	4.10	71	UnknownStatType-71
+wmo	4.10	72	UnknownStatType-72
+wmo	4.10	73	UnknownStatType-73
+wmo	4.10	74	UnknownStatType-74
+wmo	4.10	75	UnknownStatType-75
+wmo	4.10	76	UnknownStatType-76
+wmo	4.10	77	UnknownStatType-77
+wmo	4.10	78	UnknownStatType-78
+wmo	4.10	79	UnknownStatType-79
+wmo	4.10	80	UnknownStatType-80
+wmo	4.10	81	UnknownStatType-81
+wmo	4.10	82	UnknownStatType-82
+wmo	4.10	83	UnknownStatType-83
+wmo	4.10	84	UnknownStatType-84
+wmo	4.10	85	UnknownStatType-85
+wmo	4.10	86	UnknownStatType-86
+wmo	4.10	87	UnknownStatType-87
+wmo	4.10	88	UnknownStatType-88
+wmo	4.10	89	UnknownStatType-89
+wmo	4.10	90	UnknownStatType-90
+wmo	4.10	91	UnknownStatType-91
+wmo	4.10	92	UnknownStatType-92
+wmo	4.10	93	UnknownStatType-93
+wmo	4.10	94	UnknownStatType-94
+wmo	4.10	95	UnknownStatType-95
+wmo	4.10	96	UnknownStatType-96
+wmo	4.10	97	UnknownStatType-97
+wmo	4.10	98	UnknownStatType-98
+wmo	4.10	99	UnknownStatType-99
+wmo	4.10	100	UnknownStatType-100
+wmo	4.10	101	UnknownStatType-101
+wmo	4.10	102	UnknownStatType-102
+wmo	4.10	103	UnknownStatType-103
+wmo	4.10	104	UnknownStatType-104
+wmo	4.10	105	UnknownStatType-105
+wmo	4.10	106	UnknownStatType-106
+wmo	4.10	107	UnknownStatType-107
+wmo	4.10	108	UnknownStatType-108
+wmo	4.10	109	UnknownStatType-109
+wmo	4.10	110	UnknownStatType-110
+wmo	4.10	111	UnknownStatType-111
+wmo	4.10	112	UnknownStatType-112
+wmo	4.10	113	UnknownStatType-113
+wmo	4.10	114	UnknownStatType-114
+wmo	4.10	115	UnknownStatType-115
+wmo	4.10	116	UnknownStatType-116
+wmo	4.10	117	UnknownStatType-117
+wmo	4.10	118	UnknownStatType-118
+wmo	4.10	119	UnknownStatType-119
+wmo	4.10	120	UnknownStatType-120
+wmo	4.10	121	UnknownStatType-121
+wmo	4.10	122	UnknownStatType-122
+wmo	4.10	123	UnknownStatType-123
+wmo	4.10	124	UnknownStatType-124
+wmo	4.10	125	UnknownStatType-125
+wmo	4.10	126	UnknownStatType-126
+wmo	4.10	127	UnknownStatType-127
+wmo	4.10	128	UnknownStatType-128
+wmo	4.10	129	UnknownStatType-129
+wmo	4.10	130	UnknownStatType-130
+wmo	4.10	131	UnknownStatType-131
+wmo	4.10	132	UnknownStatType-132
+wmo	4.10	133	UnknownStatType-133
+wmo	4.10	134	UnknownStatType-134
+wmo	4.10	135	UnknownStatType-135
+wmo	4.10	136	UnknownStatType-136
+wmo	4.10	137	UnknownStatType-137
+wmo	4.10	138	UnknownStatType-138
+wmo	4.10	139	UnknownStatType-139
+wmo	4.10	140	UnknownStatType-140
+wmo	4.10	141	UnknownStatType-141
+wmo	4.10	142	UnknownStatType-142
+wmo	4.10	143	UnknownStatType-143
+wmo	4.10	144	UnknownStatType-144
+wmo	4.10	145	UnknownStatType-145
+wmo	4.10	146	UnknownStatType-146
+wmo	4.10	147	UnknownStatType-147
+wmo	4.10	148	UnknownStatType-148
+wmo	4.10	149	UnknownStatType-149
+wmo	4.10	150	UnknownStatType-150
+wmo	4.10	151	UnknownStatType-151
+wmo	4.10	152	UnknownStatType-152
+wmo	4.10	153	UnknownStatType-153
+wmo	4.10	154	UnknownStatType-154
+wmo	4.10	155	UnknownStatType-155
+wmo	4.10	156	UnknownStatType-156
+wmo	4.10	157	UnknownStatType-157
+wmo	4.10	158	UnknownStatType-158
+wmo	4.10	159	UnknownStatType-159
+wmo	4.10	160	UnknownStatType-160
+wmo	4.10	161	UnknownStatType-161
+wmo	4.10	162	UnknownStatType-162
+wmo	4.10	163	UnknownStatType-163
+wmo	4.10	164	UnknownStatType-164
+wmo	4.10	165	UnknownStatType-165
+wmo	4.10	166	UnknownStatType-166
+wmo	4.10	167	UnknownStatType-167
+wmo	4.10	168	UnknownStatType-168
+wmo	4.10	169	UnknownStatType-169
+wmo	4.10	170	UnknownStatType-170
+wmo	4.10	171	UnknownStatType-171
+wmo	4.10	172	UnknownStatType-172
+wmo	4.10	173	UnknownStatType-173
+wmo	4.10	174	UnknownStatType-174
+wmo	4.10	175	UnknownStatType-175
+wmo	4.10	176	UnknownStatType-176
+wmo	4.10	177	UnknownStatType-177
+wmo	4.10	178	UnknownStatType-178
+wmo	4.10	179	UnknownStatType-179
+wmo	4.10	180	UnknownStatType-180
+wmo	4.10	181	UnknownStatType-181
+wmo	4.10	182	UnknownStatType-182
+wmo	4.10	183	UnknownStatType-183
+wmo	4.10	184	UnknownStatType-184
+wmo	4.10	185	UnknownStatType-185
+wmo	4.10	186	UnknownStatType-186
+wmo	4.10	187	UnknownStatType-187
+wmo	4.10	188	UnknownStatType-188
+wmo	4.10	189	UnknownStatType-189
+wmo	4.10	190	UnknownStatType-190
+wmo	4.10	191	UnknownStatType-191
+wmo	4.10	192	UnknownStatType-192
+wmo	4.10	193	UnknownStatType-193
+wmo	4.10	194	UnknownStatType-194
+wmo	4.10	195	UnknownStatType-195
+wmo	4.10	196	UnknownStatType-196
+wmo	4.10	197	UnknownStatType-197
+wmo	4.10	198	UnknownStatType-198
+wmo	4.10	199	UnknownStatType-199
+wmo	4.10	200	UnknownStatType-200
+wmo	4.10	201	UnknownStatType-201
+wmo	4.10	202	UnknownStatType-202
+wmo	4.10	203	UnknownStatType-203
+wmo	4.10	204	UnknownStatType-204
+wmo	4.10	205	UnknownStatType-205
+wmo	4.10	206	UnknownStatType-206
+wmo	4.10	207	UnknownStatType-207
+wmo	4.10	208	UnknownStatType-208
+wmo	4.10	209	UnknownStatType-209
+wmo	4.10	210	UnknownStatType-210
+wmo	4.10	211	UnknownStatType-211
+wmo	4.10	212	UnknownStatType-212
+wmo	4.10	213	UnknownStatType-213
+wmo	4.10	214	UnknownStatType-214
+wmo	4.10	215	UnknownStatType-215
+wmo	4.10	216	UnknownStatType-216
+wmo	4.10	217	UnknownStatType-217
+wmo	4.10	218	UnknownStatType-218
+wmo	4.10	219	UnknownStatType-219
+wmo	4.10	220	UnknownStatType-220
+wmo	4.10	221	UnknownStatType-221
+wmo	4.10	222	UnknownStatType-222
+wmo	4.10	223	UnknownStatType-223
+wmo	4.10	224	UnknownStatType-224
+wmo	4.10	225	UnknownStatType-225
+wmo	4.10	226	UnknownStatType-226
+wmo	4.10	227	UnknownStatType-227
+wmo	4.10	228	UnknownStatType-228
+wmo	4.10	229	UnknownStatType-229
+wmo	4.10	230	UnknownStatType-230
+wmo	4.10	231	UnknownStatType-231
+wmo	4.10	232	UnknownStatType-232
+wmo	4.10	233	UnknownStatType-233
+wmo	4.10	234	UnknownStatType-234
+wmo	4.10	235	UnknownStatType-235
+wmo	4.10	236	UnknownStatType-236
+wmo	4.10	237	UnknownStatType-237
+wmo	4.10	238	UnknownStatType-238
+wmo	4.10	239	UnknownStatType-239
+wmo	4.10	240	UnknownStatType-240
+wmo	4.10	241	UnknownStatType-241
+wmo	4.10	242	UnknownStatType-242
+wmo	4.10	243	UnknownStatType-243
+wmo	4.10	244	UnknownStatType-244
+wmo	4.10	245	UnknownStatType-245
+wmo	4.10	246	UnknownStatType-246
+wmo	4.10	247	UnknownStatType-247
+wmo	4.10	248	UnknownStatType-248
+wmo	4.10	249	UnknownStatType-249
+wmo	4.10	250	UnknownStatType-250
+wmo	4.10	251	UnknownStatType-251
+wmo	4.10	252	UnknownStatType-252
+wmo	4.10	253	UnknownStatType-253
+wmo	4.10	254	UnknownStatType-254
+wmo	4.10	255	Missing
+wmo	4.233	0	Ozone
+wmo	4.233	1	Water Vapour
+wmo	4.233	2	Methane
+wmo	4.233	3	Carbon Dioxide
+wmo	4.233	4	Carbon Monoxide
+wmo	4.233	5	Nitrogen Dioxide
+wmo	4.233	6	Nitrous Oxide
+wmo	4.233	7	Formaldehyde
+wmo	4.233	8	Sulphur Dioxide
+wmo	4.233	9	Ammonia
+wmo	4.233	10	Ammonium
+wmo	4.233	11	Nitrogen Monoxide
+wmo	4.233	12	Atomic Oxygen
+wmo	4.233	13	Nitrate Radical
+wmo	4.233	14	Hydroperoxyl Radical
+wmo	4.233	15	Dinitrogen Pentoxide
+wmo	4.233	16	Nitrous Acid
+wmo	4.233	17	Nitric Acid
+wmo	4.233	18	Peroxynitric Acid
+wmo	4.233	19	Hydrogen Peroxide
+wmo	4.233	20	Molecular Hydrogen
+wmo	4.233	21	Atomic Nitrogen
+wmo	4.233	22	Sulphate
+wmo	4.233	23	Radon
+wmo	4.233	24	Elemental Mercury
+wmo	4.233	25	Divalent Mercury
+wmo	4.233	26	Atomic Chlorine
+wmo	4.233	27	Chlorine Monoxide
+wmo	4.233	28	Dichlorine Peroxide
+wmo	4.233	29	Hypochlorous Acid
+wmo	4.233	30	Chlorine Nitrate
+wmo	4.233	31	Chlorine Dioxide
+wmo	4.233	32	Atomic Bromide
+wmo	4.233	33	Bromine Monoxide
+wmo	4.233	34	Bromine Chloride
+wmo	4.233	35	Hydrogen Bromide
+wmo	4.233	36	Hypobromous Acid
+wmo	4.233	37	Bromine Nitrate
+wmo	4.233	38	Oxygen
+wmo	4.233	10000	Hydroxyl Radical
+wmo	4.233	10001	Methyl Peroxy Radical
+wmo	4.233	10002	Methyl Hydroperoxide
+wmo	4.233	10004	Methanol
+wmo	4.233	10005	Formic Acid
+wmo	4.233	10006	Hydrogen Cyanide
+wmo	4.233	10007	Aceto Nitrile
+wmo	4.233	10008	Ethane
+wmo	4.233	10009	Ethene (= Ethylene)
+wmo	4.233	10010	Ethyne (= Acetylene)
+wmo	4.233	10011	Ethanol
+wmo	4.233	10012	Acetic Acid
+wmo	4.233	10013	Peroxyacetyl Nitrate
+wmo	4.233	10014	Propane
+wmo	4.233	10015	Propene
+wmo	4.233	10016	Butanes
+wmo	4.233	10017	Isoprene
+wmo	4.233	10018	Alpha Pinene
+wmo	4.233	10019	Beta Pinene
+wmo	4.233	10020	Limonene
+wmo	4.233	10021	Benzene
+wmo	4.233	10022	Toluene
+wmo	4.233	10023	Xylene
+wmo	4.233	10500	Dimethyl Sulphide
+wmo	4.233	20001	Hydrogen Chloride
+wmo	4.233	20002	CFC-11
+wmo	4.233	20003	CFC-12
+wmo	4.233	20004	CFC-113
+wmo	4.233	20005	CFC-113a
+wmo	4.233	20006	CFC-114
+wmo	4.233	20007	CFC-115
+wmo	4.233	20008	HCFC-22
+wmo	4.233	20009	HCFC-141b
+wmo	4.233	20010	HCFC-142b
+wmo	4.233	20011	Halon-1202
+wmo	4.233	20012	Halon-1211
+wmo	4.233	20013	Halon-1301
+wmo	4.233	20014	Halon-2402
+wmo	4.233	20015	Methyl Chloride (HCC-40)
+wmo	4.233	20016	Carbon Tetrachloride (HCC-10)
+wmo	4.233	20017	HCC-140a
+wmo	4.233	20018	Methyl Bromide (HBC-40B1)
+wmo	4.233	20019	Hexachlorocyclohexane (HCH)
+wmo	4.233	20020	Alpha Hexachlorocyclohexane
+wmo	4.233	20021	Hexachlorobiphenyl (PCB-153)
+wmo	4.233	30000	Radioactive Pollutant (Tracer, defined by originating centre)
+wmo	4.233	60000	HOx Radical (OH+HO2)
+wmo	4.233	60001	Total Inorganic and Organic Peroxy Radicals (HO2+RO2)
+wmo	4.233	60002	Passive Ozone
+wmo	4.233	60003	NOx Expressed As Nitrogen
+wmo	4.233	60004	All Nitrogen Oxides (NOy) Expressed As Nitrogen
+wmo	4.233	60005	Total Inorganic Chlorine
+wmo	4.233	60006	Total Inorganic Bromine
+wmo	4.233	60007	Total Inorganic Chlorine Except HCl, ClONO2: ClOx
+wmo	4.233	60008	Total Inorganic Bromine Except Hbr, BrONO2:BrOx
+wmo	4.233	60009	Lumped Alkanes
+wmo	4.233	60010	Lumped Alkenes
+wmo	4.233	60011	Lumped Aromatic Coumpounds
+wmo	4.233	60012	Lumped Terpenes
+wmo	4.233	60013	Non-Methane Volatile Organic Compounds Expressed as Carbon
+wmo	4.233	60014	Anthropogenic Non-Methane Volatile Organic Compounds Expressed as Carbon
+wmo	4.233	60015	Biogenic Non-Methane Volatile Organic Compounds Expressed as Carbon
+wmo	4.233	60016	Lumped Oxygenated Hydrocarbons
+wmo	4.233	62000	Total Aerosol
+wmo	4.233	62001	Dust Dry
+wmo	4.233	62002	water In Ambient
+wmo	4.233	62003	Ammonium Dry
+wmo	4.233	62004	Nitrate Dry
+wmo	4.233	62005	Nitric Acid Trihydrate
+wmo	4.233	62006	Sulphate Dry
+wmo	4.233	62007	Mercury Dry
+wmo	4.233	62008	Sea Salt Dry
+wmo	4.233	62009	Black Carbon Dry
+wmo	4.233	62010	Particulate Organic Matter Dry
+wmo	4.233	62011	Primary Particulate Organic Matter Dry
+wmo	4.233	62012	Secondary Particulate Organic Matter Dry
+wmo	4.233	62013	Black carbon hydrophilic dry
+wmo	4.233	62014	Black carbon hydrophobic dry
+wmo	4.233	62015	Particulate organic matter hydrophilic dry
+wmo	4.233	62016	Particulate organic matter hydrophobic dry
+wmo	4.233	62017	Nitrate hydrophilic dry
+wmo	4.233	62018	Nitrate hydrophobic dry
+wmo	4.233	62020	Smoke - high absorption
+wmo	4.233	62021	Smoke - low absorption
+wmo	4.233	62022	Aerosol - high absorption
+wmo	4.233	62023	Aerosol - low absorption
+wmo	4.233	62025	Volcanic ash
+wmo	4.233	65535	Missing
+ncep	4.5	0	Reserved
+ncep	4.5	1	Ground or water surface
+ncep	4.5	2	Cloud base level
+ncep	4.5	3	Level of cloud tops
+ncep	4.5	4	Level of 0 °C isotherm
+ncep	4.5	5	Level of adiabatic condensation lifted from the surface
+ncep	4.5	6	Maximum wind level
+ncep	4.5	7	Tropopause
+ncep	4.5	8	Nominal top of the atmosphere
+ncep	4.5	9	Sea bottom
+ncep	4.5	10	Entire atmosphere
+ncep	4.5	11	Cumulonimbus (CB) base
+ncep	4.5	12	Cumulonimbus (CB) top
+ncep	4.5	13	Lowest level where vertically integrated cloud cover exceeds the specified percentage (cloud base for a given percentage cloud cover)
+ncep	4.5	14	Level of free convection (LFC)
+ncep	4.5	15	Convective condensation level (CCL)
+ncep	4.5	16	Level of neutral buoyancy or equilibrium level (LNB)
+ncep	4.5	20	Isothermal level
+ncep	4.5	21	Lowest level where mass density exceeds the specified value (base for a given threshold of mass density)
+ncep	4.5	22	Highest level where mass density exceeds the specified value (top for a given threshold of mass density)
+ncep	4.5	23	Lowest level where air concentration exceeds the specified value (base for a given threshold of air concentration)
+ncep	4.5	24	Highest level where air concentration exceeds the specified value (top for a given threshold of air concentration)
+ncep	4.5	25	Highest level where radar reflectivity exceeds the specified value (echo top for a given threshold of reflectivity)
+ncep	4.5	100	Isobaric surface
+ncep	4.5	101	Mean sea level
+ncep	4.5	102	Specific altitude above mean sea level
+ncep	4.5	103	Specified height level above ground
+ncep	4.5	104	Sigma level
+ncep	4.5	105	Hybrid level
+ncep	4.5	106	Depth below land surface
+ncep	4.5	107	Isentropic (theta) level
+ncep	4.5	108	Level at specified pressure difference from ground to level
+ncep	4.5	109	Potential vorticity surface
+ncep	4.5	110	Reserved
+ncep	4.5	111	Eta level
+ncep	4.5	112	Reserved
+ncep	4.5	113	Logarithmic hybrid level
+ncep	4.5	114	Snow level
+ncep	4.5	115	Sigma height level
+ncep	4.5	116	Reserved
+ncep	4.5	117	Mixed layer depth
+ncep	4.5	118	Hybrid height level
+ncep	4.5	119	Hybrid pressure level
+ncep	4.5	150	Generalized vertical height coordinate
+ncep	4.5	151	Soil level
+ncep	4.5	160	Depth below sea level
+ncep	4.5	161	Depth below water surface
+ncep	4.5	162	Lake or river bottom
+ncep	4.5	163	Bottom of sediment layer
+ncep	4.5	164	Bottom of thermally active sediment layer
+ncep	4.5	165	Bottom of sediment layer penetrated by thermal wave
+ncep	4.5	166	Mixing layer
+ncep	4.5	167	Bottom of root zone
+ncep	4.5	174	Top surface of ice on sea, lake or river
+ncep	4.5	175	Top surface of ice, under snow cover, on sea, lake or river
+ncep	4.5	176	Bottom surface (underside) ice on sea, lake or river
+ncep	4.5	177	Deep soil (of indefinite depth)
+ncep	4.5	178	Reserved
+ncep	4.5	179	Top surface of glacier ice and inland ice
+ncep	4.5	180	Deep inland or glacier ice (of indefinite depth)
+ncep	4.5	181	Grid tile land fraction as a model surface
+ncep	4.5	182	Grid tile water fraction as a model surface
+ncep	4.5	183	Grid tile ice fraction on sea, lake or river as a model surface
+ncep	4.5	184	Grid tile glacier ice and inland ice fraction as a model surface
+ncep	4.5	200	Entire atmosphere layer
+ncep	4.5	201	Entire ocean layer
+ncep	4.5	204	Highest tropospheric freezing level
+ncep	4.5	206	Grid scale cloud bottom level
+ncep	4.5	207	Grid scale cloud top level
+ncep	4.5	209	Boundary layer cloud bottom level
+ncep	4.5	210	Boundary layer cloud top level
+ncep	4.5	211	Boundary layer cloud layer
+ncep	4.5	212	Low cloud bottom level
+ncep	4.5	213	Low cloud top level
+ncep	4.5	214	Low cloud layer
+ncep	4.5	215	Cloud ceiling
+ncep	4.5	220	Planetary Boundary Layer
+ncep	4.5	221	Layer Between Two Hybrid Levels
+ncep	4.5	222	Middle cloud bottom level
+ncep	4.5	223	Middle cloud top level
+ncep	4.5	224	Middle cloud layer
+ncep	4.5	232	High cloud bottom level
+ncep	4.5	233	High cloud top level
+ncep	4.5	234	High cloud layer
+ncep	4.5	235	Ocean isotherm level
+ncep	4.5	236	Layer between two depths below ocean surface
+ncep	4.5	237	Bottom of ocean mixed layer
+ncep	4.5	238	Bottom of ocean isothermal layer
+ncep	4.5	239	Layer Ocean Surface and 26C Ocean Isothermal Level
+ncep	4.5	240	Ocean Mixed Layer
+ncep	4.5	241	Ordered Sequence of Data
+ncep	4.5	242	Convective cloud bottom level
+ncep	4.5	243	Convective cloud top level
+ncep	4.5	244	Convective cloud layer
+ncep	4.5	245	Lowest level of the wet bulb zero
+ncep	4.5	246	Maximum equivalent potential temperature level
+ncep	4.5	247	Equilibrium level
+ncep	4.5	248	Shallow convective cloud bottom level
+ncep	4.5	249	Shallow convective cloud top level
+ncep	4.5	251	Deep convective cloud bottom level
+ncep	4.5	252	Deep convective cloud top level
+ncep	4.5	253	Lowest bottom level of supercooled liquid water layer
+ncep	4.5	254	Highest top level of supercooled liquid water layer
+ncep	4.5	255	Missing
+ncep	4.6	0	Unperturbed high-resolution control forecast
+ncep	4.6	1	Unperturbed low-resolution control forecast
+ncep	4.6	2	Negatively perturbed forecast
+ncep	4.6	3	Positively perturbed forecast
+ncep	4.6	4	Multi-model forecast
+ncep	4.6	192	Perturbed Ensemble Member
+ncep	4.6	255	Missing
+ncep	4.7	0	Unweighted mean of all members
+ncep	4.7	1	Weighted mean of all members
+ncep	4.7	2	Standard deviation with respect to cluster mean
+ncep	4.7	3	Standard deviation with respect to cluster mean, normalized
+ncep	4.7	4	Spread of all members
+ncep	4.7	5	Large anomaly index of all members
+ncep	4.7	6	Unweighted mean of the cluster members
+ncep	4.7	7	Interquartile range (range between the 25th and 75th quantile)
+ncep	4.7	8	Minimum of all ensemble members
+ncep	4.7	9	Maximum of all ensemble members
+ncep	4.7	192	Unweighted Mode of All Members
+ncep	4.7	193	Percentile value (10%) of All Members
+ncep	4.7	194	Percentile value (50%) of All Members
+ncep	4.7	195	Percentile value (90%) of All Members
+ncep	4.7	255	Missing
+ncep	4.9	0	Probability of event below lower limit
+ncep	4.9	1	Probability of event above upper limit
+ncep	4.9	2	Probability of event between lower and upper limits (the range includes the lower limit but not the upper limit)
+ncep	4.9	3	Probability of event above lower limit
+ncep	4.9	4	Probability of event below upper limit
+ncep	4.9	5	Probability of event equal to lower limit
+ncep	4.9	6	Probability of event in above normal category
+ncep	4.9	7	Probability of event in near normal category
+ncep	4.9	8	Probability of event in below normal category
+ncep	4.9	255	Missing
+ncep	4.10	0	Average
+ncep	4.10	1	Accumulation
+ncep	4.10	2	Maximum
+ncep	4.10	3	Minimum
+ncep	4.10	4	Difference (value at the end of time range minus value at the beginning)
+ncep	4.10	5	Root mean square
+ncep	4.10	6	Standard deviation
+ncep	4.10	7	Covariance (temporal variance)
+ncep	4.10	8	Difference (value at the start of time range minus value at the end)
+ncep	4.10	9	Ratio
+ncep	4.10	10	Standardized anomaly
+ncep	4.10	11	Summation
+ncep	4.10	12	UnknownStatType-12
+ncep	4.10	13	UnknownStatType-13
+ncep	4.10	14	UnknownStatType-14
+ncep	4.10	15	UnknownStatType-15
+ncep	4.10	16	UnknownStatType-16
+ncep	4.10	17	UnknownStatType-17
+ncep	4.10	18	UnknownStatType-18
+ncep	4.10	19	UnknownStatType-19
+ncep	4.10	20	UnknownStatType-20
+ncep	4.10	21	UnknownStatType-21
+ncep	4.10	22	UnknownStatType-22
+ncep	4.10	23	UnknownStatType-23
+ncep	4.10	24	UnknownStatType-24
+ncep	4.10	25	UnknownStatType-25
+ncep	4.10	26	UnknownStatType-26
+ncep	4.10	27	UnknownStatType-27
+ncep	4.10	28	UnknownStatType-28
+ncep	4.10	29	UnknownStatType-29
+ncep	4.10	30	UnknownStatType-30
+ncep	4.10	31	UnknownStatType-31
+ncep	4.10	32	UnknownStatType-32
+ncep	4.10	33	UnknownStatType-33
+ncep	4.10	34	UnknownStatType-34
+ncep	4.10	35	UnknownStatType-35
+ncep	4.10	36	UnknownStatType-36
+ncep	4.10	37	UnknownStatType-37
+ncep	4.10	38	UnknownStatType-38
+ncep	4.10	39	UnknownStatType-39
+ncep	4.10	40	UnknownStatType-40
+ncep	4.10	41	UnknownStatType-41
+ncep	4.10	42	UnknownStatType-42
+ncep	4.10	43	UnknownStatType-43
+ncep	4.10	44	UnknownStatType-44
+ncep	4.10	45	UnknownStatType-45
+ncep	4.10	46	UnknownStatType-46
+ncep	4.10	47	UnknownStatType-47
+ncep	4.10	48	UnknownStatType-48
+ncep	4.10	49	UnknownStatType-49
+ncep	4.10	50	UnknownStatType-50
+ncep	4.10	51	UnknownStatType-51
+ncep	4.10	52	UnknownStatType-52
+ncep	4.10	53	UnknownStatType-53
+ncep	4.10	54	UnknownStatType-54
+ncep	4.10	55	UnknownStatType-55
+ncep	4.10	56	UnknownStatType-56
+ncep	4.10	57	UnknownStatType-57
+ncep	4.10	58	UnknownStatType-58
+ncep	4.10	59	UnknownStatType-59
+ncep	4.10	60	UnknownStatType-60
+ncep	4.10	61	UnknownStatType-61
+ncep	4.10	62	UnknownStatType-62
+ncep	4.10	63	UnknownStatType-63
+ncep	4.10	64	UnknownStatType-64
+ncep	4.10	65	UnknownStatType-65
+ncep	4.10	66	UnknownStatType-66
+ncep	4.10	67	UnknownStatType-67
+ncep	4.10	68	UnknownStatType-68
+ncep	4.10	69	UnknownStatType-69
+ncep	4.10	70	UnknownStatType-70
+ncep	4.10	71	UnknownStatType-71
+ncep	4.10	72	UnknownStatType-72
+ncep	4.10	73	UnknownStatType-73
+ncep	4.10	74	UnknownStatType-74
+ncep	4.10	75	UnknownStatType-75
+ncep	4.10	76	UnknownStatType-76
+ncep	4.10	77	UnknownStatType-77
+ncep	4.10	78	UnknownStatType-78
+ncep	4.10	79	UnknownStatType-79
+ncep	4.10	80	UnknownStatType-80
+ncep	4.10	81	UnknownStatType-81
+ncep	4.10	82	UnknownStatType-82
+ncep	4.10	83	UnknownStatType-83
+ncep	4.10	84	UnknownStatType-84
+ncep	4.10	85	UnknownStatType-85
+ncep	4.10	86	UnknownStatType-86
+ncep	4.10	87	UnknownStatType-87
+ncep	4.10	88	UnknownStatType-88
+ncep	4.10	89	UnknownStatType-89
+ncep	4.10	90	UnknownStatType-90
+ncep	4.10	91	UnknownStatType-91
+ncep	4.10	92	UnknownStatType-92
+ncep	4.10	93	UnknownStatType-93
+ncep	4.10	94	UnknownStatType-94
+ncep	4.10	95	UnknownStatType-95
+ncep	4.10	96	UnknownStatType-96
+ncep	4.10	97	UnknownStatType-97
+ncep	4.10	98	UnknownStatType-98
+ncep	4.10	99	UnknownStatType-99
+ncep	4.10	100	UnknownStatType-100
+ncep	4.10	101	UnknownStatType-101
+ncep	4.10	102	UnknownStatType-102
+ncep	4.10	103	UnknownStatType-103
+ncep	4.10	104	UnknownStatType-104
+ncep	4.10	105	UnknownStatType-105
+ncep	4.10	106	UnknownStatType-106
+ncep	4.10	107	UnknownStatType-107
+ncep	4.10	108	UnknownStatType-108
+ncep	4.10	109	UnknownStatType-109
+ncep	4.10	110	UnknownStatType-110
+ncep	4.10	111	UnknownStatType-111
+ncep	4.10	112	UnknownStatType-112
+ncep	4.10	113	UnknownStatType-113
+ncep	4.10	114	UnknownStatType-114
+ncep	4.10	115	UnknownStatType-115
+ncep	4.10	116	UnknownStatType-116
+ncep	4.10	117	UnknownStatType-117
+ncep	4.10	118	UnknownStatType-118
+ncep	4.10	119	UnknownStatType-119
+ncep	4.10	120	UnknownStatType-120
+ncep	4.10	121	UnknownStatType-121
+ncep	4.10	122	UnknownStatType-122
+ncep	4.10	123	UnknownStatType-123
+ncep	4.10	124	UnknownStatType-124
+ncep	4.10	125	UnknownStatType-125
+ncep	4.10	126	UnknownStatType-126
+ncep	4.10	127	UnknownStatType-127
+ncep	4.10	128	UnknownStatType-128
+ncep	4.10	129	UnknownStatType-129
+ncep	4.10	130	UnknownStatType-130
+ncep	4.10	131	UnknownStatType-131
+ncep	4.10	132	UnknownStatType-132
+ncep	4.10	133	UnknownStatType-133
+ncep	4.10	134	UnknownStatType-134
+ncep	4.10	135	UnknownStatType-135
+ncep	4.10	136	UnknownStatType-136
+ncep	4.10	137	UnknownStatType-137
+ncep	4.10	138	UnknownStatType-138
+ncep	4.10	139	UnknownStatType-139
+ncep	4.10	140	UnknownStatType-140
+ncep	4.10	141	UnknownStatType-141
+ncep	4.10	142	UnknownStatType-142
+ncep	4.10	143	UnknownStatType-143
+ncep	4.10	144	UnknownStatType-144
+ncep	4.10	145	UnknownStatType-145
+ncep	4.10	146	UnknownStatType-146
+ncep	4.10	147	UnknownStatType-147
+ncep	4.10	148	UnknownStatType-148
+ncep	4.10	149	UnknownStatType-149
+ncep	4.10	150	UnknownStatType-150
+ncep	4.10	151	UnknownStatType-151
+ncep	4.10	152	UnknownStatType-152
+ncep	4.10	153	UnknownStatType-153
+ncep	4.10	154	UnknownStatType-154
+ncep	4.10	155	UnknownStatType-155
+ncep	4.10	156	UnknownStatType-156
+ncep	4.10	157	UnknownStatType-157
+ncep	4.10	158	UnknownStatType-158
+ncep	4.10	159	UnknownStatType-159
+ncep	4.10	160	UnknownStatType-160
+ncep	4.10	161	UnknownStatType-161
+ncep	4.10	162	UnknownStatType-162
+ncep	4.10	163	UnknownStatType-163
+ncep	4.10	164	UnknownStatType-164
+ncep	4.10	165	UnknownStatType-165
+ncep	4.10	166	UnknownStatType-166
+ncep	4.10	167	UnknownStatType-167
+ncep	4.10	168	UnknownStatType-168
+ncep	4.10	169	UnknownStatType-169
+ncep	4.10	170	UnknownStatType-170
+ncep	4.10	171	UnknownStatType-171
+ncep	4.10	172	UnknownStatType-172
+ncep	4.10	173	UnknownStatType-173
+ncep	4.10	174	UnknownStatType-174
+ncep	4.10	175	UnknownStatType-175
+ncep	4.10	176	UnknownStatType-176
+ncep	4.10	177	UnknownStatType-177
+ncep	4.10	178	UnknownStatType-178
+ncep	4.10	179	UnknownStatType-179
+ncep	4.10	180	UnknownStatType-180
+ncep	4.10	181	UnknownStatType-181
+ncep	4.10	182	UnknownStatType-182
+ncep	4.10	183	UnknownStatType-183
+ncep	4.10	184	UnknownStatType-184
+ncep	4.10	185	UnknownStatType-185
+ncep	4.10	186	UnknownStatType-186
+ncep	4.10	187	UnknownStatType-187
+ncep	4.10	188	UnknownStatType-188
+ncep	4.10	189	UnknownStatType-189
+ncep	4.10	190	UnknownStatType-190
+ncep	4.10	191	UnknownStatType-191
+ncep	4.10	192	Climatological Mean Value: multiple year averages of quantities which are themselves means over some period of time (P2) less than a year. The reference time (R) indicates the date and time of the start of a period of time, given by R to R + P2, over which a mean is formed; N indicates the number of such period-means that are averaged together to form the climatological value, assuming that the N period-mean fields are separated by one year. The reference time indicates the start of the N-year climatology. N is given in octets 22-23 of the PDS. If P1 = 0 then the data averaged in the basic interval P2 are assumed to be continuous, i.e., all available data are simply averaged together. If P1 = 1 (the units of time - octet 18, code table 4 - are not relevant here) then the data averaged together in the basic interval P2 are valid only at the time (hour, minute) given in the reference time, for all the days included in the P2 period. The units of P2 are given by the contents of octet 18 and Table 4.
+ncep	4.10	193	Average of N forecasts (or initialized analyses); each product has forecast period of P1 (P1=0 for initialized analyses); products have reference times at intervals of P2, beginning at the given reference time.
+ncep	4.10	194	Average of N uninitialized analyses, starting at reference time, at intervals of P2.
+ncep	4.10	195	Average of forecast accumulations. P1 = start of accumulation period. P2 = end of accumulation period. Reference time is the start time of the first forecast, other forecasts at 24-hour intervals. Number in Ave = number of forecasts used.
+ncep	4.10	196	Average of successive forecast accumulations. P1 = start of accumulation period. P2 = end of accumulation period. Reference time is the start time of the first forecast, other forecasts at (P2 - P1) intervals. Number in Ave = number of forecasts used
+ncep	4.10	197	Average of forecast averages. P1 = start of averaging period. P2 = end of averaging period. Reference time is the start time of the first forecast, other forecasts at 24-hour intervals. Number in Ave = number of forecast used
+ncep	4.10	198	Average of successive forecast averages. P1 = start of averaging period. P2 = end of averaging period. Reference time is the start time of the first forecast, other forecasts at (P2 - P1) intervals. Number in Ave = number of forecasts used
+ncep	4.10	199	Climatological Average of N analyses, each a year apart, starting from initial time R and for the period from R+P1 to R+P2.
+ncep	4.10	200	Climatological Average of N forecasts, each a year apart, starting from initial time R and for the period from R+P1 to R+P2.
+ncep	4.10	201	Climatological Root Mean Square difference between N forecasts and their verifying analyses, each a year apart, starting with initial time R and for the period from R+P1 to R+P2.
+ncep	4.10	202	Climatological Standard Deviation of N forecasts from the mean of the same N forecasts, for forecasts one year apart. The first forecast starts wtih initial time R and is for the period from R+P1 to R+P2.
+ncep	4.10	203	Climatological Standard Deviation of N analyses from the mean of the same N analyses, for analyses one year apart. The first analyses is valid for period R+P1 to R+P2.
+ncep	4.10	204	Average of forecast accumulations. P1 = start of accumulation period. P2 = end of accumulation period. Reference time is the start time of the first forecast, other forecasts at 6-hour intervals. Number in Ave = number of forecast used
+ncep	4.10	205	Average of forecast averages. P1 = start of averaging period. P2 = end of averaging period. Reference time is the start time of the first forecast, other forecasts at 6-hour intervals. Number in Ave = number of forecast used
+ncep	4.10	206	Average of forecast accumulations. P1 = start of accumulation period. P2 = end of accumulation period. Reference time is the start time of the first forecast, other forecasts at 12-hour intervals. Number in Ave = number of forecast used
+ncep	4.10	207	Average of forecast averages. P1 = start of averaging period. P2 = end of averaging period. Reference time is the start time of the first forecast, other forecasts at 12-hour intervals. Number in Ave = number of forecast used
+ncep	4.10	208	Variance
+ncep	4.10	209	Confficient
+ncep	4.10	255	Missing
+ncep	4.233	0	Ozone
+ncep	4.233	1	Water Vapour
+ncep	4.233	2	Methane
+ncep	4.233	3	Carbon Dioxide
+ncep	4.233	4	Carbon Monoxide
+ncep	4.233	5	Nitrogen Dioxide
+ncep	4.233	6	Nitrous Oxide
+ncep	4.233	7	Formaldehyde
+ncep	4.233	8	Sulphur Dioxide
+ncep	4.233	9	Ammonia
+ncep	4.233	10	Ammonium
+ncep	4.233	11	Nitrogen Monoxide
+ncep	4.233	12	Atomic Oxygen
+ncep	4.233	13	Nitrate Radical
+ncep	4.233	14	Hydroperoxyl Radical
+ncep	4.233	15	Dinitrogen Pentoxide
+ncep	4.233	16	Nitrous Acid
+ncep	4.233	17	Nitric Acid
+ncep	4.233	18	Peroxynitric Acid
+ncep	4.233	19	Hydrogen Peroxide
+ncep	4.233	20	Molecular Hydrogen
+ncep	4.233	21	Atomic Nitrogen
+ncep	4.233	22	Sulphate
+ncep	4.233	23	Radon
+ncep	4.233	24	Elemental Mercury
+ncep	4.233	25	Divalent Mercury
+ncep	4.233	26	Atomic Chlorine
+ncep	4.233	27	Chlorine Monoxide
+ncep	4.233	28	Dichlorine Peroxide
+ncep	4.233	29	Hypochlorous Acid
+ncep	4.233	30	Chlorine Nitrate
+ncep	4.233	31	Chlorine Dioxide
+ncep	4.233	32	Atomic Bromide
+ncep	4.233	33	Bromine Monoxide
+ncep	4.233	34	Bromine Chloride
+ncep	4.233	35	Hydrogen Bromide
+ncep	4.233	36	Hypobromous Acid
+ncep	4.233	37	Bromine Nitrate
+ncep	4.233	38	Oxygen
+ncep	4.233	10000	Hydroxyl Radical
+ncep	4.233	10001	Methyl Peroxy Radical
+ncep	4.233	10002	Methyl Hydroperoxide
+ncep	4.233	10004	Methanol
+ncep	4.233	10005	Formic Acid
+ncep	4.233	10006	Hydrogen Cyanide
+ncep	4.233	10007	Aceto Nitrile
+ncep	4.233	10008	Ethane
+ncep	4.233	10009	Ethene (= Ethylene)
+ncep	4.233	10010	Ethyne (= Acetylene)
+ncep	4.233	10011	Ethanol
+ncep	4.233	10012	Acetic Acid
+ncep	4.233	10013	Peroxyacetyl Nitrate
+ncep	4.233	10014	Propane
+ncep	4.233	10015	Propene
+ncep	4.233	10016	Butanes
+ncep	4.233	10017	Isoprene
+ncep	4.233	10018	Alpha Pinene
+ncep	4.233	10019	Beta Pinene
+ncep	4.233	10020	Limonene
+ncep	4.233	10021	Benzene
+ncep	4.233	10022	Toluene
+ncep	4.233	10023	Xylene
+ncep	4.233	10500	Dimethyl Sulphide
+ncep	4.233	20001	Hydrogen Chloride
+ncep	4.233	20002	CFC-11
+ncep	4.233	20003	CFC-12
+ncep	4.233	20004	CFC-113
+ncep	4.233	20005	CFC-113a
+ncep	4.233	20006	CFC-114
+ncep	4.233	20007	CFC-115
+ncep	4.233	20008	HCFC-22
+ncep	4.233	20009	HCFC-141b
+ncep	4.233	20010	HCFC-142b
+ncep	4.233	20011	Halon-1202
+ncep	4.233	20012	Halon-1211
+ncep	4.233	20013	Halon-1301
+ncep	4.233	20014	Halon-2402
+ncep	4.233	20015	Methyl Chloride (HCC-40)
+ncep	4.233	20016	Carbon Tetrachloride (HCC-10)
+ncep	4.233	20017	HCC-140a
+ncep	4.233	20018	Methyl Bromide (HBC-40B1)
+ncep	4.233	20019	Hexachlorocyclohexane (HCH)
+ncep	4.233	20020	Alpha Hexachlorocyclohexane
+ncep	4.233	20021	Hexachlorobiphenyl (PCB-153)
+ncep	4.233	30000	Radioactive Pollutant (Tracer, defined by originating centre)
+ncep	4.233	60000	HOx Radical (OH+HO2)
+ncep	4.233	60001	Total Inorganic and Organic Peroxy Radicals (HO2+RO2)
+ncep	4.233	60002	Passive Ozone
+ncep	4.233	60003	NOx Expressed As Nitrogen
+ncep	4.233	60004	All Nitrogen Oxides (NOy) Expressed As Nitrogen
+ncep	4.233	60005	Total Inorganic Chlorine
+ncep	4.233	60006	Total Inorganic Bromine
+ncep	4.233	60007	Total Inorganic Chlorine Except HCl, ClONO2: ClOx
+ncep	4.233	60008	Total Inorganic Bromine Except Hbr, BrONO2:BrOx
+ncep	4.233	60009	Lumped Alkanes
+ncep	4.233	60010	Lumped Alkenes
+ncep	4.233	60011	Lumped Aromatic Coumpounds
+ncep	4.233	60012	Lumped Terpenes
+ncep	4.233	60013	Non-Methane Volatile Organic Compounds Expressed as Carbon
+ncep	4.233	60014	Anthropogenic Non-Methane Volatile Organic Compounds Expressed as Carbon
+ncep	4.233	60015	Biogenic Non-Methane Volatile Organic Compounds Expressed as Carbon
+ncep	4.233	60016	Lumped Oxygenated Hydrocarbons
+ncep	4.233	62000	Total Aerosol
+ncep	4.233	62001	Dust Dry
+ncep	4.233	62002	water In Ambient
+ncep	4.233	62003	Ammonium Dry
+ncep	4.233	62004	Nitrate Dry
+ncep	4.233	62005	Nitric Acid Trihydrate
+ncep	4.233	62006	Sulphate Dry
+ncep	4.233	62007	Mercury Dry
+ncep	4.233	62008	Sea Salt Dry
+ncep	4.233	62009	Black Carbon Dry
+ncep	4.233	62010	Particulate Organic Matter Dry
+ncep	4.233	62011	Primary Particulate Organic Matter Dry
+ncep	4.233	62012	Secondary Particulate Organic Matter Dry
+ncep	4.233	62013	Black carbon hydrophilic dry
+ncep	4.233	62014	Black carbon hydrophobic dry
+ncep	4.233	62015	Particulate organic matter hydrophilic dry
+ncep	4.233	62016	Particulate organic matter hydrophobic dry
+ncep	4.233	62017	Nitrate hydrophilic dry
+ncep	4.233	62018	Nitrate hydrophobic dry
+ncep	4.233	62020	Smoke - high absorption
+ncep	4.233	62021	Smoke - low absorption
+ncep	4.233	62022	Aerosol - high absorption
+ncep	4.233	62023	Aerosol - low absorption
+ncep	4.233	62025	Volcanic ash
+ncep	4.233	65535	Missing

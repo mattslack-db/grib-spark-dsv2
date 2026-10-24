@@ -1,0 +1,2064 @@
+table	discipline	category	number	abbrev	name	unit
+wmo	0	0	0		Temperature	K
+wmo	0	0	1		Virtual temperature	K
+wmo	0	0	2		Potential temperature	K
+wmo	0	0	3		Pseudo-adiabatic potential temperature or equivalent potential temperature	K
+wmo	0	0	4		Maximum temperature	K
+wmo	0	0	5		Minimum temperature	K
+wmo	0	0	6		Dewpoint temperature	K
+wmo	0	0	7		Dewpoint depression (or deficit)	K
+wmo	0	0	8		Lapse rate	K/m
+wmo	0	0	9		Temperature anomaly	K
+wmo	0	0	10		Latent heat net flux	W.m-2
+wmo	0	0	11		Sensible heat net flux	W.m-2
+wmo	0	0	12		Heat index	K
+wmo	0	0	13		Wind chill factor	K
+wmo	0	0	14		Minimum dewpoint depression	K
+wmo	0	0	15		Virtual potential temperature	K
+wmo	0	0	16		Snow phase change heat flux	W.m-2
+wmo	0	0	17		Skin temperature	K
+wmo	0	0	18		Snow temperature (top of snow)	K
+wmo	0	0	19		Turbulent transfer coefficient for heat	
+wmo	0	0	20		Turbulent diffusion coefficient for heat	m2/s
+wmo	0	0	21		Apparent temperature	K
+wmo	0	0	22		Temperature tendency due to short-wave radiation	K.s-1
+wmo	0	0	23		Temperature tendency due to long-wave radiation	K.s-1
+wmo	0	0	24		Temperature tendency due to short-wave radiation, clear sky	K.s-1
+wmo	0	0	25		Temperature tendency due to long-wave radiation, clear sky	K.s-1
+wmo	0	0	26		Temperature tendency due to parameterization	K.s-1
+wmo	0	0	27		Wet-bulb temperature	K
+wmo	0	0	28		Unbalanced component of temperature	K
+wmo	0	0	29		Temperature advection	K.s-1
+wmo	0	0	255		Missing	
+wmo	0	1	0		Specific humidity	kg/kg
+wmo	0	1	1		Relative humidity	%
+wmo	0	1	2		Humidity mixing ratio	kg/kg
+wmo	0	1	3		Precipitable water	kg.m-2
+wmo	0	1	4		Vapour pressure	Pa
+wmo	0	1	5		Saturation deficit	Pa
+wmo	0	1	6		Evaporation	kg.m-2
+wmo	0	1	7		Precipitation rate	kg.m-2.s-1
+wmo	0	1	8		Total precipitation	kg.m-2
+wmo	0	1	9		Large-scale precipitation (non-convective)	kg.m-2
+wmo	0	1	10		Convective precipitation	kg.m-2
+wmo	0	1	11		Snow depth	m
+wmo	0	1	12		Snowfall rate water equivalent	kg.m-2.s-1
+wmo	0	1	13		Water equivalent of accumulated snow depth	kg.m-2
+wmo	0	1	14		Convective snow	kg.m-2
+wmo	0	1	15		Large-scale snow	kg.m-2
+wmo	0	1	16		Snow melt	kg.m-2
+wmo	0	1	17		Snow age	d
+wmo	0	1	18		Absolute humidity	kg.m-3
+wmo	0	1	19		Precipitation type	(Code table 4.201)
+wmo	0	1	20		Integrated liquid water	kg.m-2
+wmo	0	1	21		Condensate	kg/kg
+wmo	0	1	22		Cloud mixing ratio	kg/kg
+wmo	0	1	23		Ice water mixing ratio	kg/kg
+wmo	0	1	24		Rain mixing ratio	kg/kg
+wmo	0	1	25		Snow mixing ratio	kg/kg
+wmo	0	1	26		Horizontal moisture convergence	kg.kg-1.s-1
+wmo	0	1	27		Maximum relative humidity	%
+wmo	0	1	28		Maximum absolute humidity	kg.m-3
+wmo	0	1	29		Total snowfall	m
+wmo	0	1	30		Precipitable water category	(Code table 4.202)
+wmo	0	1	31		Hail	m
+wmo	0	1	32		Graupel (snow pellets)	kg/kg
+wmo	0	1	33		Categorical rain	(Code table 4.222)
+wmo	0	1	34		Categorical freezing rain	(Code table 4.222)
+wmo	0	1	35		Categorical ice pellets	(Code table 4.222)
+wmo	0	1	36		Categorical snow	(Code table 4.222)
+wmo	0	1	37		Convective precipitation rate	kg.m-2.s-1
+wmo	0	1	38		Horizontal moisture divergence	kg.kg-1.s-1
+wmo	0	1	39		Per cent frozen precipitation	%
+wmo	0	1	40		Potential evaporation	kg.m-2
+wmo	0	1	41		Potential evaporation rate	W.m-2
+wmo	0	1	42		Snow cover	%
+wmo	0	1	43		Rain fraction of total cloud water	
+wmo	0	1	44		Rime factor	
+wmo	0	1	45		Total column integrated rain	kg.m-2
+wmo	0	1	46		Total column integrated snow	kg.m-2
+wmo	0	1	47		Large scale water precipitation (non-convective)	kg.m-2
+wmo	0	1	48		Convective water precipitation	kg.m-2
+wmo	0	1	49		Total water precipitation	kg.m-2
+wmo	0	1	50		Total snow precipitation	kg.m-2
+wmo	0	1	51		Total column water (Vertically integrated total water (vapour + cloud water/ice))	kg.m-2
+wmo	0	1	52		Total precipitation rate	kg.m-2.s-1
+wmo	0	1	53		Total snowfall rate water equivalent	kg.m-2.s-1
+wmo	0	1	54		Large scale precipitation rate	kg.m-2.s-1
+wmo	0	1	55		Convective snowfall rate water equivalent	kg.m-2.s-1
+wmo	0	1	56		Large scale snowfall rate water equivalent	kg.m-2.s-1
+wmo	0	1	57		Total snowfall rate	m/s
+wmo	0	1	58		Convective snowfall rate	m/s
+wmo	0	1	59		Large scale snowfall rate	m/s
+wmo	0	1	60		Snow depth water equivalent	kg.m-2
+wmo	0	1	61		Snow density	kg.m-3
+wmo	0	1	62		Snow evaporation	kg.m-2
+wmo	0	1	63		Reserved	
+wmo	0	1	64		Total column integrated water vapour	kg.m-2
+wmo	0	1	65		Rain precipitation rate	kg.m-2.s-1
+wmo	0	1	66		Snow precipitation rate	kg.m-2.s-1
+wmo	0	1	67		Freezing rain precipitation rate	kg.m-2.s-1
+wmo	0	1	68		Ice pellets precipitation rate	kg.m-2.s-1
+wmo	0	1	69		Total column integrated cloud water	kg.m-2
+wmo	0	1	70		Total column integrated cloud ice	kg.m-2
+wmo	0	1	71		Hail mixing ratio	kg/kg
+wmo	0	1	72		Total column integrated hail	kg.m-2
+wmo	0	1	73		Hail precipitation rate	kg.m-2.s-1
+wmo	0	1	74		Total column integrated graupel	kg.m-2
+wmo	0	1	75		Graupel (snow pellets) precipitation rate	kg.m-2.s-1
+wmo	0	1	76		Convective rain rate	kg.m-2.s-1
+wmo	0	1	77		Large scale rain rate	kg.m-2.s-1
+wmo	0	1	78		Total column integrated water (all components including precipitation)	kg.m-2
+wmo	0	1	79		Evaporation rate	kg.m-2.s-1
+wmo	0	1	80		Total condensate	kg/kg
+wmo	0	1	81		Total column-integrated condensate	kg.m-2
+wmo	0	1	82		Cloud ice mixing-ratio	kg/kg
+wmo	0	1	83		Specific cloud liquid water content	kg/kg
+wmo	0	1	84		Specific cloud ice water content	kg/kg
+wmo	0	1	85		Specific rainwater content	kg/kg
+wmo	0	1	86		Specific snow water content	kg/kg
+wmo	0	1	87		Stratiform precipitation rate	kg.m-2.s-1
+wmo	0	1	88		Categorical convective precipitation	Code table 4.222
+wmo	0	1	89		Reserved	
+wmo	0	1	90		Total kinematic moisture flux	kg.kg-1.m.s-1
+wmo	0	1	91		u-component (zonal) kinematic moisture flux	kg.kg-1.m.s-1
+wmo	0	1	92		v-component (meridional) kinematic moisture flux	kg.kg-1.m.s-1
+wmo	0	1	93		Relative humidity with respect to water	%
+wmo	0	1	94		Relative humidity with respect to ice	%
+wmo	0	1	95		Freezing or frozen precipitation rate	kg.m-2.s-1
+wmo	0	1	96		Mass density of rain	kg.m-3
+wmo	0	1	97		Mass density of snow	kg.m-3
+wmo	0	1	98		Mass density of graupel	kg.m-3
+wmo	0	1	99		Mass density of hail	kg.m-3
+wmo	0	1	100		Specific number concentration of rain	kg-1
+wmo	0	1	101		Specific number concentration of snow	kg-1
+wmo	0	1	102		Specific number concentration of graupel	kg-1
+wmo	0	1	103		Specific number concentration of hail	kg-1
+wmo	0	1	104		Number density of rain	m-3
+wmo	0	1	105		Number density of snow	m-3
+wmo	0	1	106		Number density of graupel	m-3
+wmo	0	1	107		Number density of hail	m-3
+wmo	0	1	108		Specific humidity tendency due to parameterization	kg.kg-1.s-1
+wmo	0	1	109		Mass density of liquid water coating on hail expressed as mass of liquid water per unit volume of air	kg.m-3
+wmo	0	1	110		Specific mass of liquid water coating on hail expressed as mass of liquid water per unit mass of moist air	kg.kg-1
+wmo	0	1	111		Mass mixing ratio of liquid water coating on hail expressed as mass of liquid water per unit mass of dry air	kg.kg-1
+wmo	0	1	112		Mass density of liquid water coating on graupel expressed as mass of liquid water per unit volume of air	kg.m-3
+wmo	0	1	113		Specific mass of liquid water coating on graupel expressed as mass of liquid water per unit mass of moist air	kg.kg-1
+wmo	0	1	114		Mass mixing ratio of liquid water coating on graupel expressed as mass of liquid water per unit mass of dry air	kg.kg-1
+wmo	0	1	115		Mass density of liquid water coating on snow expressed as mass of liquid water per unit volume of air	kg.m-3
+wmo	0	1	116		Specific mass of liquid water coating on snow expressed as mass of liquid water per unit mass of moist air	kg.kg-1
+wmo	0	1	117		Mass mixing ratio of liquid water coating on snow expressed as mass of liquid water per unit mass of dry air	kg.kg-1
+wmo	0	1	118		Unbalanced component of specific humidity	kg.kg-1
+wmo	0	1	119		Unbalanced component of specific cloud liquid water content	kg.kg-1
+wmo	0	1	120		Unbalanced component of specific cloud ice water content	kg.kg-1
+wmo	0	1	121		Fraction of snow cover	
+wmo	0	1	255		Missing	
+wmo	0	2	0		Wind direction (from which blowing)	degree_true
+wmo	0	2	1		Wind speed	m/s
+wmo	0	2	2		u-component of wind	m/s
+wmo	0	2	3		v-component of wind	m/s
+wmo	0	2	4		Stream function	m2/s
+wmo	0	2	5		Velocity potential	m2/s
+wmo	0	2	6		Montgomery stream function	m2.s-2
+wmo	0	2	7		Sigma coordinate vertical velocity	1/s
+wmo	0	2	8		Vertical velocity (pressure)	Pa/s
+wmo	0	2	9		Vertical velocity (geometric)	m/s
+wmo	0	2	10		Absolute vorticity	1/s
+wmo	0	2	11		Absolute divergence	1/s
+wmo	0	2	12		Relative vorticity	1/s
+wmo	0	2	13		Relative divergence	1/s
+wmo	0	2	14		Potential vorticity	K.m2.kg-1.s-1
+wmo	0	2	15		Vertical u-component shear	1/s
+wmo	0	2	16		Vertical v-component shear	1/s
+wmo	0	2	17		Momentum flux, u-component	N.m-2
+wmo	0	2	18		Momentum flux, v-component	N.m-2
+wmo	0	2	19		Wind mixing energy	J
+wmo	0	2	20		Boundary layer dissipation	W.m-2
+wmo	0	2	21		Maximum wind speed	m/s
+wmo	0	2	22		Wind speed (gust)	m/s
+wmo	0	2	23		u-component of wind (gust)	m/s
+wmo	0	2	24		v-component of wind (gust)	m/s
+wmo	0	2	25		Vertical speed shear	1/s
+wmo	0	2	26		Horizontal momentum flux	N.m-2
+wmo	0	2	27		u-component storm motion	m/s
+wmo	0	2	28		v-component storm motion	m/s
+wmo	0	2	29		Drag coefficient	
+wmo	0	2	30		Frictional velocity	m/s
+wmo	0	2	31		Turbulent diffusion coefficient for momentum	m2/s
+wmo	0	2	32		Eta coordinate vertical velocity	1/s
+wmo	0	2	33		Wind fetch	m
+wmo	0	2	34		Normal wind component	m/s
+wmo	0	2	35		Tangential wind component	m/s
+wmo	0	2	36		Amplitude function for Rossby wave envelope for meridional wind	m/s
+wmo	0	2	37		Northward turbulent surface stress	N.m-2.s
+wmo	0	2	38		Eastward turbulent surface stress	N.m-2.s
+wmo	0	2	39		Eastward wind tendency due to parameterization	m.s-2
+wmo	0	2	40		Northward wind tendency due to parameterization	m.s-2
+wmo	0	2	41		u-component of geostrophic wind	m.s-1
+wmo	0	2	42		v-component of geostrophic wind	m.s-1
+wmo	0	2	43		Geostrophic wind direction	degree_true
+wmo	0	2	44		Geostrophic wind speed	m.s-1
+wmo	0	2	45		Unbalanced component of divergence	s-1
+wmo	0	2	46		Vorticity advection	s-2
+wmo	0	2	255		Missing	
+wmo	0	3	0		Pressure	Pa
+wmo	0	3	1		Pressure reduced to MSL	Pa
+wmo	0	3	2		Pressure tendency	Pa/s
+wmo	0	3	3		ICAO Standard Atmosphere Reference Height	m
+wmo	0	3	4		Geopotential	m2.s-2
+wmo	0	3	5		Geopotential height	gpm
+wmo	0	3	6		Geometric height	m
+wmo	0	3	7		Standard deviation of height	m
+wmo	0	3	8		Pressure anomaly	Pa
+wmo	0	3	9		Geopotential height anomaly	gpm
+wmo	0	3	10		Density	kg.m-3
+wmo	0	3	11		Altimeter setting	Pa
+wmo	0	3	12		Thickness	m
+wmo	0	3	13		Pressure altitude	m
+wmo	0	3	14		Density altitude	m
+wmo	0	3	15		5-wave geopotential height	gpm
+wmo	0	3	16		Zonal flux of gravity wave stress	N.m-2
+wmo	0	3	17		Meridional flux of gravity wave stress	N.m-2
+wmo	0	3	18		Planetary boundary layer height	m
+wmo	0	3	19		5-wave geopotential height anomaly	gpm
+wmo	0	3	20		Standard deviation of sub-grid scale orography	m
+wmo	0	3	21		Angle of sub-gridscale orography	rad
+wmo	0	3	22		Slope of sub-gridscale orography	
+wmo	0	3	23		Gravity wave dissipation	W.m-2
+wmo	0	3	24		Anisotropy of sub-gridscale orography	
+wmo	0	3	25		Natural logarithm of pressure in Pa	
+wmo	0	3	26		Exner pressure	
+wmo	0	3	27		Updraught mass flux	kg.m-2.s-1
+wmo	0	3	28		Downdraught mass flux	kg.m-2.s-1
+wmo	0	3	29		Updraught detrainment rate	kg.m-3.s-1
+wmo	0	3	30		Downdraught detrainment rate	kg.m-3.s-1
+wmo	0	3	31		Unbalanced component of logarithm of surface pressure	
+wmo	0	3	255		Missing	
+wmo	0	4	0		Net short-wave radiation flux (surface)	W.m-2
+wmo	0	4	1		Net short-wave radiation flux (top of atmosphere)	W.m-2
+wmo	0	4	2		Short-wave radiation flux	W.m-2
+wmo	0	4	3		Global radiation flux	W.m-2
+wmo	0	4	4		Brightness temperature	K
+wmo	0	4	5		Radiance (with respect to wave number)	W.m-1.sr-1
+wmo	0	4	6		Radiance (with respect to wavelength)	W.m-3.sr-1
+wmo	0	4	7		Downward short-wave radiation flux	W.m-2
+wmo	0	4	8		Upward short-wave radiation flux	W.m-2
+wmo	0	4	9		Net short wave radiation flux	W.m-2
+wmo	0	4	10		Photosynthetically active radiation	W.m-2
+wmo	0	4	11		Net short-wave radiation flux, clear sky	W.m-2
+wmo	0	4	12		Downward UV radiation	W.m-2
+wmo	0	4	13		Direct short-wave radiation flux	W.m-2
+wmo	0	4	14		Diffuse short-wave radiation flux	W.m-2
+wmo	0	4	50		UV index (under clear sky)	
+wmo	0	4	51		UV index	
+wmo	0	4	52		Downward short-wave radiation flux, clear sky	W.m-2
+wmo	0	4	53		Upward short-wave radiation flux, clear sky	W.m-2
+wmo	0	4	255		Missing	
+wmo	0	5	0		Net long-wave radiation flux (surface)	W.m-2
+wmo	0	5	1		Net long-wave radiation flux (top of atmosphere)	W.m-2
+wmo	0	5	2		Long-wave radiation flux	W.m-2
+wmo	0	5	3		Downward long-wave radiation flux	W.m-2
+wmo	0	5	4		Upward long-wave radiation flux	W.m-2
+wmo	0	5	5		Net long-wave radiation flux	W.m-2
+wmo	0	5	6		Net long-wave radiation flux, clear sky	W.m-2
+wmo	0	5	7		Brightness temperature	K
+wmo	0	5	8		Downward long-wave radiation flux, clear sky	W.m-2
+wmo	0	5	255		Missing	
+wmo	0	6	0		Cloud ice	kg.m-2
+wmo	0	6	1		Total cloud cover	%
+wmo	0	6	2		Convective cloud cover	%
+wmo	0	6	3		Low cloud cover	%
+wmo	0	6	4		Medium cloud cover	%
+wmo	0	6	5		High cloud cover	%
+wmo	0	6	6		Cloud water	kg.m-2
+wmo	0	6	7		Cloud amount	%
+wmo	0	6	8		Cloud type	(Code table 4.203)
+wmo	0	6	9		Thunderstorm maximum tops	m
+wmo	0	6	10		Thunderstorm coverage	(Code table 4.204)
+wmo	0	6	11		Cloud base	m
+wmo	0	6	12		Cloud top	m
+wmo	0	6	13		Ceiling	m
+wmo	0	6	14		Non-convective cloud cover	%
+wmo	0	6	15		Cloud work function	J/kg
+wmo	0	6	16		Convective cloud efficiency	
+wmo	0	6	17		Total condensate	kg/kg
+wmo	0	6	18		Total column-integrated cloud water	kg.m-2
+wmo	0	6	19		Total column-integrated cloud ice	kg.m-2
+wmo	0	6	20		Total column-integrated condensate	kg.m-2
+wmo	0	6	21		Ice fraction of total condensate	
+wmo	0	6	22		Cloud cover	%
+wmo	0	6	23		Cloud ice mixing ratio	kg/kg
+wmo	0	6	24		Sunshine	
+wmo	0	6	25		Horizontal extent of cumulonimbus (CB)	%
+wmo	0	6	26		Height of convective cloud base	m
+wmo	0	6	27		Height of convective cloud top	m
+wmo	0	6	28		Number of cloud droplets per unit mass of air	1/kg
+wmo	0	6	29		Number of cloud ice particles per unit mass of air	1/kg
+wmo	0	6	30		Number density of cloud droplets	m-3
+wmo	0	6	31		Number density of cloud ice particles	m-3
+wmo	0	6	32		Fraction of cloud cover	
+wmo	0	6	33		Sunshine duration	s
+wmo	0	6	34		Surface long-wave effective total cloudiness	
+wmo	0	6	35		Surface short-wave effective total cloudiness	
+wmo	0	6	36		Fraction of stratiform precipitation cover	
+wmo	0	6	37		Fraction of convective precipitation cover	
+wmo	0	6	38		Mass density of cloud droplets	kg.m-3
+wmo	0	6	39		Mass density of cloud ice	kg.m-3
+wmo	0	6	40		Mass density of convective cloud water droplets	kg.m-3
+wmo	0	6	47		Volume fraction of cloud water droplets	
+wmo	0	6	48		Volume fraction of cloud ice particles	
+wmo	0	6	49		Volume fraction of cloud (ice and/or water)	
+wmo	0	6	255		Missing	
+wmo	0	7	0		Parcel lifted index (to 500 hPa)	K
+wmo	0	7	1		Best lifted index (to 500 hPa)	K
+wmo	0	7	2		K index	K
+wmo	0	7	3		KO index	K
+wmo	0	7	4		Total totals index	K
+wmo	0	7	5		Sweat index	
+wmo	0	7	6		Convective available potential energy	J/kg
+wmo	0	7	7		Convective inhibition	J/kg
+wmo	0	7	8		Storm relative helicity	J/kg
+wmo	0	7	9		Energy helicity index	
+wmo	0	7	10		Surface lifted index	K
+wmo	0	7	11		Best (4-layer) lifted index	K
+wmo	0	7	12		Richardson number	
+wmo	0	7	13		Showalter index	K
+wmo	0	7	14		Reserved	
+wmo	0	7	15		Updraught helicity	m2.s-2
+wmo	0	7	16		Bulk Richardson number	
+wmo	0	7	17		Gradient Richardson number	
+wmo	0	7	18		Flux Richardson number	
+wmo	0	7	19		Convective available potential energy - shear	m2.s-2
+wmo	0	7	255		Missing	
+wmo	0	13	0		Aerosol type	(Code table 4.205)
+wmo	0	13	255		Missing	
+wmo	0	14	0		Total ozone	DU
+wmo	0	14	1		Ozone mixing ratio	kg/kg
+wmo	0	14	2		Total column integrated ozone	DU
+wmo	0	14	255		Missing	
+wmo	0	15	0		Base spectrum width	m/s
+wmo	0	15	1		Base reflectivity	dB
+wmo	0	15	2		Base radial velocity	m/s
+wmo	0	15	3		Vertically integrated liquid water (VIL)	kg.m-2
+wmo	0	15	4		Layer-maximum base reflectivity	dB
+wmo	0	15	5		Precipitation	kg.m-2
+wmo	0	15	6		Radar spectra (1)	
+wmo	0	15	7		Radar spectra (2)	
+wmo	0	15	8		Radar spectra (3)	
+wmo	0	15	9		Reflectivity of cloud droplets	dB
+wmo	0	15	10		Reflectivity of cloud ice	dB
+wmo	0	15	11		Reflectivity of snow	dB
+wmo	0	15	12		Reflectivity of rain	dB
+wmo	0	15	13		Reflectivity of graupel	dB
+wmo	0	15	14		Reflectivity of hail	dB
+wmo	0	15	15		Hybrid scan reflectivity	dB
+wmo	0	15	16		Hybrid scan reflectivity height	m
+wmo	0	15	255		Missing	
+wmo	0	16	0		Equivalent radar reflectivity factor for rain	mm6.m-3
+wmo	0	16	1		Equivalent radar reflectivity factor for snow	mm6.m-3
+wmo	0	16	2		Equivalent radar reflectivity factor for parameterized convection	mm6.m-3
+wmo	0	16	3		Echo top	m
+wmo	0	16	4		Reflectivity	dB
+wmo	0	16	5		Composite reflectivity	dB
+wmo	0	16	255		Missing	
+wmo	0	17	0		Lightning strike density	m-2.s-1
+wmo	0	17	1		Lightning potential index (LPI)	J.kg-1
+wmo	0	17	2		Cloud-to-ground Lightning flash density	km-2.day-1
+wmo	0	17	3		Cloud-to-cloud Lightning flash density	km-2.day-1
+wmo	0	17	4		Total Lightning flash density	km-2.day-1
+wmo	0	18	0		Air concentration of caesium 137	Bq.m-3
+wmo	0	18	1		Air concentration of iodine 131	Bq.m-3
+wmo	0	18	2		Air concentration of radioactive pollutant	Bq.m-3
+wmo	0	18	3		Ground deposition of caesium 137	Bq.m-2
+wmo	0	18	4		Ground deposition of iodine 131	Bq.m-2
+wmo	0	18	5		Ground deposition of radioactive pollutant	Bq.m-2
+wmo	0	18	6		Time-integrated air concentration of caesium pollutant	Bq.s.m-3
+wmo	0	18	7		Time-integrated air concentration of iodine pollutant	Bq.s.m-3
+wmo	0	18	8		Time-integrated air concentration of radioactive pollutant	Bq.s.m-3
+wmo	0	18	9		Reserved	
+wmo	0	18	10		Air concentration	Bq.m-3
+wmo	0	18	11		Wet deposition	Bq.m-2
+wmo	0	18	12		Dry deposition	Bq.m-2
+wmo	0	18	13		Total deposition (wet + dry)	Bq.m-2
+wmo	0	18	14		Specific activity concentration	Bq.kg-1
+wmo	0	18	15		Maximum of air concentration in layer	Bq.m-3
+wmo	0	18	16		Height of maximum air concentration	m
+wmo	0	18	17		Column-integrated air concentration	Bq.m-2
+wmo	0	18	18		Column-averaged air concentration in layer	Bq.m-3
+wmo	0	18	255		Missing	
+wmo	0	19	0		Visibility	m
+wmo	0	19	1		Albedo	%
+wmo	0	19	2		Thunderstorm probability	%
+wmo	0	19	3		Mixed layer depth	m
+wmo	0	19	4		Volcanic ash	(Code table 4.206)
+wmo	0	19	5		Icing top	m
+wmo	0	19	6		Icing base	m
+wmo	0	19	7		Icing	(Code table 4.207)
+wmo	0	19	8		Turbulence top	m
+wmo	0	19	9		Turbulence base	m
+wmo	0	19	10		Turbulence	(Code table 4.208)
+wmo	0	19	11		Turbulent kinetic energy	J/kg
+wmo	0	19	12		Planetary boundary-layer regime	(Code table 4.209)
+wmo	0	19	13		Contrail intensity	(Code table 4.210)
+wmo	0	19	14		Contrail engine type	(Code table 4.211)
+wmo	0	19	15		Contrail top	m
+wmo	0	19	16		Contrail base	m
+wmo	0	19	17		Maximum snow albedo	%
+wmo	0	19	18		Snow free albedo	%
+wmo	0	19	19		Snow albedo	%
+wmo	0	19	20		Icing	%
+wmo	0	19	21		In-cloud turbulence	%
+wmo	0	19	22		Clear air turbulence (CAT)	%
+wmo	0	19	23		Supercooled large droplet probability	%
+wmo	0	19	24		Convective turbulent kinetic energy	J/kg
+wmo	0	19	25		Weather	(Code table 4.225)
+wmo	0	19	26		Convective outlook	(Code table 4.224)
+wmo	0	19	27		Icing scenario	(Code table 4.227)
+wmo	0	19	28		Mountain wave turbulence (eddy dissipation rate)	m2/3.s-1
+wmo	0	19	29		Clear air turbulence (CAT)	m2/3.s-1
+wmo	0	19	30		Eddy dissipation parameter	m2/3.s-1
+wmo	0	19	31		Maximum of eddy dissipation parameter in layer	m2/3.s-1
+wmo	0	19	32		Highest freezing level	m
+wmo	0	19	33		Visibility through liquid fog	m
+wmo	0	19	34		Visibility through ice fog	m
+wmo	0	19	35		Visibility through blowing snow	m
+wmo	0	19	255		Missing	
+wmo	0	20	0		Mass density (concentration)	kg.m-3
+wmo	0	20	1		Column-integrated mass density	kg.m-2
+wmo	0	20	2		Mass mixing ratio (mass fraction in air)	kg/kg
+wmo	0	20	3		Atmosphere emission mass flux	kg.m-2.s-1
+wmo	0	20	4		Atmosphere net production mass flux	kg.m-2.s-1
+wmo	0	20	5		Atmosphere net production and emission mass flux	kg.m-2.s-1
+wmo	0	20	6		Surface dry deposition mass flux	kg.m-2.s-1
+wmo	0	20	7		Surface wet deposition mass flux	kg.m-2.s-1
+wmo	0	20	8		Atmosphere re-emission mass flux	kg.m-2.s-1
+wmo	0	20	9		Wet deposition by large-scale precipitation mass flux	kg.m-2.s-1
+wmo	0	20	10		Wet deposition by convective precipitation mass flux	kg.m-2.s-1
+wmo	0	20	11		Sedimentation mass flux	kg.m-2.s-1
+wmo	0	20	12		Dry deposition mass flux	kg.m-2.s-1
+wmo	0	20	13		Transfer from hydrophobic to hydrophilic	kg.kg-1.s-1
+wmo	0	20	14		Transfer from SO2 (sulphur dioxide) to SO4 (sulphate)	kg.kg-1.s-1
+wmo	0	20	50		Amount in atmosphere	mol
+wmo	0	20	51		Concentration in air	mol.m-3
+wmo	0	20	52		Volume mixing ratio (fraction in air)	mol/mol
+wmo	0	20	53		Chemical gross production rate of concentration	mol.m-3.s-1
+wmo	0	20	54		Chemical gross destruction rate of concentration	mol.m-3.s-1
+wmo	0	20	55		Surface flux	mol.m-2.s-1
+wmo	0	20	56		Changes of amount in atmosphere	mol/s
+wmo	0	20	57		Total yearly average burden of the atmosphere	mol
+wmo	0	20	58		Total yearly averaged atmospheric loss	mol/s
+wmo	0	20	59		Aerosol number concentration	m-3
+wmo	0	20	60		Aerosol specific number concentration	kg-1
+wmo	0	20	61		Maximum of mass density in layer	kg.m-3
+wmo	0	20	62		Height of maximum mass density	m
+wmo	0	20	63		Column-averaged mass density in layer	kg.m-3
+wmo	0	20	100		Surface area density (aerosol)	1/m
+wmo	0	20	101		Vertical visual range	m
+wmo	0	20	102		Aerosol optical thickness	
+wmo	0	20	103		Single scattering albedo	
+wmo	0	20	104		Asymmetry factor	
+wmo	0	20	105		Aerosol extinction coefficient	1/m
+wmo	0	20	106		Aerosol absorption coefficient	1/m
+wmo	0	20	107		Aerosol lidar backscatter from satellite	m-1.sr-1
+wmo	0	20	108		Aerosol lidar backscatter from the ground	m-1.sr-1
+wmo	0	20	109		Aerosol lidar extinction from satellite	1/m
+wmo	0	20	110		Aerosol lidar extinction from the ground	1/m
+wmo	0	20	111		Angstrom exponent	
+wmo	0	20	255		Missing	
+wmo	0	190	0		Arbitrary text string	CCITT.IA5
+wmo	0	190	255		Missing	
+wmo	0	191	0		Seconds prior to initial reference time (defined in Section 1)	s
+wmo	0	191	1		Geographical latitude	deg.N
+wmo	0	191	2		Geographical longitude	deg.E
+wmo	0	191	3		Days since last observation	d
+wmo	0	191	255		Missing	
+wmo	1	0	0		Flash flood guidance (Encoded as an accumulation over a floating subinterval of time between the reference time and valid time)	kg.m-2
+wmo	1	0	1		Flash flood runoff (Encoded as an accumulation over a floating subinterval of time)	kg.m-2
+wmo	1	0	2		Remotely-sensed snow cover	(Code table 4.215)
+wmo	1	0	3		Elevation of snow-covered terrain	(Code table 4.216)
+wmo	1	0	4		Snow water equivalent per cent of normal	%
+wmo	1	0	5		Baseflow-groundwater runoff	kg.m-2
+wmo	1	0	6		Storm surface runoff	kg.m-2
+wmo	1	0	7		Discharge from rivers or streams	m3/s
+wmo	1	0	8		Groundwater upper storage	kg.m-2
+wmo	1	0	9		Groundwater lower storage	kg.m-2
+wmo	1	0	10		Side flow into river channel	m3.s-1.m-1
+wmo	1	0	11		River storage of water	m3
+wmo	1	0	12		Floodplain storage of water	m3
+wmo	1	0	13		Depth of water on soil surface	kg.m-2
+wmo	1	0	14		Upstream accumulated precipitation	kg.m-2
+wmo	1	0	15		Upstream accumulated snow melt	kg.m-2
+wmo	1	0	16		Percolation rate	kg.m-2.s-1
+wmo	1	0	255		Missing	
+wmo	1	1	0		Conditional per cent precipitation amount fractile for an overall period (Encoded as an accumulation)	kg.m-2
+wmo	1	1	1		Per cent precipitation in a sub-period of an overall period (Encoded as per cent accumulation over the sub-period)	%
+wmo	1	1	2		Probability of 0.01 inch of precipitation (POP)	%
+wmo	1	1	255		Missing	
+wmo	1	2	0		Water depth	m
+wmo	1	2	1		Water temperature	K
+wmo	1	2	2		Water fraction	
+wmo	1	2	3		Sediment thickness	m
+wmo	1	2	4		Sediment temperature	K
+wmo	1	2	5		Ice thickness	m
+wmo	1	2	6		Ice temperature	K
+wmo	1	2	7		Ice cover	
+wmo	1	2	8		Land cover (0 = water, 1 = land)	
+wmo	1	2	9		Shape factor with respect to salinity profile	
+wmo	1	2	10		Shape factor with respect to temperature profile in thermocline	
+wmo	1	2	11		Attenuation coefficient of water with respect to solar radiation	1/m
+wmo	1	2	12		Salinity	kg/kg
+wmo	1	2	13		Cross-sectional area of flow in channel	m2
+wmo	2	0	0		Land cover (0 = sea, 1 = land)	
+wmo	2	0	1		Surface roughness	m
+wmo	2	0	2		Soil temperature	K
+wmo	2	0	3		Soil moisture content	kg.m-2
+wmo	2	0	4		Vegetation	%
+wmo	2	0	5		Water runoff	kg.m-2
+wmo	2	0	6		Evapotranspiration	kg-2.s-1
+wmo	2	0	7		Model terrain height	m
+wmo	2	0	8		Land use	(Code table 4.212)
+wmo	2	0	9		Volumetric soil moisture content	
+wmo	2	0	10		Ground heat flux	W.m-2
+wmo	2	0	11		Moisture availability	%
+wmo	2	0	12		Exchange coefficient	kg.m-2.s-1
+wmo	2	0	13		Plant canopy surface water	kg.m-2
+wmo	2	0	14		Blackadar’s mixing length scale	m
+wmo	2	0	15		Canopy conductance	m/s
+wmo	2	0	16		Minimal stomatal resistance	s/m
+wmo	2	0	17		Wilting point	
+wmo	2	0	18		Solar parameter in canopy conductance	
+wmo	2	0	19		Temperature parameter in canopy	
+wmo	2	0	20		Humidity parameter in canopy conductance	
+wmo	2	0	21		Soil moisture parameter in canopy conductance	
+wmo	2	0	22		Soil moisture	kg.m-3
+wmo	2	0	23		Column-integrated soil water	kg.m-2
+wmo	2	0	24		Heat flux	W.m-2
+wmo	2	0	25		Volumetric soil moisture	m3.m-3
+wmo	2	0	26		Wilting point	kg.m-3
+wmo	2	0	27		Volumetric wilting point	m3.m-3
+wmo	2	0	28		Leaf area index	
+wmo	2	0	29		Evergreen forest cover	
+wmo	2	0	30		Deciduous forest cover	
+wmo	2	0	31		Normalized differential vegetation index (NDVI)	
+wmo	2	0	32		Root depth of vegetation	m
+wmo	2	0	33		Water runoff and drainage	kg.m-2
+wmo	2	0	34		Surface water runoff	kg.m-2
+wmo	2	0	35		Tile class	Code table 4.243
+wmo	2	0	36		Tile fraction	
+wmo	2	0	37		Tile percentage	%
+wmo	2	0	38		Soil volumetric ice content (water equivalent)	m3.m-3
+wmo	2	0	255		Missing	
+wmo	2	3	0		Soil type	(Code table 4.213)
+wmo	2	3	1		Upper layer soil temperature	K
+wmo	2	3	2		Upper layer soil moisture	kg.m-3
+wmo	2	3	3		Lower layer soil moisture	kg.m-3
+wmo	2	3	4		Bottom layer soil temperature	K
+wmo	2	3	5		Liquid volumetric soil moisture (non-frozen)	
+wmo	2	3	6		Number of soil layers in root zone	
+wmo	2	3	7		Transpiration stress-onset (soil moisture)	
+wmo	2	3	8		Direct evaporation cease (soil moisture)	
+wmo	2	3	9		Soil porosity	
+wmo	2	3	10		Liquid volumetric soil moisture (non-frozen)	m3.m-3
+wmo	2	3	11		Volumetric transpiration stress-onset (soil moisture)	m3.m-3
+wmo	2	3	12		Transpiration stress-onset (soil moisture)	kg.m-3
+wmo	2	3	13		Volumetric direct evaporation cease (soil moisture)	m3.m-3
+wmo	2	3	14		Direct evaporation cease (soil moisture)	kg.m-3
+wmo	2	3	15		Soil porosity	m3.m-3
+wmo	2	3	16		Volumetric saturation of soil moisture	m3.m-3
+wmo	2	3	17		Saturation of soil moisture	kg.m-3
+wmo	2	3	18		Soil temperature	K
+wmo	2	3	19		Soil moisture	kg.m-3
+wmo	2	3	20		Column-integrated soil moisture	kg.m-2
+wmo	2	3	21		Soil ice	kg.m-3
+wmo	2	3	22		Column-integrated soil ice	kg.m-2
+wmo	2	3	23		Liquid water in snow pack	kg.m-2
+wmo	2	3	24		Frost index	K.day-1
+wmo	2	3	25		Snow depth at elevation bands	kg.m-2
+wmo	2	3	26		Soil heat flux	W.m-2
+wmo	2	3	27		Soil depth	m
+wmo	2	3	255		Missing	
+wmo	2	4	0		Fire outlook	Code table 4.224
+wmo	2	4	1		Fire outlook due to dry thunderstorm	Code table 4.224
+wmo	2	4	2		Haines index	
+wmo	2	4	3		Fire burned area	%
+wmo	2	4	4		Fosberg index	
+wmo	2	4	5		Forest Fire Weather Index (Canadian Forest Service)	
+wmo	2	4	6		Fine Fuel Moisture Code (Canadian Forest Service)	
+wmo	2	4	7		Duff Moisture Code (Canadian Forest Service)	
+wmo	2	4	8		Drought Code (Canadian Forest Service)	
+wmo	2	4	9		Initial Fire Spread Index (Canadian Forest Service)	
+wmo	2	4	10		Fire Buildup Index (Canadian Forest Service)	
+wmo	2	4	11		Fire Daily Severity Rating (Canadian Forest Service)	
+wmo	2	4	255		Missing	
+wmo	2	5	1		Glacier temperature	K
+wmo	3	0	0		Scaled radiance	
+wmo	3	0	1		Scaled albedo	
+wmo	3	0	2		Scaled brightness temperature	
+wmo	3	0	3		Scaled precipitable water	
+wmo	3	0	4		Scaled lifted index	
+wmo	3	0	5		Scaled cloud top pressure	
+wmo	3	0	6		Scaled skin temperature	
+wmo	3	0	7		Cloud mask	Code table 4.217
+wmo	3	0	8		Pixel scene type	Code table 4.218
+wmo	3	0	9		Fire detection indicator	Code table 4.223
+wmo	3	0	255		Missing	
+wmo	3	1	0		Estimated precipitation	kg.m-2
+wmo	3	1	1		Instantaneous rain rate	kg.m-2.s-1
+wmo	3	1	2		Cloud top height	m
+wmo	3	1	3		Cloud top height quality indicator	Code table 4.219
+wmo	3	1	4		Estimated u-component of wind	m/s
+wmo	3	1	5		Estimated v-component of wind	m/s
+wmo	3	1	6		Number of pixel used	
+wmo	3	1	7		Solar zenith angle	deg
+wmo	3	1	8		Relative azimuth angle	deg
+wmo	3	1	9		Reflectance in 0.6 micron channel	%
+wmo	3	1	10		Reflectance in 0.8 micron channel	%
+wmo	3	1	11		Reflectance in 1.6 micron channel	%
+wmo	3	1	12		Reflectance in 3.9 micron channel	%
+wmo	3	1	13		Atmospheric divergence	1/s
+wmo	3	1	14		Cloudy brightness temperature	K
+wmo	3	1	15		Clear-sky brightness temperature	K
+wmo	3	1	16		Cloudy radiance (with respect to wave number)	W.m-1.sr-1
+wmo	3	1	17		Clear-sky radiance (with respect to wave number)	W.m-1.sr-1
+wmo	3	1	18		Reserved	
+wmo	3	1	19		Wind speed	m/s
+wmo	3	1	20		Aerosol optical thickness at 0.635 μm	
+wmo	3	1	21		Aerosol optical thickness at 0.810 μm	
+wmo	3	1	22		Aerosol optical thickness at 1.640 μm	
+wmo	3	1	23		Angstrom coefficient	
+wmo	3	1	27		Bidirectional reflectance factor	
+wmo	3	1	28		Brightness temperature	K
+wmo	3	1	29		Scaled radiance	
+wmo	3	1	98		Correlation coefficient between MPE rain-rates for the co-located IR data and the microwave data rain-rates	
+wmo	3	1	99		Standard deviation between MPE rain-rates for the co-located IR data and the microwave data rain-rates	kg.m-2.s-1
+wmo	3	1	255		Missing	
+wmo	3	2	0		Clear sky probability	%
+wmo	3	2	1		Cloud top temperature	K
+wmo	3	2	2		Cloud top pressure	Pa
+wmo	3	2	3		Cloud type	Code table 4.218
+wmo	3	2	4		Cloud phase	Code table 4.218
+wmo	3	2	5		Cloud optical depth	
+wmo	3	2	6		Cloud particle effective radius	m
+wmo	3	2	7		Cloud liquid water path	kg.m-2
+wmo	3	2	8		Cloud ice water path	kg.m-2
+wmo	3	2	9		Cloud albedo	
+wmo	3	2	10		Cloud emissivity	
+wmo	3	2	11		Effective absorption optical depth ratio	
+wmo	3	2	30		Measurement cost	
+wmo	3	2	31		Upper layer cloud optical depth	
+wmo	3	2	32		Upper layer cloud top pressure	Pa
+wmo	3	2	33		Upper layer cloud effective radius	m
+wmo	3	2	34		Error in upper layer cloud optical depth	
+wmo	3	2	35		Error in upper layer cloud top pressure	Pa
+wmo	3	2	36		Error in upper layer cloud effective radius	m
+wmo	3	2	37		Lower layer cloud optical depth	
+wmo	3	2	38		Lower layer cloud top pressure	Pa
+wmo	3	2	39		Error in lower layer cloud optical depth	
+wmo	3	2	40		Error in lower layer cloud top pressure	Pa
+wmo	3	3	0		Probability of encountering marginal visual flight rule conditions	%
+wmo	3	3	1		Probability of encountering low instrument flight rule conditions	%
+wmo	3	3	2		Probability of encountering instrument flight rule conditions	%
+wmo	3	4	0		Volcanic ash probability	%
+wmo	3	4	1		Volcanic ash cloud top temperature	K
+wmo	3	4	2		Volcanic ash cloud top pressure	Pa
+wmo	3	4	3		Volcanic ash cloud top height	m
+wmo	3	4	4		Volcanic ash cloud emissivity	
+wmo	3	4	5		Volcanic ash effective absorption optical depth ratio	
+wmo	3	4	6		Volcanic ash cloud optical depth	
+wmo	3	4	7		Volcanic ash column density	kg.m-2
+wmo	3	4	8		Volcanic ash particle effective radius	m
+wmo	3	5	0		Interface sea-surface temperature	K
+wmo	3	5	1		Skin sea-surface temperature	K
+wmo	3	5	2		Sub-skin sea-surface temperature	K
+wmo	3	5	3		Foundation sea-surface temperature	K
+wmo	3	5	4		Estimated bias between sea-surface temperature and standard	K
+wmo	3	5	5		Estimated standard deviation between sea surface temperature and standard	K
+wmo	3	6	0		Global solar irradiance	W.m-2
+wmo	3	6	1		Global solar exposure	J.m-2
+wmo	3	6	2		Direct solar irradiance	W.m-2
+wmo	3	6	3		Direct solar exposure	J.m-2
+wmo	3	6	4		Diffuse solar irradiance	W.m-2
+wmo	3	6	5		Diffuse solar exposure	J.m-2
+wmo	10	0	0		Wave spectra (1)	
+wmo	10	0	1		Wave spectra (2)	
+wmo	10	0	2		Wave spectra (3)	
+wmo	10	0	3		Significant height of combined wind waves and swell	m
+wmo	10	0	4		Direction of wind waves	degree_true
+wmo	10	0	5		Significant height of wind waves	m
+wmo	10	0	6		Mean period of wind waves	s
+wmo	10	0	7		Direction of swell waves	degree_true
+wmo	10	0	8		Significant height of swell waves	m
+wmo	10	0	9		Mean period of swell waves	s
+wmo	10	0	10		Primary wave direction	degree_true
+wmo	10	0	11		Primary wave mean period	s
+wmo	10	0	12		Secondary wave direction	degree_true
+wmo	10	0	13		Secondary wave mean period	s
+wmo	10	0	14		Direction of combined wind waves and swell	degree_true
+wmo	10	0	15		Mean period of combined wind waves and swell	s
+wmo	10	0	16		Coefficient of drag with waves	
+wmo	10	0	17		Friction velocity	m/s
+wmo	10	0	18		Wave stress	N.m-2
+wmo	10	0	19		Normalized wave stress	
+wmo	10	0	20		Mean square slope of waves	
+wmo	10	0	21		u-component surface Stokes drift	m/s
+wmo	10	0	22		v-component surface Stokes drift	m/s
+wmo	10	0	23		Period of maximum individual wave height	s
+wmo	10	0	24		Maximum individual wave height	m
+wmo	10	0	25		Inverse mean wave frequency	s
+wmo	10	0	26		Inverse mean frequency of wind waves	s
+wmo	10	0	27		Inverse mean frequency of total swell	s
+wmo	10	0	28		Mean zero-crossing wave period	s
+wmo	10	0	29		Mean zero-crossing period of wind waves	s
+wmo	10	0	30		Mean zero-crossing period of total swell	s
+wmo	10	0	31		Wave directional width	
+wmo	10	0	32		Directional width of wind waves	
+wmo	10	0	33		Directional width of total swell	
+wmo	10	0	34		Peak wave period	s
+wmo	10	0	35		Peak period of wind waves	s
+wmo	10	0	36		Peak period of total swell	s
+wmo	10	0	37		Altimeter wave height	m
+wmo	10	0	38		Altimeter corrected wave height	m
+wmo	10	0	39		Altimeter range relative correction	
+wmo	10	0	40		10-metre neutral wind speed over waves	m/s
+wmo	10	0	41		10-metre wind direction over waves	deg
+wmo	10	0	42		Wave energy spectrum	m2.s.rad-1
+wmo	10	0	43		Kurtosis of the sea-surface elevation due to waves	
+wmo	10	0	44		Benjamin-Feir index	
+wmo	10	0	45		Spectral peakedness factor	1/s
+wmo	10	0	46		Peak wave direction	deg
+wmo	10	0	47		Significant wave height of first swell partition	m
+wmo	10	0	48		Significant wave height of second swell partition	m
+wmo	10	0	49		Significant wave height of third swell partition	m
+wmo	10	0	50		Mean wave period of first swell partition	s
+wmo	10	0	51		Mean wave period of second swell partition	s
+wmo	10	0	52		Mean wave period of third swell partition	s
+wmo	10	0	53		Mean wave direction of first swell partition	deg
+wmo	10	0	54		Mean wave direction of second swell partition	deg
+wmo	10	0	55		Mean wave direction of third swell partition	deg
+wmo	10	0	255		Missing	
+wmo	10	1	0		Current direction	degree_true
+wmo	10	1	1		Current speed	m/s
+wmo	10	1	2		u-component of current	m/s
+wmo	10	1	3		v-component of current	m/s
+wmo	10	1	4		Rip current occurrence probability	%
+wmo	10	1	255		Missing	
+wmo	10	2	0		Ice cover	
+wmo	10	2	1		Ice thickness	m
+wmo	10	2	2		Direction of ice drift	degree_true
+wmo	10	2	3		Speed of ice drift	m/s
+wmo	10	2	4		u-component of ice drift	m/s
+wmo	10	2	5		v-component of ice drift	m/s
+wmo	10	2	6		Ice growth rate	m/s
+wmo	10	2	7		Ice divergence	1/s
+wmo	10	2	8		Ice temperature	K
+wmo	10	2	9		Module of ice internal pressure	Pa.m
+wmo	10	2	10		Zonal vector component of vertically integrated ice internal pressure	Pa.m
+wmo	10	2	11		Meridional vector component of vertically integrated ice internal pressure	Pa.m
+wmo	10	2	12		Compressive ice strength	N/m
+wmo	10	2	255		Missing	
+wmo	10	3	0		Water temperature	K
+wmo	10	3	1		Deviation of sea level from mean	m
+wmo	10	3	2		Heat exchange coefficient	
+wmo	10	3	255		Missing	
+wmo	10	4	0		Main thermocline depth	m
+wmo	10	4	1		Main thermocline anomaly	m
+wmo	10	4	2		Transient thermocline depth	m
+wmo	10	4	3		Salinity	kg/kg
+wmo	10	4	4		Ocean vertical heat diffusivity	m2/s
+wmo	10	4	5		Ocean vertical salt diffusivity	m2/s
+wmo	10	4	6		Ocean vertical momentum diffusivity	m2/s
+wmo	10	4	7		Bathymetry	m
+wmo	10	4	11		Shape factor with respect to salinity profile	
+wmo	10	4	12		Shape factor with respect to temperature profile in thermocline	
+wmo	10	4	13		Attenuation coefficient of water with respect to solar radiation	1/m
+wmo	10	4	14		Water depth	m
+wmo	10	4	15		Water temperature	K
+wmo	10	4	255		Missing	
+wmo	10	191	0		Seconds prior to initial reference time (defined in Section 1)	s
+wmo	10	191	1		Meridional overturning stream function	m3/s
+wmo	10	191	2		Reserved	
+wmo	10	191	3		Days since last observation	d
+wmo	10	191	255		Missing	
+ncep	0	0	0	TMP	Temperature	K
+ncep	0	0	1	VTMP	Virtual temperature	K
+ncep	0	0	2	POT	Potential temperature	K
+ncep	0	0	3	EPOT	Pseudo-adiabatic potential temperature or equivalent potential temperature	K
+ncep	0	0	4	TMAX	Maximum temperature	K
+ncep	0	0	5	TMIN	Minimum temperature	K
+ncep	0	0	6	DPT	Dewpoint temperature	K
+ncep	0	0	7	DEPR	Dewpoint depression (or deficit)	K
+ncep	0	0	8	LAPR	Lapse rate	K/m
+ncep	0	0	9	TMPA	Temperature anomaly	K
+ncep	0	0	10	LHTFL	Latent heat net flux	W.m-2
+ncep	0	0	11	SHTFL	Sensible heat net flux	W.m-2
+ncep	0	0	12	HEATX	Heat index	K
+ncep	0	0	13	WCF	Wind chill factor	K
+ncep	0	0	14	MINDPD	Minimum dewpoint depression	K
+ncep	0	0	15	VPTMP	Virtual potential temperature	K
+ncep	0	0	16	SNOHF	Snow phase change heat flux	W.m-2
+ncep	0	0	17	SKINT	Skin temperature	K
+ncep	0	0	18	SNOT	Snow temperature (top of snow)	K
+ncep	0	0	19	TTCHT	Turbulent transfer coefficient for heat	
+ncep	0	0	20	TDCHT	Turbulent diffusion coefficient for heat	m2/s
+ncep	0	0	21	APTMP	Apparent temperature	K
+ncep	0	0	22	TTSWR	Temperature tendency due to short-wave radiation	K.s-1
+ncep	0	0	23	TTLWR	Temperature tendency due to long-wave radiation	K.s-1
+ncep	0	0	24	TTSWRCS	Temperature tendency due to short-wave radiation, clear sky	K.s-1
+ncep	0	0	25	TTLWRCS	Temperature tendency due to long-wave radiation, clear sky	K.s-1
+ncep	0	0	26	TTPARM	Temperature tendency due to parameterization	K.s-1
+ncep	0	0	27	WETBT	Wet-bulb temperature	K
+ncep	0	0	28	UCTMP	Unbalanced component of temperature	K
+ncep	0	0	29	TMPADV	Temperature advection	K.s-1
+ncep	0	0	192	SNOHF	Snow Phase Change Heat Flux	W.m-2
+ncep	0	0	193	TTRAD	Temperature Tendency by All Radiation	K.s-1
+ncep	0	0	194	REV	Relative Error Variance	
+ncep	0	0	195	LRGHR	Large Scale Condensate Heating Rate	K.s-1
+ncep	0	0	196	CNVHR	Deep Convective Heating Rate	K.s-1
+ncep	0	0	197	THFLX	Total Downward Heat Flux at Surface	W.m-2
+ncep	0	0	198	TTDIA	Temperature Tendency by All Physics	K.s-1
+ncep	0	0	199	TTPHY	Temperature Tendency by Non-radiation Physics	K.s-1
+ncep	0	0	200	TSD1D	Standard Dev. of IR Temp. over 1x1 deg. area	K
+ncep	0	0	201	SHAHR	Shallow Convective Heating Rate	K.s-1
+ncep	0	0	202	VDFHR	Vertical Diffusion Heating rate	K.s-1
+ncep	0	0	203	THZ0	Potential Temperature at Top of Viscous Sublayer	K
+ncep	0	0	204	TCHP	Tropical Cyclone Heat Potential	Jm-2K
+ncep	0	1	0	SPFH	Specific humidity	kg/kg
+ncep	0	1	1	RH	Relative humidity	%
+ncep	0	1	2	MIXR	Humidity mixing ratio	kg/kg
+ncep	0	1	3	PWAT	Precipitable water	kg.m-2
+ncep	0	1	4	VAPP	Vapour pressure	Pa
+ncep	0	1	5	SATD	Saturation deficit	Pa
+ncep	0	1	6	EVP	Evaporation	kg.m-2
+ncep	0	1	7	PRATE	Precipitation rate	kg.m-2.s-1
+ncep	0	1	8	APCP	Total precipitation	kg.m-2
+ncep	0	1	9	NCPCP	Large-scale precipitation (non-convective)	kg.m-2
+ncep	0	1	10	ACPCP	Convective precipitation	kg.m-2
+ncep	0	1	11	SNOD	Snow depth	m
+ncep	0	1	12	SRWEQ	Snowfall rate water equivalent	kg.m-2.s-1
+ncep	0	1	13	WEASD	Water equivalent of accumulated snow depth	kg.m-2
+ncep	0	1	14	SNOC	Convective snow	kg.m-2
+ncep	0	1	15	SNOL	Large-scale snow	kg.m-2
+ncep	0	1	16	SNOM	Snow melt	kg.m-2
+ncep	0	1	17	SNOAG	Snow age	d
+ncep	0	1	18	ABSH	Absolute humidity	kg.m-3
+ncep	0	1	19	PTYPE	Precipitation type	(Code table 4.201)
+ncep	0	1	20	ILIQW	Integrated liquid water	kg.m-2
+ncep	0	1	21	TCOND	Condensate	kg/kg
+ncep	0	1	22	CLWMR	Cloud mixing ratio	kg/kg
+ncep	0	1	23	ICMR	Ice water mixing ratio	kg/kg
+ncep	0	1	24	RWMR	Rain mixing ratio	kg/kg
+ncep	0	1	25	SNMR	Snow mixing ratio	kg/kg
+ncep	0	1	26	MCONV	Horizontal moisture convergence	kg.kg-1.s-1
+ncep	0	1	27	MAXRH	Maximum relative humidity	%
+ncep	0	1	28	MAXAH	Maximum absolute humidity	kg.m-3
+ncep	0	1	29	ASNOW	Total snowfall	m
+ncep	0	1	30	PWCAT	Precipitable water category	(Code table 4.202)
+ncep	0	1	31	HAIL	Hail	m
+ncep	0	1	32	GRLE	Graupel (snow pellets)	kg/kg
+ncep	0	1	33	CRAIN	Categorical rain	(Code table 4.222)
+ncep	0	1	34	CFRZR	Categorical freezing rain	(Code table 4.222)
+ncep	0	1	35	CICEP	Categorical ice pellets	(Code table 4.222)
+ncep	0	1	36	CSNOW	Categorical snow	(Code table 4.222)
+ncep	0	1	37	CPRAT	Convective precipitation rate	kg.m-2.s-1
+ncep	0	1	38	MDIVER	Horizontal moisture divergence	kg.kg-1.s-1
+ncep	0	1	39	CPOFP	Per cent frozen precipitation	%
+ncep	0	1	40	PEVAP	Potential evaporation	kg.m-2
+ncep	0	1	41	PEVPR	Potential evaporation rate	W.m-2
+ncep	0	1	42	SNOWC	Snow cover	%
+ncep	0	1	43	FRAIN	Rain fraction of total cloud water	
+ncep	0	1	44	RIME	Rime factor	
+ncep	0	1	45	TCOLR	Total column integrated rain	kg.m-2
+ncep	0	1	46	TCOLS	Total column integrated snow	kg.m-2
+ncep	0	1	47	LSWP	Large scale water precipitation (non-convective)	kg.m-2
+ncep	0	1	48	CWP	Convective water precipitation	kg.m-2
+ncep	0	1	49	TWATP	Total water precipitation	kg.m-2
+ncep	0	1	50	TSNOWP	Total snow precipitation	kg.m-2
+ncep	0	1	51	TCWAT	Total column water (Vertically integrated total water (vapour + cloud water/ice))	kg.m-2
+ncep	0	1	52	TPRATE	Total precipitation rate	kg.m-2.s-1
+ncep	0	1	53	TSRWE	Total snowfall rate water equivalent	kg.m-2.s-1
+ncep	0	1	54	LSPRATE	Large scale precipitation rate	kg.m-2.s-1
+ncep	0	1	55	CSRWE	Convective snowfall rate water equivalent	kg.m-2.s-1
+ncep	0	1	56	LSSRWE	Large scale snowfall rate water equivalent	kg.m-2.s-1
+ncep	0	1	57	TSRATE	Total snowfall rate	m/s
+ncep	0	1	58	CSRATE	Convective snowfall rate	m/s
+ncep	0	1	59	LSSRATE	Large scale snowfall rate	m/s
+ncep	0	1	60	SDWE	Snow depth water equivalent	kg.m-2
+ncep	0	1	61	SDEN	Snow density	kg.m-3
+ncep	0	1	62	SEVAP	Snow evaporation	kg.m-2
+ncep	0	1	63		Reserved	
+ncep	0	1	64	TCIWV	Total column integrated water vapour	kg.m-2
+ncep	0	1	65	RPRATE	Rain precipitation rate	kg.m-2.s-1
+ncep	0	1	66	SPRATE	Snow precipitation rate	kg.m-2.s-1
+ncep	0	1	67	FPRATE	Freezing rain precipitation rate	kg.m-2.s-1
+ncep	0	1	68	IPRATE	Ice pellets precipitation rate	kg.m-2.s-1
+ncep	0	1	69	TCOLW	Total column integrated cloud water	kg.m-2
+ncep	0	1	70	TCOLI	Total column integrated cloud ice	kg.m-2
+ncep	0	1	71	HAILMXR	Hail mixing ratio	kg/kg
+ncep	0	1	72	TCOLH	Total column integrated hail	kg.m-2
+ncep	0	1	73	HAILPR	Hail precipitation rate	kg.m-2.s-1
+ncep	0	1	74	TCOLG	Total column integrated graupel	kg.m-2
+ncep	0	1	75	GPRATE	Graupel (snow pellets) precipitation rate	kg.m-2.s-1
+ncep	0	1	76	CRRATE	Convective rain rate	kg.m-2.s-1
+ncep	0	1	77	LSRRATE	Large scale rain rate	kg.m-2.s-1
+ncep	0	1	78	TCOLWA	Total column integrated water (all components including precipitation)	kg.m-2
+ncep	0	1	79	EVARATE	Evaporation rate	kg.m-2.s-1
+ncep	0	1	80	TOTCON	Total condensate	kg/kg
+ncep	0	1	81	TCICON	Total column-integrated condensate	kg.m-2
+ncep	0	1	82	CIMIXR	Cloud ice mixing-ratio	kg/kg
+ncep	0	1	83	SCLLWC	Specific cloud liquid water content	kg/kg
+ncep	0	1	84	SCLIWC	Specific cloud ice water content	kg/kg
+ncep	0	1	85	SRAINW	Specific rainwater content	kg/kg
+ncep	0	1	86	SSNOWW	Specific snow water content	kg/kg
+ncep	0	1	87	STRPRATE	Stratiform precipitation rate	kg.m-2.s-1
+ncep	0	1	88	CATCP	Categorical convective precipitation	Code table 4.222
+ncep	0	1	89		Reserved	
+ncep	0	1	90	TKMFLX	Total kinematic moisture flux	kg.kg-1.m.s-1
+ncep	0	1	91	UKMFLX	u-component (zonal) kinematic moisture flux	kg.kg-1.m.s-1
+ncep	0	1	92	VKMFLX	v-component (meridional) kinematic moisture flux	kg.kg-1.m.s-1
+ncep	0	1	93	RHWATER	Relative humidity with respect to water	%
+ncep	0	1	94	RHICE	Relative humidity with respect to ice	%
+ncep	0	1	95	FZPRATE	Freezing or frozen precipitation rate	kg.m-2.s-1
+ncep	0	1	96	MASSDR	Mass density of rain	kg.m-3
+ncep	0	1	97	MASSDS	Mass density of snow	kg.m-3
+ncep	0	1	98	MASSDG	Mass density of graupel	kg.m-3
+ncep	0	1	99	MASSDH	Mass density of hail	kg.m-3
+ncep	0	1	100	SPNCR	Specific number concentration of rain	kg-1
+ncep	0	1	101	SPNCS	Specific number concentration of snow	kg-1
+ncep	0	1	102	SPNCG	Specific number concentration of graupel	kg-1
+ncep	0	1	103	SPNCH	Specific number concentration of hail	kg-1
+ncep	0	1	104	NUMDR	Number density of rain	m-3
+ncep	0	1	105	NUMDS	Number density of snow	m-3
+ncep	0	1	106	NUMDG	Number density of graupel	m-3
+ncep	0	1	107	NUMDH	Number density of hail	m-3
+ncep	0	1	108	SHTPRM	Specific humidity tendency due to parameterization	kg.kg-1.s-1
+ncep	0	1	109	MDLWHVA	Mass density of liquid water coating on hail expressed as mass of liquid water per unit volume of air	kg.m-3
+ncep	0	1	110	SMLWHMA	Specific mass of liquid water coating on hail expressed as mass of liquid water per unit mass of moist air	kg.kg-1
+ncep	0	1	111	MMLWHDA	Mass mixing ratio of liquid water coating on hail expressed as mass of liquid water per unit mass of dry air	kg.kg-1
+ncep	0	1	112	MDLWGVA	Mass density of liquid water coating on graupel expressed as mass of liquid water per unit volume of air	kg.m-3
+ncep	0	1	113	SMLWGMA	Specific mass of liquid water coating on graupel expressed as mass of liquid water per unit mass of moist air	kg.kg-1
+ncep	0	1	114	MMLWGDA	Mass mixing ratio of liquid water coating on graupel expressed as mass of liquid water per unit mass of dry air	kg.kg-1
+ncep	0	1	115	MDLWSVA	Mass density of liquid water coating on snow expressed as mass of liquid water per unit volume of air	kg.m-3
+ncep	0	1	116	SMLWSMA	Specific mass of liquid water coating on snow expressed as mass of liquid water per unit mass of moist air	kg.kg-1
+ncep	0	1	117	MMLWSDA	Mass mixing ratio of liquid water coating on snow expressed as mass of liquid water per unit mass of dry air	kg.kg-1
+ncep	0	1	118	UNCSH	Unbalanced component of specific humidity	kg.kg-1
+ncep	0	1	119	UCSCLW	Unbalanced component of specific cloud liquid water content	kg.kg-1
+ncep	0	1	120	UCSCIW	Unbalanced component of specific cloud ice water content	kg.kg-1
+ncep	0	1	121	FSNOWC	Fraction of snow cover	
+ncep	0	1	129	EFRCWAT	Effective Radius of Cloud Water	m
+ncep	0	1	130	EFRRAIN	Effective Radius of Rain	m
+ncep	0	1	131	EFRCICE	Effective Radius of Cloud Ice	m
+ncep	0	1	132	EFRSNOW	Effective Radius of Snow	m
+ncep	0	1	133	EFRGRL	Effective Radius of Graupel	m
+ncep	0	1	134	EFRHAIL	Effective Radius of Hail	m
+ncep	0	1	135	EFRSLC	Effective Radius of Subgrid Liquid Clouds	m
+ncep	0	1	136	EFRSICEC	Effective Radius of Subgrid Ice Clouds	m
+ncep	0	1	137	EFARRAIN	Effective Aspect Ratio of Rain	
+ncep	0	1	138	EFARCICE	Effective Aspect Ratio of Cloud Ice	
+ncep	0	1	139	EFARSNOW	Effective Aspect Ratio of Snow	
+ncep	0	1	140	EFARGRL	Effective Aspect Ratio of Graupel	
+ncep	0	1	141	EFARHAIL	Effective Aspect Ratio of Hail	
+ncep	0	1	142	EFARSIC	Effective Aspect Ratio of Subgrid Ice Clouds	
+ncep	0	1	192	CRAIN	Categorical Rain	Code table 4.222
+ncep	0	1	193	CFRZR	Categorical Freezing Rain	Code table 4.222
+ncep	0	1	194	CICEP	Categorical Ice Pellets	Code table 4.222
+ncep	0	1	195	CSNOW	Categorical Snow	Code table 4.222
+ncep	0	1	196	CPRAT	Convective Precipitation Rate	kg.m-2.s-1
+ncep	0	1	197	MCONV	Horizontal Moisture Divergence	kg.kg-1.s-1
+ncep	0	1	198	MINRH	Minimum Relative Humidity	%
+ncep	0	1	199	PEVAP	Potential Evaporation	kg.m-2
+ncep	0	1	200	PEVPR	Potential Evaporation Rate	W.m-2
+ncep	0	1	201	SNOWC	Snow Cover	%
+ncep	0	1	202	FRAIN	Rain Fraction of Total Liquid Water	non-dim
+ncep	0	1	203	RIME	Rime Factor	non-dim
+ncep	0	1	204	TCOLR	Total Column Integrated Rain	kg.m-2
+ncep	0	1	205	TCOLS	Total Column Integrated Snow	kg.m-2
+ncep	0	1	206	TIPD	Total Icing Potential Diagnostic	non-dim
+ncep	0	1	207	NCIP	Number concentration for ice particles	non-dim
+ncep	0	1	208	SNOT	Snow temperature	K
+ncep	0	1	209	TCLSW	Total column-integrated supercooled liquid water	kg.m-2
+ncep	0	1	210	TCOLM	Total column-integrated melting ice	kg.m-2
+ncep	0	1	211	EMNP	Evaporation - Precipitation	cm/day
+ncep	0	1	212	SBSNO	Sublimation (evaporation from snow)	W.m-2
+ncep	0	1	213	CNVMR	Deep Convective Moistening Rate	kg.kg-1.s-1
+ncep	0	1	214	SHAMR	Shallow Convective Moistening Rate	kg.kg-1.s-1
+ncep	0	1	215	VDFMR	Vertical Diffusion Moistening Rate	kg.kg-1.s-1
+ncep	0	1	216	CONDP	Condensation Pressure of Parcali Lifted From Indicate Surface	Pa
+ncep	0	1	217	LRGMR	Large scale moistening rate	kg.kg-1.s-1
+ncep	0	1	218	QZ0	Specific humidity at top of viscous sublayer	kg.kg-1
+ncep	0	1	219	QMAX	Maximum specific humidity at 2m	kg.kg-1
+ncep	0	1	220	QMIN	Minimum specific humidity at 2m	kg.kg-1
+ncep	0	1	221	ARAIN	Liquid precipitation (Rainfall)	kg.m-2
+ncep	0	1	222	SNOWT	Snow temperature, depth-avg	K
+ncep	0	1	223	APCPN	Total precipitation (nearest grid point)	kg.m-2
+ncep	0	1	224	ACPCPN	Convective precipitation (nearest grid point)	kg.m-2
+ncep	0	1	225	FRZR	Freezing Rain	kg.m-2
+ncep	0	1	226	PWTHER	Pblackominant Weather (see Note 1)	
+ncep	0	1	227	FROZR	Frozen Rain	kg.m-2
+ncep	0	1	228	FICEAC	Flat Ice Accumulation (FRAM)	kg.m-2
+ncep	0	1	229	LICEAC	Line Ice Accumulation (FRAM)	kg.m-2
+ncep	0	1	230	SLACC	Sleet Accumulation	kg.m-2
+ncep	0	1	231	PPINDX	Precipitation Potential Index	%
+ncep	0	1	232	PROBCIP	Probability Cloud Ice Present	%
+ncep	0	1	233	SNOWLR	Snow Liquid ratio	kg.kg-1
+ncep	0	1	234	PCPDUR	Precipitation Duration	hour
+ncep	0	1	235	CLLMR	Cloud Liquid Mixing Ratio	kg.kg-1
+ncep	0	1	241	TSNOW	Total Snow	kg.m-2
+ncep	0	1	242	RHPW	Relative Humidity with Respect to Precipitable Water	%
+ncep	0	2	0	WDIR	Wind direction (from which blowing)	degree_true
+ncep	0	2	1	WIND	Wind speed	m/s
+ncep	0	2	2	UGRD	u-component of wind	m/s
+ncep	0	2	3	VGRD	v-component of wind	m/s
+ncep	0	2	4	STRM	Stream function	m2/s
+ncep	0	2	5	VPOT	Velocity potential	m2/s
+ncep	0	2	6	MNTSF	Montgomery stream function	m2.s-2
+ncep	0	2	7	SGCVV	Sigma coordinate vertical velocity	1/s
+ncep	0	2	8	VVEL	Vertical velocity (pressure)	Pa/s
+ncep	0	2	9	DZDT	Vertical velocity (geometric)	m/s
+ncep	0	2	10	ABSV	Absolute vorticity	1/s
+ncep	0	2	11	ABSD	Absolute divergence	1/s
+ncep	0	2	12	RELV	Relative vorticity	1/s
+ncep	0	2	13	RELD	Relative divergence	1/s
+ncep	0	2	14	PVORT	Potential vorticity	K.m2.kg-1.s-1
+ncep	0	2	15	VUCSH	Vertical u-component shear	1/s
+ncep	0	2	16	VVCSH	Vertical v-component shear	1/s
+ncep	0	2	17	UFLX	Momentum flux, u-component	N.m-2
+ncep	0	2	18	VFLX	Momentum flux, v-component	N.m-2
+ncep	0	2	19	WMIXE	Wind mixing energy	J
+ncep	0	2	20	BLYDP	Boundary layer dissipation	W.m-2
+ncep	0	2	21	MAXGUST	Maximum wind speed	m/s
+ncep	0	2	22	GUST	Wind speed (gust)	m/s
+ncep	0	2	23	UGUST	u-component of wind (gust)	m/s
+ncep	0	2	24	VGUST	v-component of wind (gust)	m/s
+ncep	0	2	25	VWSH	Vertical speed shear	1/s
+ncep	0	2	26	MFLX	Horizontal momentum flux	N.m-2
+ncep	0	2	27	USTM	u-component storm motion	m/s
+ncep	0	2	28	VSTM	v-component storm motion	m/s
+ncep	0	2	29	CD	Drag coefficient	
+ncep	0	2	30	FRICV	Frictional velocity	m/s
+ncep	0	2	31	TDCMOM	Turbulent diffusion coefficient for momentum	m2/s
+ncep	0	2	32	ETACVV	Eta coordinate vertical velocity	1/s
+ncep	0	2	33	WINDF	Wind fetch	m
+ncep	0	2	34	NWIND	Normal wind component	m/s
+ncep	0	2	35	TWIND	Tangential wind component	m/s
+ncep	0	2	36	AFRWE	Amplitude function for Rossby wave envelope for meridional wind	m/s
+ncep	0	2	37	NTSS	Northward turbulent surface stress	N.m-2.s
+ncep	0	2	38	ETSS	Eastward turbulent surface stress	N.m-2.s
+ncep	0	2	39	EWTPARM	Eastward wind tendency due to parameterization	m.s-2
+ncep	0	2	40	NWTPARM	Northward wind tendency due to parameterization	m.s-2
+ncep	0	2	41	UGWIND	u-component of geostrophic wind	m.s-1
+ncep	0	2	42	VGWIND	v-component of geostrophic wind	m.s-1
+ncep	0	2	43	GEOWD	Geostrophic wind direction	degree_true
+ncep	0	2	44	GEOWS	Geostrophic wind speed	m.s-1
+ncep	0	2	45	UNDIV	Unbalanced component of divergence	s-1
+ncep	0	2	46	VORTADV	Vorticity advection	s-2
+ncep	0	2	192	VWSH	Vertical Speed Shear	s-1
+ncep	0	2	193	MFLX	Horizontal Momentum Flux	N.m-2
+ncep	0	2	194	USTM	U-Component Storm Motion	m.s-1
+ncep	0	2	195	VSTM	V-Component Storm Motion	m.s-1
+ncep	0	2	196	CD	Drag Coefficient	non-dim
+ncep	0	2	197	FRICV	Frictional Velocity	m.s-1
+ncep	0	2	198	LAUV	Latitude of U Wind Component of Velocity	deg
+ncep	0	2	199	LOUV	Longitude of U Wind Component of Velocity	deg
+ncep	0	2	200	LAVV	Latitude of V Wind Component of Velocity	deg
+ncep	0	2	201	LOVV	Longitude of V Wind Component of Velocity	deg
+ncep	0	2	202	LAPP	Latitude of Presure Point	deg
+ncep	0	2	203	LOPP	Longitude of Presure Point	deg
+ncep	0	2	204	VEDH	Vertical Eddy Diffusivity Heat exchange	m2.s-1
+ncep	0	2	205	COVMZ	Covariance between Meridional and Zonal Components of the wind.	m2.s-2
+ncep	0	2	206	COVTZ	Covariance between Temperature and Zonal Components of the wind.	K.m.s-1
+ncep	0	2	207	COVTM	Covariance between Temperature and Meridional Components of the wind.	K.m.s-1
+ncep	0	2	208	VDFUA	Vertical Diffusion Zonal Acceleration	m.s-2
+ncep	0	2	209	VDFVA	Vertical Diffusion Meridional Acceleration	m.s-2
+ncep	0	2	210	GWDU	Gravity wave drag zonal acceleration	m.s-2
+ncep	0	2	211	GWDV	Gravity wave drag meridional acceleration	m.s-2
+ncep	0	2	212	CNVU	Convective zonal momentum mixing acceleration	m.s-2
+ncep	0	2	213	CNVV	Convective meridional momentum mixing acceleration	m.s-2
+ncep	0	2	214	WTEND	Tendency of vertical velocity	m.s-2
+ncep	0	2	215	OMGALF	Omega (Dp/Dt) divide by density	K
+ncep	0	2	216	CNGWDU	Convective Gravity wave drag zonal acceleration	m.s-2
+ncep	0	2	217	CNGWDV	Convective Gravity wave drag meridional acceleration	m.s-2
+ncep	0	2	218	LMV	Velocity Point Model Surface	
+ncep	0	2	219	PVMWW	Potential Vorticity (Mass-Weighted)	1/s/m
+ncep	0	2	220	MAXUVV	Hourly Maximum of Upward Vertical Velocity in the lowest 400hPa	m.s-1
+ncep	0	2	221	MAXDVV	Hourly Maximum of Downward Vertical Velocity in the lowest 400hPa	m.s-1
+ncep	0	2	222	MAXUW	U Component of Hourly Maximum 10m Wind Speed	m.s-1
+ncep	0	2	223	MAXVW	V Component of Hourly Maximum 10m Wind Speed	m.s-1
+ncep	0	2	224	VRATE	Ventilation Rate	m2.s-1
+ncep	0	2	225	TRWSPD	Transport Wind Speed	m.s-1
+ncep	0	2	226	TRWDIR	Transport Wind Direction	Deg
+ncep	0	2	227	TOA10	Earliest Reasonable Arrival Time (10% exceedance)	s
+ncep	0	2	228	TOA50	Most Likely Arrival Time (50% exceedance)	s
+ncep	0	2	229	TOD50	Most Likely Departure Time (50% exceedance)	s
+ncep	0	2	230	TOD90	Latest Reasonable Departure Time (90% exceedance)	s
+ncep	0	2	231	TPWDIR	Tropical Wind Direction	
+ncep	0	2	232	TPWSPD	Tropical Wind Speed	m.s-1
+ncep	0	3	0	PRES	Pressure	Pa
+ncep	0	3	1	PRMSL	Pressure reduced to MSL	Pa
+ncep	0	3	2	PTEND	Pressure tendency	Pa/s
+ncep	0	3	3	ICAHT	ICAO Standard Atmosphere Reference Height	m
+ncep	0	3	4	GP	Geopotential	m2.s-2
+ncep	0	3	5	HGT	Geopotential height	gpm
+ncep	0	3	6	DIST	Geometric height	m
+ncep	0	3	7	HSTDV	Standard deviation of height	m
+ncep	0	3	8	PRESA	Pressure anomaly	Pa
+ncep	0	3	9	GPA	Geopotential height anomaly	gpm
+ncep	0	3	10	DEN	Density	kg.m-3
+ncep	0	3	11	ALTS	Altimeter setting	Pa
+ncep	0	3	12	THICK	Thickness	m
+ncep	0	3	13	PRESALT	Pressure altitude	m
+ncep	0	3	14	DENALT	Density altitude	m
+ncep	0	3	15	5WAVH	5-wave geopotential height	gpm
+ncep	0	3	16	U-GWD	Zonal flux of gravity wave stress	N.m-2
+ncep	0	3	17	V-GWD	Meridional flux of gravity wave stress	N.m-2
+ncep	0	3	18	HPBL	Planetary boundary layer height	m
+ncep	0	3	19	5WAVA	5-wave geopotential height anomaly	gpm
+ncep	0	3	20	SDSGSO	Standard deviation of sub-grid scale orography	m
+ncep	0	3	21	AOSGSO	Angle of sub-gridscale orography	rad
+ncep	0	3	22	SSGSO	Slope of sub-gridscale orography	
+ncep	0	3	23	GWD	Gravity wave dissipation	W.m-2
+ncep	0	3	24	ASGSO	Anisotropy of sub-gridscale orography	
+ncep	0	3	25	NLPRES	Natural logarithm of pressure in Pa	
+ncep	0	3	26	EXPRES	Exner pressure	
+ncep	0	3	27	UMFLX	Updraught mass flux	kg.m-2.s-1
+ncep	0	3	28	DMFLX	Downdraught mass flux	kg.m-2.s-1
+ncep	0	3	29	UDRATE	Updraught detrainment rate	kg.m-3.s-1
+ncep	0	3	30	DDRATE	Downdraught detrainment rate	kg.m-3.s-1
+ncep	0	3	31	UCLSPRS	Unbalanced component of logarithm of surface pressure	
+ncep	0	3	192	MSLET	MSLP (Eta model reduction)	Pa
+ncep	0	3	193	5WAVH	5-Wave Geopotential Height	gpm
+ncep	0	3	194	U-GWD	Zonal Flux of Gravity Wave Stress	N.m-2
+ncep	0	3	195	V-GWD	Meridional Flux of Gravity Wave Stress	N.m-2
+ncep	0	3	196	HPBL	Planetary Boundary Layer Height	m
+ncep	0	3	197	5WAVA	5-Wave Geopotential Height Anomaly	gpm
+ncep	0	3	198	MSLMA	MSLP (MAPS System Reduction)	Pa
+ncep	0	3	199	TSLSA	3-hr pressure tendency (Std. Atmos. Reduction)	Pa.s-1
+ncep	0	3	200	PLPL	Pressure of level from which parcel was lifted	Pa
+ncep	0	3	201	LPSX	X-gradient of Log Pressure	m-1
+ncep	0	3	202	LPSY	Y-gradient of Log Pressure	m-1
+ncep	0	3	203	HGTX	X-gradient of Height	m-1
+ncep	0	3	204	HGTY	Y-gradient of Height	m-1
+ncep	0	3	205	LAYTH	Layer Thickness	m
+ncep	0	3	206	NLGSP	Natural Log of Surface Pressure	ln.(kPa)
+ncep	0	3	207	CNVUMF	Convective updraft mass flux	kg.m-2.s-1
+ncep	0	3	208	CNVDMF	Convective downdraft mass flux	kg.m-2.s-1
+ncep	0	3	209	CNVDEMF	Convective detrainment mass flux	kg.m-2.s-1
+ncep	0	3	210	LMH	Mass Point Model Surface	
+ncep	0	3	211	HGTN	Geopotential Height (nearest grid point)	gpm
+ncep	0	3	212	PRESN	Pressure (nearest grid point)	Pa
+ncep	0	3	213	ORCONV	Orographic Convexity	
+ncep	0	3	214	ORASW	Orographic Asymmetry, W Component	
+ncep	0	3	215	ORASS	Orographic Asymmetry, S Component	
+ncep	0	3	216	ORASSW	Orographic Asymmetry, SW Component	
+ncep	0	3	217	ORASNW	Orographic Asymmetry, NW Component	
+ncep	0	3	218	ORLSW	Orographic Length Scale, W Component	
+ncep	0	3	219	ORLSS	Orographic Length Scale, S Component	
+ncep	0	3	220	ORLSSW	Orographic Length Scale, SW Component	
+ncep	0	3	221	ORLSNW	Orographic Length Scale, NW Component	
+ncep	0	4	0	NSWRS	Net short-wave radiation flux (surface)	W.m-2
+ncep	0	4	1	NSWRT	Net short-wave radiation flux (top of atmosphere)	W.m-2
+ncep	0	4	2	SWAVR	Short-wave radiation flux	W.m-2
+ncep	0	4	3	GRAD	Global radiation flux	W.m-2
+ncep	0	4	4	BRTMP	Brightness temperature	K
+ncep	0	4	5	LWRAD	Radiance (with respect to wave number)	W.m-1.sr-1
+ncep	0	4	6	SWRAD	Radiance (with respect to wavelength)	W.m-3.sr-1
+ncep	0	4	7	DSWRF	Downward short-wave radiation flux	W.m-2
+ncep	0	4	8	USWRF	Upward short-wave radiation flux	W.m-2
+ncep	0	4	9	NSWRF	Net short wave radiation flux	W.m-2
+ncep	0	4	10	PHOTAR	Photosynthetically active radiation	W.m-2
+ncep	0	4	11	NSWRFCS	Net short-wave radiation flux, clear sky	W.m-2
+ncep	0	4	12	DWUVR	Downward UV radiation	W.m-2
+ncep	0	4	13	DSWRFLX	Direct short-wave radiation flux	W.m-2
+ncep	0	4	14	DIFSWRF	Diffuse short-wave radiation flux	W.m-2
+ncep	0	4	50	UVIUCS	UV index (under clear sky)	
+ncep	0	4	51	UVI	UV index	
+ncep	0	4	52	DSWRFCS	Downward short-wave radiation flux, clear sky	W.m-2
+ncep	0	4	53	USWRFCS	Upward short-wave radiation flux, clear sky	W.m-2
+ncep	0	4	192	DSWRF	Downward Short-Wave Radiation Flux	W.m-2
+ncep	0	4	193	USWRF	Upward Short-Wave Radiation Flux	W.m-2
+ncep	0	4	194	DUVB	UV-B Downward Solar Flux	W.m-2
+ncep	0	4	195	CDUVB	Clear sky UV-B Downward Solar Flux	W.m-2
+ncep	0	4	196	CSDSF	Clear Sky Downward Solar Flux	W.m-2
+ncep	0	4	197	SWHR	Solar Radiative Heating Rate	K.s-1
+ncep	0	4	198	CSUSF	Clear Sky Upward Solar Flux	W.m-2
+ncep	0	4	199	CFNSF	Cloud Forcing Net Solar Flux	W.m-2
+ncep	0	4	200	VBDSF	Visible Beam Downward Solar Flux	W.m-2
+ncep	0	4	201	VDDSF	Visible Diffuse Downward Solar Flux	W.m-2
+ncep	0	4	202	NBDSF	Near IR Beam Downward Solar Flux	W.m-2
+ncep	0	4	203	NDDSF	Near IR Diffuse Downward Solar Flux	W.m-2
+ncep	0	4	204	DTRF	Downward Total Radiation Flux	W.m-2
+ncep	0	4	205	UTRF	Upward Total Radiation Flux	W.m-2
+ncep	0	5	0	NLWRS	Net long-wave radiation flux (surface)	W.m-2
+ncep	0	5	1	NLWRT	Net long-wave radiation flux (top of atmosphere)	W.m-2
+ncep	0	5	2	LWAVR	Long-wave radiation flux	W.m-2
+ncep	0	5	3	DLWRF	Downward long-wave radiation flux	W.m-2
+ncep	0	5	4	ULWRF	Upward long-wave radiation flux	W.m-2
+ncep	0	5	5	NLWRF	Net long-wave radiation flux	W.m-2
+ncep	0	5	6	NLWRCS	Net long-wave radiation flux, clear sky	W.m-2
+ncep	0	5	7	BRTEMP	Brightness temperature	K
+ncep	0	5	8	DLWRFCS	Downward long-wave radiation flux, clear sky	W.m-2
+ncep	0	5	192	DLWRF	Downward Long-Wave Rad. Flux	W.m-2
+ncep	0	5	193	ULWRF	Upward Long-Wave Rad. Flux	W.m-2
+ncep	0	5	194	LWHR	Long-Wave Radiative Heating Rate	K.s-1
+ncep	0	5	195	CSULF	Clear Sky Upward Long Wave Flux	W.m-2
+ncep	0	5	196	CSDLF	Clear Sky Downward Long Wave Flux	W.m-2
+ncep	0	5	197	CFNLF	Cloud Forcing Net Long Wave Flux	W.m-2
+ncep	0	6	0	CICE	Cloud ice	kg.m-2
+ncep	0	6	1	TCDC	Total cloud cover	%
+ncep	0	6	2	CDCON	Convective cloud cover	%
+ncep	0	6	3	LCDC	Low cloud cover	%
+ncep	0	6	4	MCDC	Medium cloud cover	%
+ncep	0	6	5	HCDC	High cloud cover	%
+ncep	0	6	6	CWAT	Cloud water	kg.m-2
+ncep	0	6	7	CDCA	Cloud amount	%
+ncep	0	6	8	CDCT	Cloud type	(Code table 4.203)
+ncep	0	6	9	TMAXT	Thunderstorm maximum tops	m
+ncep	0	6	10	THUNC	Thunderstorm coverage	(Code table 4.204)
+ncep	0	6	11	CDCB	Cloud base	m
+ncep	0	6	12	CDCTOP	Cloud top	m
+ncep	0	6	13	CEIL	Ceiling	m
+ncep	0	6	14	CDLYR	Non-convective cloud cover	%
+ncep	0	6	15	CWORK	Cloud work function	J/kg
+ncep	0	6	16	CUEFI	Convective cloud efficiency	
+ncep	0	6	17	TCONDO	Total condensate	kg/kg
+ncep	0	6	18	TCOLWO	Total column-integrated cloud water	kg.m-2
+ncep	0	6	19	TCOLIO	Total column-integrated cloud ice	kg.m-2
+ncep	0	6	20	TCOLC	Total column-integrated condensate	kg.m-2
+ncep	0	6	21	FICE	Ice fraction of total condensate	
+ncep	0	6	22	CDCC	Cloud cover	%
+ncep	0	6	23	CDCIMR	Cloud ice mixing ratio	kg/kg
+ncep	0	6	24	SUNS	Sunshine	
+ncep	0	6	25	CBHE	Horizontal extent of cumulonimbus (CB)	%
+ncep	0	6	26	HCONCB	Height of convective cloud base	m
+ncep	0	6	27	HCONCT	Height of convective cloud top	m
+ncep	0	6	28	NCONCD	Number of cloud droplets per unit mass of air	1/kg
+ncep	0	6	29	NCCICE	Number of cloud ice particles per unit mass of air	1/kg
+ncep	0	6	30	NDENCD	Number density of cloud droplets	m-3
+ncep	0	6	31	NDCICE	Number density of cloud ice particles	m-3
+ncep	0	6	32	FRACCC	Fraction of cloud cover	
+ncep	0	6	33	SUNSD	Sunshine duration	s
+ncep	0	6	34	SLWTC	Surface long-wave effective total cloudiness	
+ncep	0	6	35	SSWTC	Surface short-wave effective total cloudiness	
+ncep	0	6	36	FSTRPC	Fraction of stratiform precipitation cover	
+ncep	0	6	37	FCONPC	Fraction of convective precipitation cover	
+ncep	0	6	38	MASSDCD	Mass density of cloud droplets	kg.m-3
+ncep	0	6	39	MASSDCI	Mass density of cloud ice	kg.m-3
+ncep	0	6	40	MDCCWD	Mass density of convective cloud water droplets	kg.m-3
+ncep	0	6	47	VFRCWD	Volume fraction of cloud water droplets	
+ncep	0	6	48	VFRCICE	Volume fraction of cloud ice particles	
+ncep	0	6	49	VFRCIW	Volume fraction of cloud (ice and/or water)	
+ncep	0	6	192	CDLYR	Non-Convective Cloud Cover	%
+ncep	0	6	193	CWORK	Cloud Work Function	J.kg-1
+ncep	0	6	194	CUEFI	Convective Cloud Efficiency	non-dim
+ncep	0	6	195	TCOND	Total Condensate	kg.kg-1
+ncep	0	6	196	TCOLW	Total Column-Integrated Cloud Water	kg.m-2
+ncep	0	6	197	TCOLI	Total Column-Integrated Cloud Ice	kg.m-2
+ncep	0	6	198	TCOLC	Total Column-Integrated Condensate	kg.m-2
+ncep	0	6	199	FICE	Ice fraction of total condensate	non-dim
+ncep	0	6	200	MFLUX	Convective Cloud Mass Flux	Pa.s-1
+ncep	0	6	201	SUNSD	Sunshine Duration	s
+ncep	0	7	0	PLI	Parcel lifted index (to 500 hPa)	K
+ncep	0	7	1	BLI	Best lifted index (to 500 hPa)	K
+ncep	0	7	2	KX	K index	K
+ncep	0	7	3	KOX	KO index	K
+ncep	0	7	4	TOTALX	Total totals index	K
+ncep	0	7	5	SX	Sweat index	
+ncep	0	7	6	CAPE	Convective available potential energy	J/kg
+ncep	0	7	7	CIN	Convective inhibition	J/kg
+ncep	0	7	8	HLCY	Storm relative helicity	J/kg
+ncep	0	7	9	EHLX	Energy helicity index	
+ncep	0	7	10	LFT X	Surface lifted index	K
+ncep	0	7	11	4LFTX	Best (4-layer) lifted index	K
+ncep	0	7	12	RI	Richardson number	
+ncep	0	7	13	SHWINX	Showalter index	K
+ncep	0	7	14		Reserved	
+ncep	0	7	15	UPHL	Updraught helicity	m2.s-2
+ncep	0	7	16	BLKRN	Bulk Richardson number	
+ncep	0	7	17	GRDRN	Gradient Richardson number	
+ncep	0	7	18	FLXRN	Flux Richardson number	
+ncep	0	7	19	CONAPES	Convective available potential energy - shear	m2.s-2
+ncep	0	7	192	LFT X	Surface Lifted Index	K
+ncep	0	7	193	4LFTX	Best (4 layer) Lifted Index	K
+ncep	0	7	194	RI	Richardson Number	
+ncep	0	7	195	CWDI	Convective Weather Detection Index	
+ncep	0	7	196	UVI	Ultra Violet Index	W.m-2
+ncep	0	7	197	UPHL	Updraft Helicity	m2.s-2
+ncep	0	7	198	LAI	Leaf Area Index	
+ncep	0	7	199	MXUPHL	Hourly Maximum of Updraft Helicity over Layer 2km to 5 km AGL	m2.s-2
+ncep	0	7	200	MNUPHL	Hourly Minimum of Updraft Helicity	m2.s-2
+ncep	0	7	201	BNEGELAY	Bourgoiun Negative Energy Layer (surface to freezing level)	J.kg-1
+ncep	0	7	202	BPOSELAY	Bourgoiun Positive Energy Layer (2k ft AGL to 400 hPa)	J.kg-1
+ncep	0	7	203	DCAPE	Downdraft CAPE	J.kg-1
+ncep	0	7	204	EFHL	Effective Storm Relative Helicity	m2.s-2
+ncep	0	7	205	ESP	Enhanced Stretching Potential	
+ncep	0	7	206	CANGLE	Critical Angle	Degree
+ncep	0	13	0	AEROT	Aerosol type	(Code table 4.205)
+ncep	0	13	192	PMTC	Particulate matter (coarse)	µg.m-3
+ncep	0	13	193	PMTF	Particulate matter (fine)	µg.m-3
+ncep	0	13	194	LPMTF	Particulate matter (fine)	log10.(µg.m-3)
+ncep	0	13	195	LIPMF	Integrated column particulate matter (fine)	log10.(µg.m-3)
+ncep	0	14	0	TOZNE	Total ozone	DU
+ncep	0	14	1	O3MR	Ozone mixing ratio	kg/kg
+ncep	0	14	2	TCIOZ	Total column integrated ozone	DU
+ncep	0	14	192	O3MR	Ozone Mixing Ratio	kg.kg-1
+ncep	0	14	193	OZCON	Ozone Concentration	ppb
+ncep	0	14	194	OZCAT	Categorical Ozone Concentration	Non-Dim
+ncep	0	14	195	VDFOZ	Ozone Vertical Diffusion	kg.kg-1.s-1
+ncep	0	14	196	POZ	Ozone Production	kg.kg-1.s-1
+ncep	0	14	197	TOZ	Ozone Tendency	kg.kg-1.s-1
+ncep	0	14	198	POZT	Ozone Production from Temperature Term	kg.kg-1.s-1
+ncep	0	14	199	POZO	Ozone Production from Column Ozone Term	kg.kg-1.s-1
+ncep	0	14	200	OZMAX1	Ozone Daily Max from 1-hour Average	ppbV
+ncep	0	14	201	OZMAX8	Ozone Daily Max from 8-hour Average	ppbV
+ncep	0	14	202	PDMAX1	PM 2.5 Daily Max from 1-hour Average	g.m-3
+ncep	0	14	203	PDMAX24	PM 2.5 Daily Max from 24-hour Average	g.m-3
+ncep	0	15	0	BSWID	Base spectrum width	m/s
+ncep	0	15	1	BREF	Base reflectivity	dB
+ncep	0	15	2	BRVEL	Base radial velocity	m/s
+ncep	0	15	3	VIL	Vertically integrated liquid water (VIL)	kg.m-2
+ncep	0	15	4	LMAXBR	Layer-maximum base reflectivity	dB
+ncep	0	15	5	PREC	Precipitation	kg.m-2
+ncep	0	15	6	RDSP1	Radar spectra (1)	
+ncep	0	15	7	RDSP2	Radar spectra (2)	
+ncep	0	15	8	RDSP3	Radar spectra (3)	
+ncep	0	15	9	RFCD	Reflectivity of cloud droplets	dB
+ncep	0	15	10	RFCI	Reflectivity of cloud ice	dB
+ncep	0	15	11	RFSNOW	Reflectivity of snow	dB
+ncep	0	15	12	RFRAIN	Reflectivity of rain	dB
+ncep	0	15	13	RFGRPL	Reflectivity of graupel	dB
+ncep	0	15	14	RFHAIL	Reflectivity of hail	dB
+ncep	0	15	15	HSR	Hybrid scan reflectivity	dB
+ncep	0	15	16	HSRHT	Hybrid scan reflectivity height	m
+ncep	0	16	0	REFZR	Equivalent radar reflectivity factor for rain	mm6.m-3
+ncep	0	16	1	REFZI	Equivalent radar reflectivity factor for snow	mm6.m-3
+ncep	0	16	2	REFZC	Equivalent radar reflectivity factor for parameterized convection	mm6.m-3
+ncep	0	16	3	RETOP	Echo top	m
+ncep	0	16	4	REFD	Reflectivity	dB
+ncep	0	16	5	REFC	Composite reflectivity	dB
+ncep	0	16	192	REFZR	Equivalent radar reflectivity factor for rain	m.m6.m-3
+ncep	0	16	193	REFZI	Equivalent radar reflectivity factor for snow	m.m6.m-3
+ncep	0	16	194	REFZC	Equivalent radar reflectivity factor for parameterized convection	m.m6.m-3
+ncep	0	16	195	REFD	Reflectivity	dB
+ncep	0	16	196	REFC	Composite reflectivity	dB
+ncep	0	16	197	RETOP	Echo Top (See Note 1)	m
+ncep	0	16	198	MAXREF	Hourly Maximum of Simulated Reflectivity at 1 km AGL	dB
+ncep	0	17	0	LTNGSD	Lightning strike density	m-2.s-1
+ncep	0	17	1	LTPINX	Lightning potential index (LPI)	J.kg-1
+ncep	0	17	2	CDGDLTFD	Cloud-to-ground Lightning flash density	km-2.day-1
+ncep	0	17	3	CDCDLTFD	Cloud-to-cloud Lightning flash density	km-2.day-1
+ncep	0	17	4	TLGTFD	Total Lightning flash density	km-2.day-1
+ncep	0	17	192	LTNG	Lightning	non-dim
+ncep	0	18	0	ACCES	Air concentration of caesium 137	Bq.m-3
+ncep	0	18	1	ACIOD	Air concentration of iodine 131	Bq.m-3
+ncep	0	18	2	ACRADP	Air concentration of radioactive pollutant	Bq.m-3
+ncep	0	18	3	GDCES	Ground deposition of caesium 137	Bq.m-2
+ncep	0	18	4	GDIOD	Ground deposition of iodine 131	Bq.m-2
+ncep	0	18	5	GDRADP	Ground deposition of radioactive pollutant	Bq.m-2
+ncep	0	18	6	TIACCP	Time-integrated air concentration of caesium pollutant	Bq.s.m-3
+ncep	0	18	7	TIACIP	Time-integrated air concentration of iodine pollutant	Bq.s.m-3
+ncep	0	18	8	TIACRP	Time-integrated air concentration of radioactive pollutant	Bq.s.m-3
+ncep	0	18	9		Reserved	
+ncep	0	18	10	AIRCON	Air concentration	Bq.m-3
+ncep	0	18	11	WETDEP	Wet deposition	Bq.m-2
+ncep	0	18	12	DRYDEP	Dry deposition	Bq.m-2
+ncep	0	18	13	TOTLWD	Total deposition (wet + dry)	Bq.m-2
+ncep	0	18	14	SACON	Specific activity concentration	Bq.kg-1
+ncep	0	18	15	MAXACON	Maximum of air concentration in layer	Bq.m-3
+ncep	0	18	16	HMXACON	Height of maximum air concentration	m
+ncep	0	18	17	CIAIRC	Column-integrated air concentration	Bq.m-2
+ncep	0	18	18	CAACL	Column-averaged air concentration in layer	Bq.m-3
+ncep	0	19	0	VIS	Visibility	m
+ncep	0	19	1	ALBDO	Albedo	%
+ncep	0	19	2	TSTM	Thunderstorm probability	%
+ncep	0	19	3	MIXHT	Mixed layer depth	m
+ncep	0	19	4	VOLASH	Volcanic ash	(Code table 4.206)
+ncep	0	19	5	ICIT	Icing top	m
+ncep	0	19	6	ICIB	Icing base	m
+ncep	0	19	7	ICI	Icing	(Code table 4.207)
+ncep	0	19	8	TURBT	Turbulence top	m
+ncep	0	19	9	TURBB	Turbulence base	m
+ncep	0	19	10	TURB	Turbulence	(Code table 4.208)
+ncep	0	19	11	TKE	Turbulent kinetic energy	J/kg
+ncep	0	19	12	PBLREG	Planetary boundary-layer regime	(Code table 4.209)
+ncep	0	19	13	CONTI	Contrail intensity	(Code table 4.210)
+ncep	0	19	14	CONTET	Contrail engine type	(Code table 4.211)
+ncep	0	19	15	CONTT	Contrail top	m
+ncep	0	19	16	CONTB	Contrail base	m
+ncep	0	19	17	MXSALB	Maximum snow albedo	%
+ncep	0	19	18	SNFALB	Snow free albedo	%
+ncep	0	19	19	SALBD	Snow albedo	%
+ncep	0	19	20	ICIP	Icing	%
+ncep	0	19	21	CTP	In-cloud turbulence	%
+ncep	0	19	22	CAT	Clear air turbulence (CAT)	%
+ncep	0	19	23	SLDP	Supercooled large droplet probability	%
+ncep	0	19	24	CONTKE	Convective turbulent kinetic energy	J/kg
+ncep	0	19	25	WIWW	Weather	(Code table 4.225)
+ncep	0	19	26	CONVO	Convective outlook	(Code table 4.224)
+ncep	0	19	27	ICESC	Icing scenario	(Code table 4.227)
+ncep	0	19	28	MWTURB	Mountain wave turbulence (eddy dissipation rate)	m2/3.s-1
+ncep	0	19	29	CATEDR	Clear air turbulence (CAT)	m2/3.s-1
+ncep	0	19	30	EDPARM	Eddy dissipation parameter	m2/3.s-1
+ncep	0	19	31	MXEDPRM	Maximum of eddy dissipation parameter in layer	m2/3.s-1
+ncep	0	19	32	HIFREL	Highest freezing level	m
+ncep	0	19	33	VISLFOG	Visibility through liquid fog	m
+ncep	0	19	34	VISIFOG	Visibility through ice fog	m
+ncep	0	19	35	VISBSN	Visibility through blowing snow	m
+ncep	0	19	36	PSNOWS	Presence of Snow Squalls	See.Table.4.222
+ncep	0	19	37	ICESEV	Icing Severity	non-dim
+ncep	0	19	192	MXSALB	Maximum Snow Albedo	%
+ncep	0	19	193	SNFALB	Snow-Free Albedo	%
+ncep	0	19	194	SRCONO	Slight risk convective outlook	categorical
+ncep	0	19	195	MRCONO	Moderate risk convective outlook	categorical
+ncep	0	19	196	HRCONO	High risk convective outlook	categorical
+ncep	0	19	197	TORPROB	Tornado probability	%
+ncep	0	19	198	HAILPROB	Hail probability	%
+ncep	0	19	199	WINDPROB	Wind probability	%
+ncep	0	19	200	STORPROB	Significant Tornado probability	%
+ncep	0	19	201	SHAILPRO	Significant Hail probability	%
+ncep	0	19	202	SWINDPRO	Significant Wind probability	%
+ncep	0	19	203	TSTMC	Categorical Thunderstorm	Code table 4.222
+ncep	0	19	204	MIXLY	Number of mixed layers next to surface	integer
+ncep	0	19	205	FLGHT	Flight Category	
+ncep	0	19	206	CICEL	Confidence - Ceiling	
+ncep	0	19	207	CIVIS	Confidence - Visibility	
+ncep	0	19	208	CIFLT	Confidence - Flight Category	
+ncep	0	19	209	LAVNI	Low-Level aviation interest	
+ncep	0	19	210	HAVNI	High-Level aviation interest	
+ncep	0	19	211	SBSALB	Visible, Black Sky Albedo	%
+ncep	0	19	212	SWSALB	Visible, White Sky Albedo	%
+ncep	0	19	213	NBSALB	Near IR, Black Sky Albedo	%
+ncep	0	19	214	NWSALB	Near IR, White Sky Albedo	%
+ncep	0	19	215	PRSVR	Total Probability of Severe Thunderstorms (Days 2,3)	%
+ncep	0	19	216	PRSIGSVR	Total Probability of Extreme Severe Thunderstorms (Days 2,3)	%
+ncep	0	19	217	SIPD	Supercooled Large Droplet (SLD) Icingsee Note 2	See.Table.4.207
+ncep	0	19	218	EPSR	Radiative emissivity	
+ncep	0	19	219	TPFI	Turbulence Potential Forecast Index	
+ncep	0	19	220	SVRTS	Categorical Severe Thunderstorm	Code table 4.222
+ncep	0	19	221	PROCON	Probability of Convection	%
+ncep	0	19	222	CONVP	Convection Potential	Code table 4.222
+ncep	0	19	232	VAFTD	Volcanic Ash Forecast Transport and Dispersion	log10.(kg.m-3)
+ncep	0	19	233	ICPRB	Icing probability	non-dim
+ncep	0	19	234	ICSEV	Icing Severity	non-dim
+ncep	0	19	235	JFWPRB	Joint Fire Weather Probability	%
+ncep	0	19	236	SNOWLVL	Snow Level	m
+ncep	0	19	237	DRYTPROB	Dry Thunderstorm Probability	%
+ncep	0	19	238	ELLINX	Ellrod Index	
+ncep	0	19	239	CWASP	Craven-Wiedenfeld Aggregate Severe Parameter	
+ncep	0	20	0	MASSDEN	Mass density (concentration)	kg.m-3
+ncep	0	20	1	COLMD	Column-integrated mass density	kg.m-2
+ncep	0	20	2	MASSMR	Mass mixing ratio (mass fraction in air)	kg/kg
+ncep	0	20	3	AEMFLX	Atmosphere emission mass flux	kg.m-2.s-1
+ncep	0	20	4	ANPMFLX	Atmosphere net production mass flux	kg.m-2.s-1
+ncep	0	20	5	ANPEMFLX	Atmosphere net production and emission mass flux	kg.m-2.s-1
+ncep	0	20	6	SDDMFLX	Surface dry deposition mass flux	kg.m-2.s-1
+ncep	0	20	7	SWDMFLX	Surface wet deposition mass flux	kg.m-2.s-1
+ncep	0	20	8	AREMFLX	Atmosphere re-emission mass flux	kg.m-2.s-1
+ncep	0	20	9	WLSMFLX	Wet deposition by large-scale precipitation mass flux	kg.m-2.s-1
+ncep	0	20	10	WDCPMFLX	Wet deposition by convective precipitation mass flux	kg.m-2.s-1
+ncep	0	20	11	SEDMFLX	Sedimentation mass flux	kg.m-2.s-1
+ncep	0	20	12	DDMFLX	Dry deposition mass flux	kg.m-2.s-1
+ncep	0	20	13	TRANHH	Transfer from hydrophobic to hydrophilic	kg.kg-1.s-1
+ncep	0	20	14	TRSDS	Transfer from SO2 (sulphur dioxide) to SO4 (sulphate)	kg.kg-1.s-1
+ncep	0	20	15	DDVEL	Dry deposition velocity	m.s-1
+ncep	0	20	16	MSSRDRYA	Mass mixing ratio with respect to dry air	kg.kg-1
+ncep	0	20	17	MSSRWETA	Mass mixing ratio with respect to wet air	kg.kg-1
+ncep	0	20	50	AIA	Amount in atmosphere	mol
+ncep	0	20	51	CONAIR	Concentration in air	mol.m-3
+ncep	0	20	52	VMXR	Volume mixing ratio (fraction in air)	mol/mol
+ncep	0	20	53	CGPRC	Chemical gross production rate of concentration	mol.m-3.s-1
+ncep	0	20	54	CGDRC	Chemical gross destruction rate of concentration	mol.m-3.s-1
+ncep	0	20	55	SFLUX	Surface flux	mol.m-2.s-1
+ncep	0	20	56	COAIA	Changes of amount in atmosphere	mol/s
+ncep	0	20	57	TYABA	Total yearly average burden of the atmosphere	mol
+ncep	0	20	58	TYAAL	Total yearly averaged atmospheric loss	mol/s
+ncep	0	20	59	ANCON	Aerosol number concentration	m-3
+ncep	0	20	60	ASNCON	Aerosol specific number concentration	kg-1
+ncep	0	20	61	MXMASSD	Maximum of mass density in layer	kg.m-3
+ncep	0	20	62	HGTMD	Height of maximum mass density	m
+ncep	0	20	63	CAVEMDL	Column-averaged mass density in layer	kg.m-3
+ncep	0	20	64	MOLRDRYA	Mole fraction with respect to dry air	mol.mol-1
+ncep	0	20	65	MOLRWETA	Mole fraction with respect to wet air	mol.mol-1
+ncep	0	20	66	CINCLDSP	Column-integrated in-cloud scavenging rate by precipitation	kg.m-2.s-1
+ncep	0	20	67	CBLCLDSP	Column-integrated below-cloud scavenging rate by precipitation	kg.m-2.s-1
+ncep	0	20	68	CIRELREP	Column-integrated release rate from evaporating precipitation	kg.m-2.s-1
+ncep	0	20	69	CINCSLSP	Column-integrated in-cloud scavenging rate by large-scale precipitation	kg.m-2.s-1
+ncep	0	20	70	CBECSLSP	Column-integrated below-cloud scavenging rate by large-scale precipitation	kg.m-2.s-1
+ncep	0	20	71	CRERELSP	Column-integrated release rate from evaporating large-scale precipitation	kg.m-2.s-1
+ncep	0	20	72	CINCSRCP	Column-integrated in-cloud scavenging rate by convective precipitation	kg.m-2.s-1
+ncep	0	20	73	CBLCSRCP	Column-integrated below-cloud scavenging rate by convective precipitation	kg.m-2.s-1
+ncep	0	20	74	CIRERECP	Column-integrated release rate from evaporating convective precipitation	kg.m-2.s-1
+ncep	0	20	75	WFIREFLX	Wildfire flux	kg.m-2.s-1
+ncep	0	20	76	EMISFLX	Emission Rate	kg.kg-1.s-1
+ncep	0	20	77	SFCEFLX	Surface Emission flux	kg.m-2.s-1
+ncep	0	20	100	SADEN	Surface area density (aerosol)	1/m
+ncep	0	20	101	ATMTK	Vertical visual range	m
+ncep	0	20	102	AOTK	Aerosol optical thickness	
+ncep	0	20	103	SSALBK	Single scattering albedo	
+ncep	0	20	104	ASYSFK	Asymmetry factor	
+ncep	0	20	105	AECOEF	Aerosol extinction coefficient	1/m
+ncep	0	20	106	AACOEF	Aerosol absorption coefficient	1/m
+ncep	0	20	107	ALBSAT	Aerosol lidar backscatter from satellite	m-1.sr-1
+ncep	0	20	108	ALBGRD	Aerosol lidar backscatter from the ground	m-1.sr-1
+ncep	0	20	109	ALESAT	Aerosol lidar extinction from satellite	1/m
+ncep	0	20	110	ALEGRD	Aerosol lidar extinction from the ground	1/m
+ncep	0	20	111	ANGSTEXP	Angstrom exponent	
+ncep	0	20	112	SCTAOTK	Scattering Aerosol Optical Thickness	
+ncep	0	190	0	ATEXT	Arbitrary text string	CCITT.IA5
+ncep	0	191	0	TSEC	Seconds prior to initial reference time (defined in Section 1)	s
+ncep	0	191	1	GEOLAT	Geographical latitude	deg.N
+ncep	0	191	2	GEOLON	Geographical longitude	deg.E
+ncep	0	191	3	DSLOBS	Days since last observation	d
+ncep	0	191	192	NLAT	Latitude (-90 to 90)	
+ncep	0	191	193	ELON	East Longitude (0 to 360)	
+ncep	0	191	194	RTSEC	Seconds prior to initial reference time	s
+ncep	0	191	195	MLYNO	Model Layer number (From bottom up)	
+ncep	0	191	196	NLATN	Latitude (nearest neighbor) (-90 to 90)	
+ncep	0	191	197	ELONN	East Longitude (nearest neighbor) (0 to 360)	
+ncep	0	192	1	COVMZ	COVMZ	m2/s2
+ncep	0	192	2	COVTZ	COVTZ	K.m/s
+ncep	0	192	3	COVTM	COVTM	K.m/s
+ncep	0	192	4	COVTW	COVTW	K.m/s
+ncep	0	192	5	COVZZ	COVZZ	m2/s2
+ncep	0	192	6	COVMM	COVMM	m2/s2
+ncep	0	192	7	COVQZ	COVQZ	kg/kg.m/s
+ncep	0	192	8	COVQM	COVQM	kg/kg.m/s
+ncep	0	192	9	COVTVV	COVTVV	K.Pa/s
+ncep	0	192	10	COVQVV	COVQVV	kg/kg.Pa/s
+ncep	0	192	11	COVPSPS	COVPSPS	Pa.Pa
+ncep	0	192	12	COVQQ	COVQQ	kg/kg.kg/kg
+ncep	0	192	13	COVVVVV	COVVVVV	Pa2/s2
+ncep	0	192	14	COVTT	COVTT	K.K
+ncep	1	0	0	FFLDG	Flash flood guidance (Encoded as an accumulation over a floating subinterval of time between the reference time and valid time)	kg.m-2
+ncep	1	0	1	FFLDRO	Flash flood runoff (Encoded as an accumulation over a floating subinterval of time)	kg.m-2
+ncep	1	0	2	RSSC	Remotely-sensed snow cover	(Code table 4.215)
+ncep	1	0	3	ESCT	Elevation of snow-covered terrain	(Code table 4.216)
+ncep	1	0	4	SWEPON	Snow water equivalent per cent of normal	%
+ncep	1	0	5	BGRUN	Baseflow-groundwater runoff	kg.m-2
+ncep	1	0	6	SSRUN	Storm surface runoff	kg.m-2
+ncep	1	0	7	DISRS	Discharge from rivers or streams	m3/s
+ncep	1	0	8	GWUPS	Groundwater upper storage	kg.m-2
+ncep	1	0	9	GWLOWS	Groundwater lower storage	kg.m-2
+ncep	1	0	10	SFLORC	Side flow into river channel	m3.s-1.m-1
+ncep	1	0	11	RVERSW	River storage of water	m3
+ncep	1	0	12	FLDPSW	Floodplain storage of water	m3
+ncep	1	0	13	DEPWSS	Depth of water on soil surface	kg.m-2
+ncep	1	0	14	UPAPCP	Upstream accumulated precipitation	kg.m-2
+ncep	1	0	15	UPASM	Upstream accumulated snow melt	kg.m-2
+ncep	1	0	16	PERRATE	Percolation rate	kg.m-2.s-1
+ncep	1	0	192	BGRUN	Baseflow-Groundwater Runoff	kg.m-2
+ncep	1	0	193	SSRUN	Storm Surface Runoff	kg.m-2
+ncep	1	1	0	CPPOP	Conditional per cent precipitation amount fractile for an overall period (Encoded as an accumulation)	kg.m-2
+ncep	1	1	1	PPOSP	Per cent precipitation in a sub-period of an overall period (Encoded as per cent accumulation over the sub-period)	%
+ncep	1	1	2	POP	Probability of 0.01 inch of precipitation (POP)	%
+ncep	1	1	192	CPOZP	Probability of Freezing Precipitation	%
+ncep	1	1	193	CPOFP	Percent of Frozen Precipitation	%
+ncep	1	1	194	PPFFG	Probability of precipitation exceeding flash flood guidance values	%
+ncep	1	1	195	CWR	Probability of Wetting Rain, exceeding in 0.10" in a given time period	%
+ncep	1	2	0	WDPTHIL	Water depth	m
+ncep	1	2	1	WTMPIL	Water temperature	K
+ncep	1	2	2	WFRACT	Water fraction	
+ncep	1	2	3	SEDTK	Sediment thickness	m
+ncep	1	2	4	SEDTMP	Sediment temperature	K
+ncep	1	2	5	ICTKIL	Ice thickness	m
+ncep	1	2	6	ICETIL	Ice temperature	K
+ncep	1	2	7	ICECIL	Ice cover	
+ncep	1	2	8	LANDIL	Land cover (0 = water, 1 = land)	
+ncep	1	2	9	SFSAL	Shape factor with respect to salinity profile	
+ncep	1	2	10	SFTMP	Shape factor with respect to temperature profile in thermocline	
+ncep	1	2	11	ACWSR	Attenuation coefficient of water with respect to solar radiation	1/m
+ncep	1	2	12	SALTIL	Salinity	kg/kg
+ncep	1	2	13	CSAFC	Cross-sectional area of flow in channel	m2
+ncep	2	0	0	LAND	Land cover (0 = sea, 1 = land)	
+ncep	2	0	1	SFCR	Surface roughness	m
+ncep	2	0	2	TSOIL	Soil temperature	K
+ncep	2	0	3	SOILM	Soil moisture content	kg.m-2
+ncep	2	0	4	VEG	Vegetation	%
+ncep	2	0	5	WATR	Water runoff	kg.m-2
+ncep	2	0	6	EVAPT	Evapotranspiration	kg-2.s-1
+ncep	2	0	7	MTERH	Model terrain height	m
+ncep	2	0	8	LANDU	Land use	(Code table 4.212)
+ncep	2	0	9	SOILW	Volumetric soil moisture content	
+ncep	2	0	10	GFLUX	Ground heat flux	W.m-2
+ncep	2	0	11	MSTAV	Moisture availability	%
+ncep	2	0	12	SFEXC	Exchange coefficient	kg.m-2.s-1
+ncep	2	0	13	CNWAT	Plant canopy surface water	kg.m-2
+ncep	2	0	14	BMIXL	Blackadar’s mixing length scale	m
+ncep	2	0	15	CCOND	Canopy conductance	m/s
+ncep	2	0	16	RSMIN	Minimal stomatal resistance	s/m
+ncep	2	0	17	WILT	Wilting point	
+ncep	2	0	18	RCS	Solar parameter in canopy conductance	
+ncep	2	0	19	RCT	Temperature parameter in canopy	
+ncep	2	0	20	RCQ	Humidity parameter in canopy conductance	
+ncep	2	0	21	RCSOL	Soil moisture parameter in canopy conductance	
+ncep	2	0	22	SOILM	Soil moisture	kg.m-3
+ncep	2	0	23	CISOILW	Column-integrated soil water	kg.m-2
+ncep	2	0	24	HFLUX	Heat flux	W.m-2
+ncep	2	0	25	VSOILM	Volumetric soil moisture	m3.m-3
+ncep	2	0	26	WILT	Wilting point	kg.m-3
+ncep	2	0	27	VWILTP	Volumetric wilting point	m3.m-3
+ncep	2	0	28	LEAINX	Leaf area index	
+ncep	2	0	29	EVGFC	Evergreen forest cover	
+ncep	2	0	30	DECFC	Deciduous forest cover	
+ncep	2	0	31	NDVINX	Normalized differential vegetation index (NDVI)	
+ncep	2	0	32	RDVEG	Root depth of vegetation	m
+ncep	2	0	33	WROD	Water runoff and drainage	kg.m-2
+ncep	2	0	34	SFCWRO	Surface water runoff	kg.m-2
+ncep	2	0	35	TCLASS	Tile class	Code table 4.243
+ncep	2	0	36	TFRCT	Tile fraction	
+ncep	2	0	37	TPERCT	Tile percentage	%
+ncep	2	0	38	SOILVIC	Soil volumetric ice content (water equivalent)	m3.m-3
+ncep	2	0	39	EVAPTRAT	Evapotranspiration Rate	kg.m-2.s-1
+ncep	2	0	192	SOILW	Volumetric Soil Moisture Content	Fraction
+ncep	2	0	193	GFLUX	Ground Heat Flux	W.m-2
+ncep	2	0	194	MSTAV	Moisture Availability	%
+ncep	2	0	195	SFEXC	Exchange Coefficient	(kg.m-3).(m.s-1)
+ncep	2	0	196	CNWAT	Plant Canopy Surface Water	kg.m-2
+ncep	2	0	197	BMIXL	Blackadars Mixing Length Scale	m
+ncep	2	0	198	VGTYP	Vegetation Type	Integer.(0-13)
+ncep	2	0	199	CCOND	Canopy Conductance	m.s-1
+ncep	2	0	200	RSMIN	Minimal Stomatal Resistance	s.m-1
+ncep	2	0	201	WILT	Wilting Point	Fraction
+ncep	2	0	202	RCS	Solar parameter in canopy conductance	Fraction
+ncep	2	0	203	RCT	Temperature parameter in canopy conductance	Fraction
+ncep	2	0	204	RCQ	Humidity parameter in canopy conductance	Fraction
+ncep	2	0	205	RCSOL	Soil moisture parameter in canopy conductance	Fraction
+ncep	2	0	206	RDRIP	Rate of water dropping from canopy to ground	
+ncep	2	0	207	ICWAT	Ice-free water surface	%
+ncep	2	0	208	AKHS	Surface exchange coefficients for T and Q divided by delta z	m.s-1
+ncep	2	0	209	AKMS	Surface exchange coefficients for U and V divided by delta z	m.s-1
+ncep	2	0	210	VEGT	Vegetation canopy temperature	K
+ncep	2	0	211	SSTOR	Surface water storage	Kg.m-2
+ncep	2	0	212	LSOIL	Liquid soil moisture content (non-frozen)	Kg.m-2
+ncep	2	0	213	EWATR	Open water evaporation (standing water)	W.m-2
+ncep	2	0	214	GWREC	Groundwater recharge	Kg.m-2
+ncep	2	0	215	QREC	Flood plain recharge	Kg.m-2
+ncep	2	0	216	SFCRH	Roughness length for heat	m
+ncep	2	0	217	NDVI	Normalized Difference Vegetation Index	
+ncep	2	0	218	LANDN	Land-sea coverage (nearest neighbor) [land=1,sea=0]	
+ncep	2	0	219	AMIXL	Asymptotic mixing length scale	m
+ncep	2	0	220	WVINC	Water vapor added by precip assimilation	Kg.m-2
+ncep	2	0	221	WCINC	Water condensate added by precip assimilation	Kg.m-2
+ncep	2	0	222	WVCONV	Water Vapor Flux Convergance (Vertical Int)	Kg.m-2
+ncep	2	0	223	WCCONV	Water Condensate Flux Convergance (Vertical Int)	Kg.m-2
+ncep	2	0	224	WVUFLX	Water Vapor Zonal Flux (Vertical Int)	Kg.m-2
+ncep	2	0	225	WVVFLX	Water Vapor Meridional Flux (Vertical Int)	Kg.m-2
+ncep	2	0	226	WCUFLX	Water Condensate Zonal Flux (Vertical Int)	Kg.m-2
+ncep	2	0	227	WCVFLX	Water Condensate Meridional Flux (Vertical Int)	Kg.m-2
+ncep	2	0	228	ACOND	Aerodynamic conductance	m.s-1
+ncep	2	0	229	EVCW	Canopy water evaporation	W.m-2
+ncep	2	0	230	TRANS	Transpiration	W.m-2
+ncep	2	1	192	CANL	Cold Advisory for Newborn Livestock	
+ncep	2	3	0	SOTYP	Soil type	(Code table 4.213)
+ncep	2	3	1	UPLST	Upper layer soil temperature	K
+ncep	2	3	2	UPLSM	Upper layer soil moisture	kg.m-3
+ncep	2	3	3	LOWLSM	Lower layer soil moisture	kg.m-3
+ncep	2	3	4	BOTLST	Bottom layer soil temperature	K
+ncep	2	3	5	SOILL	Liquid volumetric soil moisture (non-frozen)	
+ncep	2	3	6	RLYRS	Number of soil layers in root zone	
+ncep	2	3	7	SMREF	Transpiration stress-onset (soil moisture)	
+ncep	2	3	8	SMDRY	Direct evaporation cease (soil moisture)	
+ncep	2	3	9	POROS	Soil porosity	
+ncep	2	3	10	LIQVSM	Liquid volumetric soil moisture (non-frozen)	m3.m-3
+ncep	2	3	11	VOLTSO	Volumetric transpiration stress-onset (soil moisture)	m3.m-3
+ncep	2	3	12	TRANSO	Transpiration stress-onset (soil moisture)	kg.m-3
+ncep	2	3	13	VOLDEC	Volumetric direct evaporation cease (soil moisture)	m3.m-3
+ncep	2	3	14	DIREC	Direct evaporation cease (soil moisture)	kg.m-3
+ncep	2	3	15	SOILP	Soil porosity	m3.m-3
+ncep	2	3	16	VSOSM	Volumetric saturation of soil moisture	m3.m-3
+ncep	2	3	17	SATOSM	Saturation of soil moisture	kg.m-3
+ncep	2	3	18	SOILTMP	Soil temperature	K
+ncep	2	3	19	SOILMOI	Soil moisture	kg.m-3
+ncep	2	3	20	CISOILM	Column-integrated soil moisture	kg.m-2
+ncep	2	3	21	SOILICE	Soil ice	kg.m-3
+ncep	2	3	22	CISICE	Column-integrated soil ice	kg.m-2
+ncep	2	3	23	LWSNWP	Liquid water in snow pack	kg.m-2
+ncep	2	3	24	FRSTINX	Frost index	K.day-1
+ncep	2	3	25	SNWDEB	Snow depth at elevation bands	kg.m-2
+ncep	2	3	26	SHFLX	Soil heat flux	W.m-2
+ncep	2	3	27	SOILDEP	Soil depth	m
+ncep	2	3	192	SOILL	Liquid Volumetric Soil Moisture (non Frozen)	
+ncep	2	3	193	RLYRS	Number of Soil Layers in Root Zone	non-dim
+ncep	2	3	194	SLTYP	Surface Slope Type	Index
+ncep	2	3	195	SMREF	Transpiration Stress-onset (soil moisture)	
+ncep	2	3	196	SMDRY	Direct Evaporation Cease (soil moisture)	
+ncep	2	3	197	POROS	Soil Porosity	
+ncep	2	3	198	EVBS	Direct Evaporation from Bare Soil	W.m-2
+ncep	2	3	199	LSPA	Land Surface Precipitation Accumulation	kg.m-2
+ncep	2	3	200	BARET	Bare Soil Surface Skin temperature	K
+ncep	2	3	201	AVSFT	Average Surface Skin Temperature	K
+ncep	2	3	202	RADT	Effective Radiative Skin Temperature	K
+ncep	2	3	203	FLDCP	Field Capacity	Fraction
+ncep	2	4	0	FIREOLK	Fire outlook	Code table 4.224
+ncep	2	4	1	FIREODT	Fire outlook due to dry thunderstorm	Code table 4.224
+ncep	2	4	2	HINDEX	Haines index	
+ncep	2	4	3	FBAREA	Fire burned area	%
+ncep	2	4	4	FOSINDX	Fosberg index	
+ncep	2	4	5	FWINX	Forest Fire Weather Index (Canadian Forest Service)	
+ncep	2	4	6	FFMCODE	Fine Fuel Moisture Code (Canadian Forest Service)	
+ncep	2	4	7	DUFMCODE	Duff Moisture Code (Canadian Forest Service)	
+ncep	2	4	8	DRTCODE	Drought Code (Canadian Forest Service)	
+ncep	2	4	9	INFSINX	Initial Fire Spread Index (Canadian Forest Service)	
+ncep	2	4	10	FBUPINX	Fire Buildup Index (Canadian Forest Service)	
+ncep	2	4	11	FDSRTE	Fire Daily Severity Rating (Canadian Forest Service)	
+ncep	2	5	1	GLACTMP	Glacier temperature	K
+ncep	3	0	0	SRAD	Scaled radiance	
+ncep	3	0	1	SALBEDO	Scaled albedo	
+ncep	3	0	2	SBTMP	Scaled brightness temperature	
+ncep	3	0	3	SPWAT	Scaled precipitable water	
+ncep	3	0	4	SLFTI	Scaled lifted index	
+ncep	3	0	5	SCTPRES	Scaled cloud top pressure	
+ncep	3	0	6	SSTMP	Scaled skin temperature	
+ncep	3	0	7	CLOUDM	Cloud mask	Code table 4.217
+ncep	3	0	8	PIXST	Pixel scene type	Code table 4.218
+ncep	3	0	9	FIREDI	Fire detection indicator	Code table 4.223
+ncep	3	1	0	ESTP	Estimated precipitation	kg.m-2
+ncep	3	1	1	IRRATE	Instantaneous rain rate	kg.m-2.s-1
+ncep	3	1	2	CTOPH	Cloud top height	m
+ncep	3	1	3	CTOPHQI	Cloud top height quality indicator	Code table 4.219
+ncep	3	1	4	ESTUGRD	Estimated u-component of wind	m/s
+ncep	3	1	5	ESTVGRD	Estimated v-component of wind	m/s
+ncep	3	1	6	NPIXU	Number of pixel used	
+ncep	3	1	7	SOLZA	Solar zenith angle	deg
+ncep	3	1	8	RAZA	Relative azimuth angle	deg
+ncep	3	1	9	RFL06	Reflectance in 0.6 micron channel	%
+ncep	3	1	10	RFL08	Reflectance in 0.8 micron channel	%
+ncep	3	1	11	RFL16	Reflectance in 1.6 micron channel	%
+ncep	3	1	12	RFL39	Reflectance in 3.9 micron channel	%
+ncep	3	1	13	ATMDIV	Atmospheric divergence	1/s
+ncep	3	1	14	CBTMP	Cloudy brightness temperature	K
+ncep	3	1	15	CSBTMP	Clear-sky brightness temperature	K
+ncep	3	1	16	CLDRAD	Cloudy radiance (with respect to wave number)	W.m-1.sr-1
+ncep	3	1	17	CSKYRAD	Clear-sky radiance (with respect to wave number)	W.m-1.sr-1
+ncep	3	1	18		Reserved	
+ncep	3	1	19	WINDS	Wind speed	m/s
+ncep	3	1	20	AOT06	Aerosol optical thickness at 0.635 μm	
+ncep	3	1	21	AOT08	Aerosol optical thickness at 0.810 μm	
+ncep	3	1	22	AOT16	Aerosol optical thickness at 1.640 μm	
+ncep	3	1	23	ANGCOE	Angstrom coefficient	
+ncep	3	1	27	BRFLF	Bidirectional reflectance factor	
+ncep	3	1	28	SPBRT	Brightness temperature	K
+ncep	3	1	29	SCRAD	Scaled radiance	
+ncep	3	1	98	CCMPEMRR	Correlation coefficient between MPE rain-rates for the co-located IR data and the microwave data rain-rates	
+ncep	3	1	99	SDMPEMRR	Standard deviation between MPE rain-rates for the co-located IR data and the microwave data rain-rates	kg.m-2.s-1
+ncep	3	1	192	USCT	Scatterometer Estimated U Wind Component	m.s-1
+ncep	3	1	193	VSCT	Scatterometer Estimated V Wind Component	m.s-1
+ncep	3	1	194	SWQI	Scatterometer Wind Quality	
+ncep	3	2	0	CSKPROB	Clear sky probability	%
+ncep	3	2	1	CTOPTMP	Cloud top temperature	K
+ncep	3	2	2	CTOPRES	Cloud top pressure	Pa
+ncep	3	2	3	CLDTYPE	Cloud type	Code table 4.218
+ncep	3	2	4	CLDPHAS	Cloud phase	Code table 4.218
+ncep	3	2	5	CLDODEP	Cloud optical depth	
+ncep	3	2	6	CLDPER	Cloud particle effective radius	m
+ncep	3	2	7	CLDLWP	Cloud liquid water path	kg.m-2
+ncep	3	2	8	CLDIWP	Cloud ice water path	kg.m-2
+ncep	3	2	9	CLDALB	Cloud albedo	
+ncep	3	2	10	CLDEMISS	Cloud emissivity	
+ncep	3	2	11	EAODR	Effective absorption optical depth ratio	
+ncep	3	2	30	MEACST	Measurement cost	
+ncep	3	2	31		Upper layer cloud optical depth	
+ncep	3	2	32		Upper layer cloud top pressure	Pa
+ncep	3	2	33		Upper layer cloud effective radius	m
+ncep	3	2	34		Error in upper layer cloud optical depth	
+ncep	3	2	35		Error in upper layer cloud top pressure	Pa
+ncep	3	2	36		Error in upper layer cloud effective radius	m
+ncep	3	2	37		Lower layer cloud optical depth	
+ncep	3	2	38		Lower layer cloud top pressure	Pa
+ncep	3	2	39		Error in lower layer cloud optical depth	
+ncep	3	2	40		Error in lower layer cloud top pressure	Pa
+ncep	3	3	0	PBMVFRC	Probability of encountering marginal visual flight rule conditions	%
+ncep	3	3	1	PBLIFRC	Probability of encountering low instrument flight rule conditions	%
+ncep	3	3	2	PBINFRC	Probability of encountering instrument flight rule conditions	%
+ncep	3	4	0	VOLAPROB	Volcanic ash probability	%
+ncep	3	4	1	VOLACDTT	Volcanic ash cloud top temperature	K
+ncep	3	4	2	VOLACDTP	Volcanic ash cloud top pressure	Pa
+ncep	3	4	3	VOLACDTH	Volcanic ash cloud top height	m
+ncep	3	4	4	VOLACDEM	Volcanic ash cloud emissivity	
+ncep	3	4	5	VOLAEADR	Volcanic ash effective absorption optical depth ratio	
+ncep	3	4	6	VOLACDOD	Volcanic ash cloud optical depth	
+ncep	3	4	7	VOLACDEN	Volcanic ash column density	kg.m-2
+ncep	3	4	8	VOLAPER	Volcanic ash particle effective radius	m
+ncep	3	5	0	ISSTMP	Interface sea-surface temperature	K
+ncep	3	5	1	SKSSTMP	Skin sea-surface temperature	K
+ncep	3	5	2	SSKSSTMP	Sub-skin sea-surface temperature	K
+ncep	3	5	3	FDNSSTMP	Foundation sea-surface temperature	K
+ncep	3	5	4	EBSSTSTD	Estimated bias between sea-surface temperature and standard	K
+ncep	3	5	5	EBSDSSTS	Estimated standard deviation between sea surface temperature and standard	K
+ncep	3	6	0	GSOLIRR	Global solar irradiance	W.m-2
+ncep	3	6	1	GSOLEXP	Global solar exposure	J.m-2
+ncep	3	6	2	DIRSOLIR	Direct solar irradiance	W.m-2
+ncep	3	6	3	DIRSOLEX	Direct solar exposure	J.m-2
+ncep	3	6	4	DIFSOLIR	Diffuse solar irradiance	W.m-2
+ncep	3	6	5	DIFSOLEX	Diffuse solar exposure	J.m-2
+ncep	3	192	0	SBT122	Simulated Brightness Temperature for GOES 12, Channel 2	K
+ncep	3	192	1	SBT123	Simulated Brightness Temperature for GOES 12, Channel 3	K
+ncep	3	192	2	SBT124	Simulated Brightness Temperature for GOES 12, Channel 4	K
+ncep	3	192	3	SBT126	Simulated Brightness Temperature for GOES 12, Channel 6	K
+ncep	3	192	4	SBC123	Simulated Brightness Counts for GOES 12, Channel 3	Byte
+ncep	3	192	5	SBC124	Simulated Brightness Counts for GOES 12, Channel 4	Byte
+ncep	3	192	6	SBT112	Simulated Brightness Temperature for GOES 11, Channel 2	K
+ncep	3	192	7	SBT113	Simulated Brightness Temperature for GOES 11, Channel 3	K
+ncep	3	192	8	SBT114	Simulated Brightness Temperature for GOES 11, Channel 4	K
+ncep	3	192	9	SBT115	Simulated Brightness Temperature for GOES 11, Channel 5	K
+ncep	3	192	10	AMSRE9	Simulated Brightness Temperature for AMSRE on Aqua, Channel 9	K
+ncep	3	192	11	AMSRE10	Simulated Brightness Temperature for AMSRE on Aqua, Channel 10	K
+ncep	3	192	12	AMSRE11	Simulated Brightness Temperature for AMSRE on Aqua, Channel 11	K
+ncep	3	192	13	AMSRE12	Simulated Brightness Temperature for AMSRE on Aqua, Channel 12	K
+ncep	3	192	14	SRFA161	Simulated Reflectance Factor for ABI GOES-16, Band-1	
+ncep	3	192	15	SRFA162	Simulated Reflectance Factor for ABI GOES-16, Band-2	
+ncep	3	192	16	SRFA163	Simulated Reflectance Factor for ABI GOES-16, Band-3	
+ncep	3	192	17	SRFA164	Simulated Reflectance Factor for ABI GOES-16, Band-4	
+ncep	3	192	18	SRFA165	Simulated Reflectance Factor for ABI GOES-16, Band-5	
+ncep	3	192	19	SRFA166	Simulated Reflectance Factor for ABI GOES-16, Band-6	
+ncep	3	192	20	SBTA167	Simulated Brightness Temperature for ABI GOES-16, Band-7	K
+ncep	3	192	21	SBTA168	Simulated Brightness Temperature for ABI GOES-16, Band-8	K
+ncep	3	192	22	SBTA169	Simulated Brightness Temperature for ABI GOES-16, Band-9	K
+ncep	3	192	23	SBTA1610	Simulated Brightness Temperature for ABI GOES-16, Band-10	K
+ncep	3	192	24	SBTA1611	Simulated Brightness Temperature for ABI GOES-16, Band-11	K
+ncep	3	192	25	SBTA1612	Simulated Brightness Temperature for ABI GOES-16, Band-12	K
+ncep	3	192	26	SBTA1613	Simulated Brightness Temperature for ABI GOES-16, Band-13	K
+ncep	3	192	27	SBTA1614	Simulated Brightness Temperature for ABI GOES-16, Band-14	K
+ncep	3	192	28	SBTA1615	Simulated Brightness Temperature for ABI GOES-16, Band-15	K
+ncep	3	192	29	SBTA1616	Simulated Brightness Temperature for ABI GOES-16, Band-16	K
+ncep	3	192	30	SRFA171	Simulated Reflectance Factor for ABI GOES-17, Band-1	
+ncep	3	192	31	SRFA172	Simulated Reflectance Factor for ABI GOES-17, Band-2	
+ncep	3	192	32	SRFA173	Simulated Reflectance Factor for ABI GOES-17, Band-3	
+ncep	3	192	33	SRFA174	Simulated Reflectance Factor for ABI GOES-17, Band-4	
+ncep	3	192	34	SRFA175	Simulated Reflectance Factor for ABI GOES-17, Band-5	
+ncep	3	192	35	SRFA176	Simulated Reflectance Factor for ABI GOES-17, Band-6	
+ncep	3	192	36	SBTA177	Simulated Brightness Temperature for ABI GOES-17, Band-7	K
+ncep	3	192	37	SBTA178	Simulated Brightness Temperature for ABI GOES-17, Band-8	K
+ncep	3	192	38	SBTA179	Simulated Brightness Temperature for ABI GOES-17, Band-9	K
+ncep	3	192	39	SBTA1710	Simulated Brightness Temperature for ABI GOES-17, Band-10	K
+ncep	3	192	40	SBTA1711	Simulated Brightness Temperature for ABI GOES-17, Band-11	K
+ncep	3	192	41	SBTA1712	Simulated Brightness Temperature for ABI GOES-17, Band-12	K
+ncep	3	192	42	SBTA1713	Simulated Brightness Temperature for ABI GOES-17, Band-13	K
+ncep	3	192	43	SBTA1714	Simulated Brightness Temperature for ABI GOES-17, Band-14	K
+ncep	3	192	44	SBTA1715	Simulated Brightness Temperature for ABI GOES-17, Band-15	K
+ncep	3	192	45	SBTA1716	Simulated Brightness Temperature for ABI GOES-17, Band-16	K
+ncep	3	192	46	SRFAGR1	Simulated Reflectance Factor for nadir ABI GOES-R, Band-1	
+ncep	3	192	47	SRFAGR2	Simulated Reflectance Factor for nadir ABI GOES-R, Band-2	
+ncep	3	192	48	SRFAGR3	Simulated Reflectance Factor for nadir ABI GOES-R, Band-3	
+ncep	3	192	49	SRFAGR4	Simulated Reflectance Factor for nadir ABI GOES-R, Band-4	
+ncep	3	192	50	SRFAGR5	Simulated Reflectance Factor for nadir ABI GOES-R, Band-5	
+ncep	3	192	51	SRFAGR6	Simulated Reflectance Factor for nadir ABI GOES-R, Band-6	
+ncep	3	192	52	SBTAGR7	Simulated Brightness Temperature for nadir ABI GOES-R, Band-7	
+ncep	3	192	53	SBTAGR8	Simulated Brightness Temperature for nadir ABI GOES-R, Band-8	
+ncep	3	192	54	SBTAGR9	Simulated Brightness Temperature for nadir ABI GOES-R, Band-9	
+ncep	3	192	55	SBTAGR10	Simulated Brightness Temperature for nadir ABI GOES-R, Band-10	
+ncep	3	192	56	SBTAGR11	Simulated Brightness Temperature for nadir ABI GOES-R, Band-11	
+ncep	3	192	57	SBTAGR12	Simulated Brightness Temperature for nadir ABI GOES-R, Band-12	
+ncep	3	192	58	SBTAGR13	Simulated Brightness Temperature for nadir ABI GOES-R, Band-13	
+ncep	3	192	59	SBTAGR14	Simulated Brightness Temperature for nadir ABI GOES-R, Band-14	
+ncep	3	192	60	SBTAGR15	Simulated Brightness Temperature for nadir ABI GOES-R, Band-15	
+ncep	3	192	61	SBTAGR16	Simulated Brightness Temperature for nadir ABI GOES-R, Band-16	
+ncep	4	0	0	TMPSWP	Temperature	K
+ncep	4	0	1	ELECTMP	Electron Temperature	K
+ncep	4	0	2	PROTTMP	Proton Temperature	K
+ncep	4	0	3	IONTMP	Ion Temperature	K
+ncep	4	0	4	PRATMP	Parallel Temperature	K
+ncep	4	0	5	PRPTMP	Perpendicular Temperature	K
+ncep	4	1	0	SPEED	Velocity Magnitude (Speed)	m.s-1
+ncep	4	1	1	VEL1	1st Vector Component of Velocity (Coordinate system dependent)	m.s-1
+ncep	4	1	2	VEL2	2nd Vector Component of Velocity (Coordinate system dependent)	m.s-1
+ncep	4	1	3	VEL3	3rd Vector Component of Velocity (Coordinate system dependent)	m.s-1
+ncep	4	2	0	PLSMDEN	Particle Number Density	m-3
+ncep	4	2	1	ELCDEN	Electron Density	m-3
+ncep	4	2	2	PROTDEN	Proton Density	m-3
+ncep	4	2	3	IONDEN	Ion Density	m-3
+ncep	4	2	4	VTEC	Vertical Electron Content	m-2
+ncep	4	2	5	ABSFRQ	HF Absorption Frequency	Hz
+ncep	4	2	6	ABSRB	HF Absorption	dB
+ncep	4	2	7	SPRDF	Spread F	m
+ncep	4	2	8	HPRIMF	h'F	m
+ncep	4	2	9	CRTFRQ	Critical Frequency	Hz
+ncep	4	2	10	SCINT	Scintillation	
+ncep	4	3	0	BTOT	Magnetic Field Magnitude	T
+ncep	4	3	1	BVEC1	1st Vector Component of Magnetic Field	T
+ncep	4	3	2	BVEC2	2nd Vector Component of Magnetic Field	T
+ncep	4	3	3	BVEC3	3rd Vector Component of Magnetic Field	T
+ncep	4	3	4	ETOT	Electric Field Magnitude	V.m-1
+ncep	4	3	5	EVEC1	1st Vector Component of Electric Field	V.m-1
+ncep	4	3	6	EVEC2	2nd Vector Component of Electric Field	V.m-1
+ncep	4	3	7	EVEC3	3rd Vector Component of Electric Field	V.m-1
+ncep	4	4	0	DIFPFLUX	Proton Flux (Differential)	(m2.s.sr.eV)-1
+ncep	4	4	1	INTPFLUX	Proton Flux (Integral)	(m2.s.sr)-1
+ncep	4	4	2	DIFEFLUX	Electron Flux (Differential)	(m2.s.sr.eV)-1
+ncep	4	4	3	INTEFLUX	Electron Flux (Integral)	(m2.s.sr)-1
+ncep	4	4	4	DIFIFLUX	Heavy Ion Flux (Differential)	(m2.s.sr.eV./.nuc)-1
+ncep	4	4	5	INTIFLUX	Heavy Ion Flux (iIntegral)	(m2.s.sr)-1
+ncep	4	4	6	NTRNFLUX	Cosmic Ray Neutron Flux	h-1
+ncep	4	6	0	TSI	Integrated Solar Irradiance	W.m-2
+ncep	4	6	1	XLONG	Solar X-ray Flux (XRS Long)	W.m-2
+ncep	4	6	2	XSHRT	Solar X-ray Flux (XRS Short)	W.m-2
+ncep	4	6	3	EUVIRR	Solar EUV Irradiance	W.m-2
+ncep	4	6	4	SPECIRR	Solar Spectral Irradiance	W.m-2.nm-1
+ncep	4	6	5	F107	F10.7	W.m-2.Hz-1
+ncep	4	6	6	SOLRF	Solar Radio Emissions	W.m-2.Hz-1
+ncep	4	7	0	LMBINT	Limb Intensity	m-2.s-1
+ncep	4	7	1	DSKINT	Disk Intensity	m-2.s-1
+ncep	4	7	2	DSKDAY	Disk Intensity Day	m-2.s-1
+ncep	4	7	3	DSKNGT	Disk Intensity Night	m-2.s-1
+ncep	4	8	0	XRAYRAD	X-Ray Radiance	W.sr-1.m-2
+ncep	4	8	1	EUVRAD	EUV Radiance	W.sr-1.m-2
+ncep	4	8	2	HARAD	H-Alpha Radiance	W.sr-1.m-2
+ncep	4	8	3	WHTRAD	White Light Radiance	W.sr-1.m-2
+ncep	4	8	4	CAIIRAD	CaII-K Radiance	W.sr-1.m-2
+ncep	4	8	5	WHTCOR	White Light Coronagraph Radiance	W.sr-1.m-2
+ncep	4	8	6	HELCOR	Heliospheric Radiance	W.sr-1.m-2
+ncep	4	8	7	MASK	Thematic Mask	
+ncep	4	9	0	SIGPED	Pedersen Conductivity	S.m-1
+ncep	4	9	1	SIGHAL	Hall Conductivity	S.m-1
+ncep	4	9	2	SIGPAR	Parallel Conductivity	S.m-1
+ncep	10	0	0	WVSP1	Wave spectra (1)	
+ncep	10	0	1	WVSP2	Wave spectra (2)	
+ncep	10	0	2	WVSP3	Wave spectra (3)	
+ncep	10	0	3	HTSGW	Significant height of combined wind waves and swell	m
+ncep	10	0	4	WVDIR	Direction of wind waves	degree_true
+ncep	10	0	5	WVHGT	Significant height of wind waves	m
+ncep	10	0	6	WVPER	Mean period of wind waves	s
+ncep	10	0	7	SWDIR	Direction of swell waves	degree_true
+ncep	10	0	8	SWELL	Significant height of swell waves	m
+ncep	10	0	9	SWPER	Mean period of swell waves	s
+ncep	10	0	10	DIRPW	Primary wave direction	degree_true
+ncep	10	0	11	PERPW	Primary wave mean period	s
+ncep	10	0	12	DIRSW	Secondary wave direction	degree_true
+ncep	10	0	13	PERSW	Secondary wave mean period	s
+ncep	10	0	14	WWSDIR	Direction of combined wind waves and swell	degree_true
+ncep	10	0	15	MWSPER	Mean period of combined wind waves and swell	s
+ncep	10	0	16	CDWW	Coefficient of drag with waves	
+ncep	10	0	17	FRICV	Friction velocity	m/s
+ncep	10	0	18	WSTR	Wave stress	N.m-2
+ncep	10	0	19	NWSTR	Normalized wave stress	
+ncep	10	0	20	MSSW	Mean square slope of waves	
+ncep	10	0	21	USSD	u-component surface Stokes drift	m/s
+ncep	10	0	22	VSSD	v-component surface Stokes drift	m/s
+ncep	10	0	23	PMAXWH	Period of maximum individual wave height	s
+ncep	10	0	24	MAXWH	Maximum individual wave height	m
+ncep	10	0	25	IMWF	Inverse mean wave frequency	s
+ncep	10	0	26	IMFWW	Inverse mean frequency of wind waves	s
+ncep	10	0	27	IMFTSW	Inverse mean frequency of total swell	s
+ncep	10	0	28	MZWPER	Mean zero-crossing wave period	s
+ncep	10	0	29	MZPWW	Mean zero-crossing period of wind waves	s
+ncep	10	0	30	MZPTSW	Mean zero-crossing period of total swell	s
+ncep	10	0	31	WDIRW	Wave directional width	
+ncep	10	0	32	DIRWWW	Directional width of wind waves	
+ncep	10	0	33	DIRWTS	Directional width of total swell	
+ncep	10	0	34	PWPER	Peak wave period	s
+ncep	10	0	35	PPERWW	Peak period of wind waves	s
+ncep	10	0	36	PPERTS	Peak period of total swell	s
+ncep	10	0	37	ALTWH	Altimeter wave height	m
+ncep	10	0	38	ALCWH	Altimeter corrected wave height	m
+ncep	10	0	39	ALRRC	Altimeter range relative correction	
+ncep	10	0	40	MNWSOW	10-metre neutral wind speed over waves	m/s
+ncep	10	0	41	MWDIRW	10-metre wind direction over waves	deg
+ncep	10	0	42	WESP	Wave energy spectrum	m2.s.rad-1
+ncep	10	0	43	KSSEW	Kurtosis of the sea-surface elevation due to waves	
+ncep	10	0	44	BENINX	Benjamin-Feir index	
+ncep	10	0	45	SPFTR	Spectral peakedness factor	1/s
+ncep	10	0	46	PWAVEDIR	Peak wave direction	deg
+ncep	10	0	47	SWHFSWEL	Significant wave height of first swell partition	m
+ncep	10	0	48	SWHSSWEL	Significant wave height of second swell partition	m
+ncep	10	0	49	SWHTSWEL	Significant wave height of third swell partition	m
+ncep	10	0	50	MWPFSWEL	Mean wave period of first swell partition	s
+ncep	10	0	51	MWPSSWEL	Mean wave period of second swell partition	s
+ncep	10	0	52	MWPTSWEL	Mean wave period of third swell partition	s
+ncep	10	0	53	MWDFSWEL	Mean wave direction of first swell partition	deg
+ncep	10	0	54	MWDSSWEL	Mean wave direction of second swell partition	deg
+ncep	10	0	55	MWDTSWEL	Mean wave direction of third swell partition	deg
+ncep	10	0	56	WDWFSWEL	Wave directional width of first swell partition	
+ncep	10	0	57	WDWSSWEL	Wave directional width of second swell partition	
+ncep	10	0	58	WDWTSWEL	Wave directional width of third swell partition	
+ncep	10	0	59	WFWFSWEL	Wave frequency width of first swell partition	
+ncep	10	0	60	WFWSSWEL	Wave frequency width of second swell partition	
+ncep	10	0	61	WFWTSWEL	Wave frequency width of third swell partition	
+ncep	10	0	62	WAVEFREW	Wave frequency width	
+ncep	10	0	63	FREWWW	Frequency width of wind waves	
+ncep	10	0	64	FREWTSW	Frequency width of total swell	
+ncep	10	0	192	WSTP	Wave Steepness	
+ncep	10	0	193	WLENG	Wave Length	
+ncep	10	1	0	DIRC	Current direction	degree_true
+ncep	10	1	1	SPC	Current speed	m/s
+ncep	10	1	2	UOGRD	u-component of current	m/s
+ncep	10	1	3	VOGRD	v-component of current	m/s
+ncep	10	1	4	RIPCOP	Rip current occurrence probability	%
+ncep	10	1	192	OMLU	Ocean Mixed Layer U Velocity	m.s-1
+ncep	10	1	193	OMLV	Ocean Mixed Layer V Velocity	m.s-1
+ncep	10	1	194	UBARO	Barotropic U velocity	m.s-1
+ncep	10	1	195	VBARO	Barotropic V velocity	m.s-1
+ncep	10	2	0	ICEC	Ice cover	
+ncep	10	2	1	ICETK	Ice thickness	m
+ncep	10	2	2	DICED	Direction of ice drift	degree_true
+ncep	10	2	3	SICED	Speed of ice drift	m/s
+ncep	10	2	4	UICE	u-component of ice drift	m/s
+ncep	10	2	5	VICE	v-component of ice drift	m/s
+ncep	10	2	6	ICEG	Ice growth rate	m/s
+ncep	10	2	7	ICED	Ice divergence	1/s
+ncep	10	2	8	ICETMP	Ice temperature	K
+ncep	10	2	9	ICEPRS	Module of ice internal pressure	Pa.m
+ncep	10	2	10	ZVCICEP	Zonal vector component of vertically integrated ice internal pressure	Pa.m
+ncep	10	2	11	MVCICEP	Meridional vector component of vertically integrated ice internal pressure	Pa.m
+ncep	10	2	12	CICES	Compressive ice strength	N/m
+ncep	10	3	0	WTMP	Water temperature	K
+ncep	10	3	1	DSLM	Deviation of sea level from mean	m
+ncep	10	3	2	CH	Heat exchange coefficient	
+ncep	10	3	3	PRACTSAL	Practical salinity	
+ncep	10	3	192	SURGE	Hurricane Storm Surge	m
+ncep	10	3	193	ETSRG	Extra Tropical Storm Surge	m
+ncep	10	3	194	ELEV	Ocean Surface Elevation Relative to Geoid	m
+ncep	10	3	195	SSHG	Sea Surface Height Relative to Geoid	m
+ncep	10	3	196	P2OMLT	Ocean Mixed Layer Potential Density (Reference 2000m)	kg.m-3
+ncep	10	3	197	AOHFLX	Net Air-Ocean Heat Flux	W.m-2
+ncep	10	3	198	ASHFL	Assimilative Heat Flux	W.m-2
+ncep	10	3	199	SSTT	Surface Temperature Trend	degree.per.day
+ncep	10	3	200	SSST	Surface Salinity Trend	psu.per.day
+ncep	10	3	201	KENG	Kinetic Energy	J.kg-1
+ncep	10	3	202	SLTFL	Salt Flux	kg.m-2s-1
+ncep	10	3	203	LCH	Heat Exchange Coefficient	
+ncep	10	3	204	FRZSPR	Freezing Spray	
+ncep	10	3	205	TWLWAV	Total Water Level Accounting for Tide, Wind and Waves	m
+ncep	10	3	206	RUNUP	Total Water Level Increase due to Waves	m
+ncep	10	3	207	SETUP	Mean Increase in Water Level due to Waves	m
+ncep	10	3	208	SWASH	Time-varying Increase in Water Level due to Waves	m
+ncep	10	3	209	TWLDT	Total Water Level Above Dune Toe	m
+ncep	10	3	210	TWLDC	Total Water Level Above Dune Crest	m
+ncep	10	3	242	TCSRG20	20% Tropical Cyclone Storm Surge Exceedance	m
+ncep	10	3	243	TCSRG30	30% Tropical Cyclone Storm Surge Exceedance	m
+ncep	10	3	244	TCSRG40	40% Tropical Cyclone Storm Surge Exceedance	m
+ncep	10	3	245	TCSRG50	50% Tropical Cyclone Storm Surge Exceedance	m
+ncep	10	3	246	TCSRG60	60% Tropical Cyclone Storm Surge Exceedance	m
+ncep	10	3	247	TCSRG70	70% Tropical Cyclone Storm Surge Exceedance	m
+ncep	10	3	248	TCSRG80	80% Tropical Cyclone Storm Surge Exceedance	m
+ncep	10	3	249	TCSRG90	90% Tropical Cyclone Storm Surge Exceedance	m
+ncep	10	3	250	ETCWL	Extra Tropical Storm Surge Combined Surge and Tide	m
+ncep	10	3	251	TIDE	Tide	m
+ncep	10	3	252	EROSNP	Erosion Occurrence Probability	%
+ncep	10	3	253	OWASHP	Overwash Occurrence Probability	%
+ncep	10	4	0	MTHD	Main thermocline depth	m
+ncep	10	4	1	MTHA	Main thermocline anomaly	m
+ncep	10	4	2	TTHDP	Transient thermocline depth	m
+ncep	10	4	3	SALTY	Salinity	kg/kg
+ncep	10	4	4	OVHD	Ocean vertical heat diffusivity	m2/s
+ncep	10	4	5	OVSD	Ocean vertical salt diffusivity	m2/s
+ncep	10	4	6	OVMD	Ocean vertical momentum diffusivity	m2/s
+ncep	10	4	7	BATHY	Bathymetry	m
+ncep	10	4	11	SFSALP	Shape factor with respect to salinity profile	
+ncep	10	4	12	SFTMPP	Shape factor with respect to temperature profile in thermocline	
+ncep	10	4	13	ACWSRD	Attenuation coefficient of water with respect to solar radiation	1/m
+ncep	10	4	14	WDEPTH	Water depth	m
+ncep	10	4	15	WTMPSS	Water temperature	K
+ncep	10	4	16	WATERDEN	Water Density (rho)	kg.m-3
+ncep	10	4	17	WATDENA	Water Density Anomaly (sigma) See note	kg.m-3
+ncep	10	4	18	WATPTEMP	Water potential temperature (theta)	K
+ncep	10	4	19	WATPDEN	Water potential density (rho theta)	kg.m-3
+ncep	10	4	20	WATPDENA	Water potential density anomaly (sigma theta) See Note	kg.m-3
+ncep	10	4	21	PRTSAL	Practical salinity	psu.(numeric)
+ncep	10	4	192	WTMPC	3-D Temperature	c
+ncep	10	4	193	SALIN	3-D Salinity	psu
+ncep	10	4	194	BKENG	Barotropic Kinectic Energy	J.kg-1
+ncep	10	4	195	DBSS	Geometric Depth Below Sea Surface	m
+ncep	10	4	196	INTFD	Interface Depths	m
+ncep	10	4	197	OHC	Ocean Heat Content	J.m-2
+ncep	10	191	0	IRTSEC	Seconds prior to initial reference time (defined in Section 1)	s
+ncep	10	191	1	MOSF	Meridional overturning stream function	m3/s
+ncep	10	191	2		Reserved	
+ncep	10	191	3	DSLOBS	Days since last observation	d

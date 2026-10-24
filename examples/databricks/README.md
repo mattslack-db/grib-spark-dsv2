@@ -64,3 +64,24 @@ resolution, forecast hours), and run all cells.
 - NOMADS keeps only about the last 10 days of runs and limits request rates, so the notebook downloads its files
   one at a time and only the forecast hours in the `nomads_forecast_hours` widget (default `0,3`, ~200 MB each).
 - Once data is in the Delta table, readers such as SQL warehouses, dashboards and Genie don't need the JAR.
+
+## Comparing with the Rust reader
+
+[`rust_python_datasource_eval.py`](rust_python_datasource_eval.py) runs the Rust reader in [`rust/`](../../rust)
+(through its PySpark Python data source) and this Scala reader on the same files in the volume, and checks that
+their output matches. It needs the cluster above plus the Rust wheel as a second cluster library:
+
+```bash
+rust/scripts/build_linux_wheel.sh    # needs Docker; writes target/wheels/grib_idx-*.whl
+databricks fs cp target/wheels/grib_idx-0.1.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl \
+  dbfs:/Volumes/<catalog>/<schema>/<volume>/wheels/ --profile <profile>
+databricks libraries install --profile <profile> --json '{
+  "cluster_id": "<cluster-id>",
+  "libraries": [{"whl": "/Volumes/<catalog>/<schema>/<volume>/wheels/grib_idx-0.1.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"}]
+}'
+databricks workspace import /Users/<your-user@company.com>/rust_python_datasource_eval \
+  --file examples/databricks/rust_python_datasource_eval.py --language PYTHON --format SOURCE --profile <profile>
+```
+
+Set the `run_dir` widget to a directory of GFS files with `.idx` sidecars (step 3 of the main notebook downloads
+them) and run all cells.

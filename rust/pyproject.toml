@@ -5,13 +5,15 @@ build-backend = "maturin"
 [project]
 name = "grib-idx"
 version = "0.1.0"
-description = "Evaluation spike: idx-driven GRIB2 range reads from object storage, decoded to Arrow"
+description = "GRIB2 reader with idx-driven range reads from object storage, decoded to Arrow, with a PySpark data source"
 requires-python = ">=3.10"
 dependencies = ["pyarrow>=14"]
 
 [dependency-groups]
-dev = ["maturin>=1.9,<2", "numpy", "pytest"]
+dev = ["maturin>=1.9,<2", "numpy", "pytest", "pyspark>=4.1"]
 
 [tool.maturin]
 features = ["python"]
-module-name = "grib_idx"
+python-source = "python"
+module-name = "grib_idx._native"
+exclude = ["**/__pycache__/**"]

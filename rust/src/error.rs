@@ -4,12 +4,14 @@ pub enum Error {
     InvalidLocation { location: String, reason: String },
     #[error("object store error: {0}")]
     Store(#[from] object_store::Error),
-    #[error("index {0} is not valid UTF-8")]
-    IndexEncoding(String),
-    #[error("index {0} has malformed lines; refusing to derive byte ranges from it")]
-    MalformedIndex(String),
     #[error("failed to decode message {message_index}: {reason}")]
     Decode { message_index: usize, reason: String },
+    #[error("unsupported: {0}")]
+    Unsupported(String),
+    #[error("the levels option matches .idx level text, so it needs an .idx sidecar")]
+    LevelsNeedIndex,
+    #[error("invalid option {name}: {reason}")]
+    InvalidOption { name: String, reason: String },
     #[error("arrow error: {0}")]
     Arrow(#[from] arrow::error::ArrowError),
 }
