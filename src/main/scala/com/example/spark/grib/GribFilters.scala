@@ -35,7 +35,10 @@ object GribFilters {
    */
   def isSupported(filter: Filter): Boolean = filter match {
     case EqualTo("variable_short_name", _: String)    => true
-    case In("variable_short_name", _)                 => true
+    // A NULL in the list makes SQL's answer NULL rather than false for other
+    // rows, which `passes` can't express (it matters under NOT), so Spark
+    // evaluates those lists itself.
+    case In("variable_short_name", values)            => values.forall(_.isInstanceOf[String])
     case EqualTo("level_type", _: String)             => true
     case EqualTo("discipline", _: Int)                => true
     case EqualTo("level_value", _: Number)            => true
@@ -149,7 +152,8 @@ object GribFilters {
   /**
    * wgrib2 `.idx` names that differ from netCDF-Java's decoded short names
    * beyond case, as observed in NOAA files (`.idx` name -> decoded name, upper
-   * case). Without these, filtering on either name dropped the fields.
+   * case). Without these, filtering on either name dropped the fields. Other
+   * pairs are unknown; see the README's known limitations.
    */
   private val IdxNameAliases: Map[String, String] = Map(
     "CLMR" -> "CLWMR", // cloud mixing ratio
@@ -157,8 +161,21 @@ object GribFilters {
   )
 
   private val PlainAbbreviation = "^[A-Za-z0-9_]+$".r
-  /** The decoder's name for a parameter its tables don't know (see GribMessageDecoder). */
-  private val DecodedFallbackName = "^var\\d+_\\d+_\\d+$".r
+  /**
+   * The decoder's name for a parameter its tables don't know (see
+   * GribMessageDecoder): `var<discipline>_<category>_<number>` in GRIB2,
+   * `var_<number>` in GRIB1.
+   */
+  private val DecodedFallbackName = "^var(\\d+_\\d+_\\d+|_\\d+)$".r
+
+  /** A name in upper case, with an `.idx` alias replaced by its decoded name. */
+  private def canonicalName(name: String): String = {
+    val upper = name.toUpperCase
+    IdxNameAliases.getOrElse(upper, upper)
+  }
+
+  /** Whether two short names denote the same field: equal ignoring case, or alias and decoded name either way round. */
+  private def isSameField(a: String, b: String): Boolean = canonicalName(a) == canonicalName(b)
 
   /**
    * Whether the field an `.idx` entry names `idxName` could decode with short
@@ -169,8 +186,7 @@ object GribFilters {
   def idxNameMayBe(idxName: String, v: String): Boolean =
     PlainAbbreviation.findFirstIn(idxName).isEmpty ||
       DecodedFallbackName.findFirstIn(v).isDefined ||
-      idxName.equalsIgnoreCase(v) ||
-      IdxNameAliases.get(idxName.toUpperCase).exists(_.equalsIgnoreCase(v))
+      isSameField(idxName, v)
 
   /**
    * The `variables` option (a user-convenience filter) against a decoded
@@ -178,9 +194,7 @@ object GribFilters {
    * `.idx` name (e.g. `CLMR` for `CLWMR`). An empty set means "keep everything".
    */
   def matchesAnyVariable(name: String, variables: Set[String]): Boolean =
-    variables.isEmpty || variables.exists { v =>
-      v.equalsIgnoreCase(name) || IdxNameAliases.get(v.toUpperCase).exists(_.equalsIgnoreCase(name))
-    }
+    variables.isEmpty || variables.exists(isSameField(_, name))
 
   /**
    * The `variables` option against an `.idx` entry's name: kept if any
@@ -188,7 +202,5 @@ object GribFilters {
    * stricter than [[matchesAnyVariable]] on the decoded field.
    */
   def indexEntryMatchesAnyVariable(idxName: String, variables: Set[String]): Boolean =
-    variables.isEmpty || variables.exists { v =>
-      idxNameMayBe(idxName, v) || IdxNameAliases.get(v.toUpperCase).exists(idxNameMayBe(idxName, _))
-    }
+    variables.isEmpty || variables.exists(idxNameMayBe(idxName, _))
 }

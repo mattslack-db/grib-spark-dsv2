@@ -165,4 +165,14 @@ class FilterPushDownSpec extends SparkTestBase with Matchers {
     whole.count() shouldBe CloudMixingRatioFields
     indexed.count() shouldBe CloudMixingRatioFields
   }
+
+  test("an IN list containing NULL keeps SQL semantics", SlowTest) {
+    assume(gribFile.isDefined, "Test fixture not found. Run download_test_fixtures.sh")
+
+    val df = gridded(useIndex = true).load(gribFile.get)
+    val tmpCount = df.where("variable_short_name = 'TMP'").count()
+
+    df.where("variable_short_name IN ('TMP', NULL)").count() shouldBe tmpCount
+    df.where("NOT (variable_short_name IN ('TMP', NULL))").count() shouldBe 0L
+  }
 }

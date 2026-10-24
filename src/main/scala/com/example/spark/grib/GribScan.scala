@@ -164,8 +164,8 @@ class GribScan(
    * never pruned; they're filtered after decoding.
    */
   private def isIndexEntryKept(entry: GribIndexEntry, level: Option[IndexLevel]): Boolean =
-    // Option-level variable filter (case-insensitive; kept consistent with the
-    // message level via GribFilters.matchesAnyVariable), then pushed SQL
+    // Option-level variable filter (GribFilters.indexEntryMatchesAnyVariable,
+    // never stricter than matchesAnyVariable on the decoded message), then pushed SQL
     // filters — superset pruning on variable_short_name, and on level when known.
     GribFilters.indexEntryMatchesAnyVariable(entry.variableName, options.variables) &&
       pushedFilters.forall(GribFilters.indexEntryKept(entry, _, level))

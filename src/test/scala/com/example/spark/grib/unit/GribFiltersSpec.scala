@@ -131,6 +131,24 @@ class GribFiltersSpec extends AnyFunSuite with Matchers {
     GribFilters.indexEntryKept(entry("TMP"), EqualTo("variable_short_name", "var0_16_195")) shouldBe true
   }
 
+  test("indexEntryKept never prunes on the decoder's GRIB1 name for an unknown parameter") {
+    // GRIB1 parameters missing from the tables decode as var_<number>.
+    GribFilters.indexEntryKept(entry("var123"), EqualTo("variable_short_name", "var_123")) shouldBe true
+    GribFilters.indexEntryKept(entry("TMP"), In("variable_short_name", Array("var_123"))) shouldBe true
+  }
+
+  test("indexEntryKept matches an alias whichever side carries the .idx spelling") {
+    GribFilters.indexEntryKept(entry("CLWMR"), EqualTo("variable_short_name", "CLMR")) shouldBe true
+    GribFilters.indexEntryKept(entry("LFT X"), EqualTo("variable_short_name", "LFTX")) shouldBe true
+  }
+
+  test("isSupported rejects an IN list on variable_short_name containing NULL") {
+    // SQL gives NULL, not false, for a non-matching row, which NOT would turn
+    // into the wrong answer; Spark evaluates these itself.
+    GribFilters.isSupported(In("variable_short_name", Array("TMP", null))) shouldBe false
+    GribFilters.isSupported(Not(In("variable_short_name", Array("TMP", null)))) shouldBe false
+  }
+
   // --- matchesAnyVariable ---
 
   test("matchesAnyVariable is case-insensitive and treats empty as keep-all") {
@@ -143,6 +161,12 @@ class GribFiltersSpec extends AnyFunSuite with Matchers {
     GribFilters.matchesAnyVariable("CLWMR", Set("clmr")) shouldBe true
     GribFilters.matchesAnyVariable("LFT X", Set("LFTX")) shouldBe true
     GribFilters.matchesAnyVariable("CLWMR", Set("TMP")) shouldBe false
+  }
+
+  test("matchesAnyVariable matches an alias in both directions") {
+    // If the decoder ever emitted the .idx spelling, the documented name must still work.
+    GribFilters.matchesAnyVariable("CLMR", Set("CLWMR")) shouldBe true
+    GribFilters.matchesAnyVariable("LFTX", Set("lft x")) shouldBe true
   }
 
   test("indexEntryMatchesAnyVariable keeps an .idx entry requested by either name") {
