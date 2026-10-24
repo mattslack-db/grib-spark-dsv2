@@ -143,7 +143,7 @@ async fn levels_option_requires_an_index() {
 
 #[tokio::test]
 async fn directory_and_glob_listing_skip_sidecars() {
-    if fixture("gfs_sample.grib2").is_none() {
+    if fixture("gfs_sample.grib2").is_none() || fixture("templates_sample.grib2").is_none() {
         return;
     }
     let dir = resources().to_string_lossy().into_owned();

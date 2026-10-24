@@ -67,6 +67,8 @@ jobs:
       - name: Build and install
         run: |
           python -m venv .venv
+          # maturin develop installs the dev group with `pip install --group` (pip 25.1+).
+          .venv/bin/pip install -q --upgrade pip
           .venv/bin/pip install -q "maturin>=1.9,<2" numpy pytest pyarrow "pyspark>=4.1"
           .venv/bin/maturin develop --release
       - name: Tests
