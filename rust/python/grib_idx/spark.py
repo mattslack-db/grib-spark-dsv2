@@ -65,13 +65,18 @@ def _ddl_type(arrow_type: pa.DataType) -> str:
     if pa.types.is_list(arrow_type):
         return f"ARRAY<{_ddl_type(arrow_type.value_type)}>"
     if pa.types.is_struct(arrow_type):
-        return "STRUCT<" + ", ".join(f"`{f.name}`: {_ddl_type(f.type)}" for f in arrow_type) + ">"
+        return "STRUCT<" + ", ".join(f"`{f.name}`: {_ddl_field_type(f)}" for f in arrow_type) + ">"
     raise TypeError(f"no Spark type for {arrow_type}")
 
 
+def _ddl_field_type(field: pa.Field) -> str:
+    # Spark 4.2 rejects Arrow batches whose nullability differs from the schema.
+    return _ddl_type(field.type) + ("" if field.nullable else " NOT NULL")
+
+
 def spark_schema(output_mode: str) -> str:
-    """The Spark DDL of the reader's Arrow schema for `output_mode`."""
-    return ", ".join(f"`{f.name}` {_ddl_type(f.type)}" for f in _native.schema(output_mode))
+    """The Spark DDL of the reader's Arrow schema for `output_mode`, nullability included."""
+    return ", ".join(f"`{f.name}` {_ddl_field_type(f)}" for f in _native.schema(output_mode))
 
 
 @dataclass(frozen=True)

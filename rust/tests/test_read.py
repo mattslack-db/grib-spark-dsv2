@@ -10,8 +10,14 @@ import grib_idx
 FIXTURES = Path(__file__).resolve().parents[2] / "src" / "test" / "resources"
 GFS = FIXTURES / "gfs_sample.grib2"
 TEMPLATES = FIXTURES / "templates_sample.grib2"
+GEFS_CHEM = FIXTURES / "gefs_chem_sample.grib2"
 
-requires_fixtures = pytest.mark.skipif(not GFS.exists(), reason="run download_test_fixtures.sh")
+
+def requires(*fixtures: Path) -> pytest.MarkDecorator:
+    return pytest.mark.skipif(not all(f.exists() for f in fixtures), reason="run download_test_fixtures.sh")
+
+
+requires_fixtures = requires(GFS)
 
 
 @requires_fixtures
@@ -68,7 +74,7 @@ def test_a_field_is_found_by_its_idx_or_decoded_name_with_or_without_the_index(n
     assert set(table.column("variable_short_name").to_pylist()) == {"CLWMR"}
 
 
-@requires_fixtures
+@requires(TEMPLATES)
 def test_file_without_index_is_read_whole_with_product_attributes() -> None:
     table = grib_idx.read(str(TEMPLATES))
 
@@ -77,7 +83,7 @@ def test_file_without_index_is_read_whole_with_product_attributes() -> None:
     assert any(p["ensemble"] for p in products) and any(p["probability"] for p in products)
 
 
-@requires_fixtures
+@requires(GFS, GEFS_CHEM)
 def test_glob_reads_every_matching_file() -> None:
     table = grib_idx.read(str(FIXTURES / "g*_sample.grib2"), variables=["PRMSL", "PMTF"])
 
@@ -120,9 +126,9 @@ def test_returns_pyarrow_types() -> None:
     assert isinstance(grib_idx.schema("flat"), pa.Schema)
 
 
-@requires_fixtures
+@requires(GEFS_CHEM)
 def test_index_is_found_for_file_names_that_need_percent_encoding(tmp_path: Path) -> None:
-    source = FIXTURES / "gefs_chem_sample.grib2"
+    source = GEFS_CHEM
     named = tmp_path / "gefs chem 100%.grib2"
     named.write_bytes(source.read_bytes())
     (tmp_path / "gefs chem 100%.grib2.idx").write_bytes(Path(f"{source}.idx").read_bytes())

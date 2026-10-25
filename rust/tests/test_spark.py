@@ -137,5 +137,19 @@ def test_spark_schema_mirrors_the_arrow_schema() -> None:
 
     ddl = spark_schema("flat")
 
-    assert ddl.startswith("`file_path` STRING, `message_index` INT")
+    assert ddl.startswith("`file_path` STRING NOT NULL, `message_index` INT NOT NULL, `discipline` INT,")
     assert "`value` DOUBLE" in ddl and "`product` STRUCT<`aerosol`: STRUCT<`type`: INT" in ddl
+
+
+@pytest.mark.parametrize("output_mode", ["flat", "gridded"])
+def test_spark_schema_keeps_the_arrow_nullability(spark, output_mode: str) -> None:
+    # Spark 4.2 rejects batches whose nullability differs from the declared schema.
+    from pyspark.sql.types import _parse_datatype_string
+
+    from grib_idx import _native
+    from grib_idx.spark import spark_schema
+
+    declared = {f.name: f.nullable for f in _parse_datatype_string(spark_schema(output_mode)).fields}
+
+    assert declared == {f.name: f.nullable for f in _native.schema(output_mode)}
+    assert declared["file_path"] is False and declared["level_value"] is True
