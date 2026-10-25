@@ -19,3 +19,10 @@ src/test/resources/*.idx
 
 # Local tool configuration
 .isaac/
+
+# Rust reader (rust/): cargo target/ is covered above
+.venv/
+__pycache__/
+.pytest_cache/
+.coverage
+rust/python/grib_idx/*.so

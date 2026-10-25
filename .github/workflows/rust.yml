@@ -1,0 +1,92 @@
+name: rust
+
+on:
+  pull_request:
+    types: [ opened, synchronize ]
+    paths: [ 'rust/**', '.github/workflows/rust.yml' ]
+  push:
+    branches: [ main ]
+    paths: [ 'rust/**', '.github/workflows/rust.yml' ]
+
+defaults:
+  run:
+    working-directory: rust
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # Formatting, lints (with and without the Python extension) and the Rust
+  # tests. The fixture tests skip themselves if the GFS sample isn't there.
+  cargo:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust
+      - name: Format
+        run: cargo fmt --check
+      - name: Clippy
+        run: |
+          cargo clippy --all-targets --release -- -D warnings
+          cargo clippy --all-targets --all-features --release -- -D warnings
+      - name: Download GFS test fixture
+        # Best effort, as in the Scala integration job: NOAA download
+        # flakiness only skips the fixture tests.
+        continue-on-error: true
+        working-directory: .
+        run: ./.github/scripts/download_gfs_fixture.sh
+      - name: Tests
+        run: cargo test --release
+
+  # The Python API, partition planning and the local Spark 4.1 data source.
+  python:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      # PySpark 4.1 runs Spark locally for tests/test_spark.py.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Download GFS test fixture
+        continue-on-error: true
+        working-directory: .
+        run: ./.github/scripts/download_gfs_fixture.sh
+      - name: Build and install
+        run: |
+          python -m venv .venv
+          # maturin develop installs the dev group with `pip install --group` (pip 25.1+).
+          .venv/bin/pip install -q --upgrade pip
+          .venv/bin/pip install -q "maturin>=1.9,<2" numpy pytest pyarrow "pyspark>=4.1"
+          .venv/bin/maturin develop --release
+      - name: Tests
+        run: .venv/bin/python -m pytest tests/
+
+  # The manylinux x86_64 abi3 wheel Databricks clusters install, as
+  # scripts/build_linux_wheel.sh builds it locally.
+  wheel:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: PyO3/maturin-action@v1
+        with:
+          working-directory: rust
+          target: x86_64-unknown-linux-gnu
+          manylinux: '2014'
+          args: --release --out dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: grib-idx-wheel
+          path: rust/dist/*.whl

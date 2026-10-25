@@ -43,12 +43,7 @@ jobs:
           cache: 'sbt'
       - uses: sbt/setup-sbt@v1
       - name: Download GFS test fixture
-        run: |
-          mkdir -p src/test/resources
-          curl -sS --fail --retry 3 -o src/test/resources/gfs_sample.grib2 \
-            "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20240101/00/atmos/gfs.t00z.pgrb2.1p00.f000"
-          curl -sS --fail --retry 3 -o src/test/resources/gfs_sample.grib2.idx \
-            "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20240101/00/atmos/gfs.t00z.pgrb2.1p00.f000.idx"
+        run: ./.github/scripts/download_gfs_fixture.sh
       - name: Local integration tests
         # Enable SlowTest-tagged tests by clearing the exclusion, and name the
         # local specs explicitly to skip S3ReadSpec.
